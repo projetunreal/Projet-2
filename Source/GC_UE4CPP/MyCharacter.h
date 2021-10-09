@@ -7,14 +7,16 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/SceneComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Food.h"
+#include "FoodUser.h"
 
 #include "MyCharacter.generated.h"
 
 UCLASS()
-class GC_UE4CPP_API AMyCharacter : public ACharacter
+class GC_UE4CPP_API AMyCharacter : public ACharacter,public IFoodUser
 {
 	GENERATED_BODY()
 	UPROPERTY(VisibleAnywhere, Category = "Trigger Capsule")
@@ -44,6 +46,9 @@ public:
 	void MoveRight(float axis);
 	void MoveForward(float axis);
 	void ZoomCamera(float axis);
+
+	void PickUpFood(AFood* food);
+	void DropFood();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -9,12 +9,8 @@ void AMyCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 	if (OtherActor->ActorHasTag("Food"))
 	{
 		FoodHeld = Cast<AFood>(OtherActor);
-		FoodHeld->PickedUp();
-		FName socketFood = TEXT("FoodSocket");
-		UE_LOG(LogTemp, Warning, TEXT("Test"));
-		FAttachmentTransformRules rules = FAttachmentTransformRules(EAttachmentRule::KeepWorld, true);
-
-		OtherActor->AttachToActor(this, rules, socketFood);
+		PickUpFood(Cast<AFood>(OtherActor));
+		
 		//OtherActor->K2_AttachToActor(this, OtherActor->GetAttachParentSocketName(), EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, true);
 
 	}
@@ -25,6 +21,13 @@ AMyCharacter::AMyCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.0f, 700.0f, 0.0f);
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(FName(TEXT("CameraBoom")));
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->bEnableCameraLag = true;
@@ -83,4 +86,19 @@ void AMyCharacter::ZoomCamera(float axis)
 {
 	if (CameraBoom->TargetArmLength + axis * ZOOM_INCREMENT > 0 && CameraBoom->TargetArmLength + axis * ZOOM_INCREMENT < ZOOM_MAX)
 		CameraBoom->TargetArmLength += axis * ZOOM_INCREMENT;
+}
+
+void AMyCharacter::PickUpFood(AFood* food)
+{
+	FoodHeld = food;
+	FoodHeld->PickedUp();
+	FName socketFood = TEXT("FoodSocket");
+	UE_LOG(LogTemp, Warning, TEXT("Test"));
+	FAttachmentTransformRules rules = FAttachmentTransformRules(EAttachmentRule::KeepRelative, true);
+
+	FoodHeld->AttachToActor(this, rules, socketFood);
+}
+
+void AMyCharacter::DropFood()
+{
 }
