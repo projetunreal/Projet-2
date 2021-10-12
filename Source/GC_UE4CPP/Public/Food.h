@@ -16,7 +16,7 @@ public:
 	// Sets default values for this actor's properties
 	AFood();
 	UPROPERTY(EditAnywhere)
-		UStaticMeshComponent* Sm;
+		UStaticMeshComponent* StaticMesh;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
