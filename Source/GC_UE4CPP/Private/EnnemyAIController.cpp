@@ -10,6 +10,8 @@ AEnnemyAIController::AEnnemyAIController()
 	BehaviorComp = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("BehaviorComp"));
 	BlackboardComp = CreateDefaultSubobject<UBlackboardComponent>(TEXT("BlackboardComp"));
 	LocationToGoKey = "LocationToGo";
+
+	SetGenericTeamId(FGenericTeamId(1));
 }
 
 void AEnnemyAIController::OnPossess(APawn* SomePawn)
