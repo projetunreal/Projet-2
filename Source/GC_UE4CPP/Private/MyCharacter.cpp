@@ -94,12 +94,12 @@ void AMyCharacter::ZoomCamera(float axis)
 }
 void AMyCharacter::FoodAction()
 {
-	
+
 	if (FoodHeld)
 	{
 
-void AMyCharacter::DropFood()
-{
+		DropFood();
+	}
 }
 
 void AMyCharacter::PlusReleased()
@@ -113,6 +113,4 @@ void AMyCharacter::MinusReleased()
 	AInGameHUD* HUD = Cast<AInGameHUD>(UGameplayStatics::GetPlayerController(this, 0)->GetHUD());
 	HUD->UpdateFoodCount(-1);
 }
-		DropFood();
-	}
-}
+

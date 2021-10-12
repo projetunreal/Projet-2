@@ -11,8 +11,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Food.h"
-#include "FoodUser.h"
-#include "UI/InGameHUD.h"
+#include "../UI/InGameHUD.h"
 
 #include "FoodUserActor.h"
 #include "MyCharacter.generated.h"
@@ -46,8 +45,6 @@ public:
 	void MoveForward(float axis);
 	void ZoomCamera(float axis);
 
-	void PickUpFood(AFood* food);
-	void DropFood();
 
 	UFUNCTION()
 	void PlusReleased();
