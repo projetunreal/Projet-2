@@ -12,6 +12,7 @@
 #include "Camera/CameraComponent.h"
 #include "Food.h"
 #include "FoodUser.h"
+#include "UI/InGameHUD.h"
 
 #include "MyCharacter.generated.h"
 
@@ -49,6 +50,11 @@ public:
 
 	void PickUpFood(AFood* food);
 	void DropFood();
+
+	UFUNCTION()
+	void PlusReleased();
+	UFUNCTION()
+	void MinusReleased();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

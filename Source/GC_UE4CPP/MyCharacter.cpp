@@ -52,7 +52,7 @@ void AMyCharacter::BeginPlay()
 void AMyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 }
 
 // Called to bind functionality to input
@@ -64,6 +64,10 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAxis("MoveRight", this, &AMyCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("MoveForward", this, &AMyCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("Zoom", this, &AMyCharacter::ZoomCamera);
+	
+	PlayerInputComponent->BindAction("AddProgressBar", IE_Released, this, &AMyCharacter::PlusReleased);
+	PlayerInputComponent->BindAction("SubstractProgressBar", IE_Released, this, &AMyCharacter::MinusReleased);
+
 }
 
 void AMyCharacter::MoveRight(float axis)
@@ -103,4 +107,16 @@ void AMyCharacter::PickUpFood(AFood* food)
 
 void AMyCharacter::DropFood()
 {
+}
+
+void AMyCharacter::PlusReleased()
+{
+	AInGameHUD* HUD = Cast<AInGameHUD>(UGameplayStatics::GetPlayerController(this, 0)->GetHUD());
+	HUD->UpdateFoodCount(1);
+}
+
+void AMyCharacter::MinusReleased()
+{
+	AInGameHUD* HUD = Cast<AInGameHUD>(UGameplayStatics::GetPlayerController(this, 0)->GetHUD());
+	HUD->UpdateFoodCount(-1);
 }
