@@ -27,9 +27,3 @@ void AFood::Tick(float DeltaTime)
 
 }
 
-void AFood::PickedUp()
-{
-	Sm->SetSimulatePhysics(false);
-	Sm->SetEnableGravity(false);
-}
-

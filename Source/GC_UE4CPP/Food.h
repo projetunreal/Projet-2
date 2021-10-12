@@ -10,19 +10,15 @@ UCLASS()
 class GC_UE4CPP_API AFood : public AActor
 {
 	GENERATED_BODY()
-	UPROPERTY(EditAnywhere)
-		UStaticMeshComponent* Sm;
+	
 
 public:
 	// Sets default values for this actor's properties
 	AFood();
-
+	UPROPERTY(EditAnywhere)
+		UStaticMeshComponent* Sm;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-public:
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	void PickedUp();
 };

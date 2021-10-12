@@ -6,9 +6,9 @@
 void AMyCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 
-	if (OtherActor->ActorHasTag("Food"))
+	if (OtherActor->ActorHasTag("Food") )
 	{
-		FoodHeld = Cast<AFood>(OtherActor);
+		
 		PickUpFood(Cast<AFood>(OtherActor));
 		
 		//OtherActor->K2_AttachToActor(this, OtherActor->GetAttachParentSocketName(), EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, true);
@@ -91,12 +91,14 @@ void AMyCharacter::ZoomCamera(float axis)
 void AMyCharacter::PickUpFood(AFood* food)
 {
 	FoodHeld = food;
-	FoodHeld->PickedUp();
+	//FoodHeld->PickedUp();
+	(FoodHeld)->Sm->SetSimulatePhysics(false);
+	(FoodHeld)->Sm->SetCollisionProfileName(TEXT("OverlapAll"));
 	FName socketFood = TEXT("FoodSocket");
 	UE_LOG(LogTemp, Warning, TEXT("Test"));
-	FAttachmentTransformRules rules = FAttachmentTransformRules(EAttachmentRule::KeepRelative, true);
-
-	FoodHeld->AttachToActor(this, rules, socketFood);
+	FAttachmentTransformRules rules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false);
+	(FoodHeld)->Sm->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("FoodSocket"));
+	//FoodHeld->AttachToActor(this, rules, socketFood);
 }
 
 void AMyCharacter::DropFood()
