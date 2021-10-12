@@ -14,10 +14,11 @@
 #include "FoodUser.h"
 #include "UI/InGameHUD.h"
 
+#include "FoodUserActor.h"
 #include "MyCharacter.generated.h"
 
 UCLASS()
-class GC_UE4CPP_API AMyCharacter : public ACharacter,public IFoodUser
+class GC_UE4CPP_API AMyCharacter : public AFoodUserActor
 {
 	GENERATED_BODY()
 	UPROPERTY(VisibleAnywhere, Category = "Trigger Capsule")
@@ -28,11 +29,8 @@ class GC_UE4CPP_API AMyCharacter : public ACharacter,public IFoodUser
 		USpringArmComponent* CameraBoom;
 	UPROPERTY(VisibleAnywhere)
 		UCameraComponent* Camera;
-	UPROPERTY(EditAnywhere)
-		USkeletalMeshComponent* SM_Character;
 
-	UPROPERTY(EditAnywhere)
-		AFood* FoodHeld;
+
 	UPROPERTY(VisibleAnywhere)
 		float ZOOM_INCREMENT = 60;
 	UPROPERTY(VisibleAnywhere)
@@ -59,6 +57,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	void FoodAction();
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

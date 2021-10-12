@@ -9,7 +9,7 @@ AFood::AFood()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	Sm = CreateDefaultSubobject<UStaticMeshComponent>(FName("Static Mesh"));
+	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Static Mesh"));
 
 }
 

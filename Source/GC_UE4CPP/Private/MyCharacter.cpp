@@ -33,7 +33,6 @@ AMyCharacter::AMyCharacter()
 	CameraBoom->bEnableCameraLag = true;
 	//CameraBoom->bDrawDebugLagMarkers = true;
 	Camera = CreateDefaultSubobject<UCameraComponent>(FName(TEXT("Camera")));
-	SM_Character = GetMesh();
 	TriggerCapsule = GetCapsuleComponent();
 	Camera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	CameraBoom->TargetArmLength = 300.0f;
@@ -68,6 +67,8 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction("AddProgressBar", IE_Released, this, &AMyCharacter::PlusReleased);
 	PlayerInputComponent->BindAction("SubstractProgressBar", IE_Released, this, &AMyCharacter::MinusReleased);
 
+
+	PlayerInputComponent->BindAction("FoodAction", IE_Pressed,this, &AMyCharacter::FoodAction);
 }
 
 void AMyCharacter::MoveRight(float axis)
@@ -91,19 +92,11 @@ void AMyCharacter::ZoomCamera(float axis)
 	if (CameraBoom->TargetArmLength + axis * ZOOM_INCREMENT > 0 && CameraBoom->TargetArmLength + axis * ZOOM_INCREMENT < ZOOM_MAX)
 		CameraBoom->TargetArmLength += axis * ZOOM_INCREMENT;
 }
-
-void AMyCharacter::PickUpFood(AFood* food)
+void AMyCharacter::FoodAction()
 {
-	FoodHeld = food;
-	//FoodHeld->PickedUp();
-	(FoodHeld)->Sm->SetSimulatePhysics(false);
-	(FoodHeld)->Sm->SetCollisionProfileName(TEXT("OverlapAll"));
-	FName socketFood = TEXT("FoodSocket");
-	UE_LOG(LogTemp, Warning, TEXT("Test"));
-	FAttachmentTransformRules rules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false);
-	(FoodHeld)->Sm->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("FoodSocket"));
-	//FoodHeld->AttachToActor(this, rules, socketFood);
-}
+	
+	if (FoodHeld)
+	{
 
 void AMyCharacter::DropFood()
 {
@@ -119,4 +112,7 @@ void AMyCharacter::MinusReleased()
 {
 	AInGameHUD* HUD = Cast<AInGameHUD>(UGameplayStatics::GetPlayerController(this, 0)->GetHUD());
 	HUD->UpdateFoodCount(-1);
+}
+		DropFood();
+	}
 }
