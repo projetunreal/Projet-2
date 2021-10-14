@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Math/UnrealMathUtility.h"
+#include "EnnemyAIController.h"
 #include "AISpawner.h"
 
 // Sets default values
@@ -11,16 +12,6 @@ AAISpawner::AAISpawner()
 	AICount = 0;
 }
 
-void AAISpawner::IncreaseAICount()
-{
-	AIInsideRoomCount++;
-}
-
-void AAISpawner::DecreaseAICount()
-{
-	AIInsideRoomCount--;
-}
-
 void AAISpawner::SpawnIA()
 {
 	if (AICharacterBP)
@@ -29,9 +20,12 @@ void AAISpawner::SpawnIA()
 		p.Owner = this;
 	
 		AAICharacter* AIChar = GetWorld()->SpawnActor<AAICharacter>(AICharacterBP, GetActorLocation() + FVector(0,0,125.549332), GetActorRotation(), p);
-		SpawnedAI.Add(AIChar);
-
-		IncreaseAICount();
+		AEnnemyAIController* AICon = Cast<AEnnemyAIController>(AIChar->GetController());
+		if (AICon)
+		{
+			AICon->GetBlackboardComp()->SetValueAsObject("Spawner", this);
+			SpawnedAI.Add(AIChar);
+		}
 	}
 }
 
@@ -40,7 +34,6 @@ void AAISpawner::BeginPlay()
 {
 	Super::BeginPlay();
 	BeginTime = GetWorld()->GetTimeSeconds();
-	AIInsideRoomCount = 0;
 }
 
 // Called every frame
@@ -51,15 +44,21 @@ void AAISpawner::Tick(float DeltaTime)
 	AAICharacter* AIChar;
 
 	//despawn at entry with job done
+	int AIInsideRoomCount = SpawnedAI.Num();
 	for (int i = AIInsideRoomCount-1; i >= 0; i--)
 	{
 		AIChar = SpawnedAI[i];
-		if (AIChar->IsJobDone() && FVector::Distance(GetActorLocation(), AIChar->GetActorLocation()) < DestroyRadius)
+		AEnnemyAIController* AIController = Cast<AEnnemyAIController>(AIChar->GetController());
+		if (AIController)
 		{
-			AIChar->Destroy();
-			SpawnedAI.RemoveAtSwap(i);
+			//UE_LOG(LogTemp, Warning, TEXT("%i"), AIInsideRoomCount);
+			if (AIController->IsJobDone() && FVector::Distance(GetActorLocation(), AIChar->GetActorLocation()) < DestroyRadius)
+			{
+				AIChar->Destroy();
+				SpawnedAI.RemoveAtSwap(i);
 
-			RespawnTimes.Add(GetWorld()->GetTimeSeconds() + FMath::RandRange(RespawnMinCooldown, RespawnMaxCooldown));
+				RespawnTimes.Add(GetWorld()->GetTimeSeconds() + FMath::RandRange(RespawnMinCooldown, RespawnMaxCooldown));
+			}
 		}
 	}
 

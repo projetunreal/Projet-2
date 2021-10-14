@@ -29,13 +29,3 @@ void AAICharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-void AAICharacter::JobIsDone()
-{
-	JobDone = true;
-}
-
-bool AAICharacter::IsJobDone()
-{
-	return JobDone;
-}
-

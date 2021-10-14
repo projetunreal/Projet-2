@@ -18,7 +18,7 @@ public:
 	AAISpawner();
 	
 	UPROPERTY(EditAnywhere)
-		float DestroyRadius = 5;
+		float DestroyRadius = 150;
 
 	UPROPERTY(EditAnywhere)
 		float RespawnMinCooldown = 0;
@@ -29,12 +29,8 @@ public:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<AAICharacter> AICharacterBP;
 
-	void IncreaseAICount();
-	void DecreaseAICount();
-
 private:
 
-	int AIInsideRoomCount;
 	int AICount;
 
 	TArray<AAICharacter*> SpawnedAI;

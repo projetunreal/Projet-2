@@ -35,6 +35,16 @@ AAICharacter* AEnnemyAIController::GetAICharacter()
 	return AIChar;
 }
 
+void AEnnemyAIController::JobIsDone()
+{
+	BlackboardComp->SetValueAsBool("JobIsDone", true);
+}
+
+bool AEnnemyAIController::IsJobDone()
+{
+	return BlackboardComp->GetValueAsBool("JobIsDone");
+}
+
 void AEnnemyAIController::OnPossess(APawn* SomePawn)
 {
 	Super::OnPossess(SomePawn);

@@ -60,4 +60,7 @@ public:
 	FORCEINLINE TArray<AActor*> GetAvailableTargetPoints() { return EnnemyTargetPoints; }
 
 	AAICharacter* GetAICharacter();
+
+	void JobIsDone();
+	bool IsJobDone();
 };

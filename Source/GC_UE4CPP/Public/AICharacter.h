@@ -19,9 +19,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = "AI")
 		class UBehaviorTree* BehaviorTree;
 
-	UPROPERTY(EditAnywhere, Category = "AI")
-		bool JobDone = false;
-
 private:
 
 protected:
@@ -34,7 +31,4 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	void JobIsDone();
-	bool IsJobDone();
 };
