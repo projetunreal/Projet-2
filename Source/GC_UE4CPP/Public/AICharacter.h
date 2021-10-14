@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "FoodUserActor.h"
 #include "AICharacter.generated.h"
 
 UCLASS()
-class GC_UE4CPP_API AAICharacter : public ACharacter
+class GC_UE4CPP_API AAICharacter : public AFoodUserActor
 {
 	GENERATED_BODY()
 
