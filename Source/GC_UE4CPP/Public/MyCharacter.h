@@ -11,6 +11,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Food.h"
+#include "FoodSpot.h"
 #include "../UI/InGameHUD.h"
 
 #include "FoodUserActor.h"

@@ -13,6 +13,15 @@ void AMyCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 		
 		//OtherActor->K2_AttachToActor(this, OtherActor->GetAttachParentSocketName(), EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, true);
 	}
+	else if(OtherActor->ActorHasTag("FoodSlot"))
+	{
+
+		UE_LOG(LogTemp, Warning, TEXT("Test"));
+		
+		AFoodSpot* spot = Cast<AFoodSpot>(OtherActor);
+		PutFoodOnSpot(spot->getMesh());
+		//DropFood();
+	}
 }
 
 // Sets default values
