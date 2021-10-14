@@ -31,9 +31,11 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	bool IsHoldingFood();
+	void DropFood();
 protected :
 	void PickUpFood(AFood* food);
-	void DropFood();
+	
 	virtual void FoodAction();
+	void PutFoodOnSpot(USceneComponent* obj);
 	
 };
