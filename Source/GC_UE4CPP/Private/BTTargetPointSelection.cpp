@@ -15,7 +15,7 @@ EBTNodeResult::Type UBTTargetPointSelection::ExecuteTask(UBehaviorTreeComponent&
 
         UBlackboardComponent* BlackboardComp = AICon->GetBlackboardComp();
         AEnnemyTargetPoint* CurrentPoint = Cast<AEnnemyTargetPoint>(BlackboardComp->GetValueAsObject("LocationToGo"));
-
+  
         TArray<AActor*> AvailableTargetPoints = AICon->GetAvailableTargetPoints();
 
         int32 RandomIndex;

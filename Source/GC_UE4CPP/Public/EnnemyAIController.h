@@ -10,6 +10,9 @@
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "Kismet/GameplayStatics.h"
+#include "Perception/AIPerceptionComponent.h"
+#include "Perception/AISenseConfig_Sight.h"
+#include "MyCharacter.h"
 
 #include "EnnemyAIController.generated.h"
 
@@ -29,14 +32,32 @@ class GC_UE4CPP_API AEnnemyAIController : public AAIController
 		FName LocationToGoKey;
 
 	TArray<AActor*> EnnemyTargetPoints;
+	
+	AActor* TargetActor;
 
+	AAICharacter* AIChar;
+
+	float SearchDistance = 15;
+
+	//float LastTimePlayerWasSeen = 0;
+	
 	virtual void OnPossess(APawn* SomePawn) override;
 
+	UFUNCTION()
+	void OnTargetUpdated(AActor* Actor, FAIStimulus const Stimulus);
+
+	void SetupPerceptionSystem();
+
 public:
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 
 	AEnnemyAIController();
 
 	FORCEINLINE UBlackboardComponent* GetBlackboardComp() const { return BlackboardComp; }
 
 	FORCEINLINE TArray<AActor*> GetAvailableTargetPoints() { return EnnemyTargetPoints; }
+
+	AAICharacter* GetAICharacter();
 };
