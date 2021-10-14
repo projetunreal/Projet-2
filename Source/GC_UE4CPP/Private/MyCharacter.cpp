@@ -12,7 +12,6 @@ void AMyCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 		PickUpFood(Cast<AFood>(OtherActor));
 		
 		//OtherActor->K2_AttachToActor(this, OtherActor->GetAttachParentSocketName(), EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, true);
-
 	}
 }
 
@@ -76,7 +75,8 @@ void AMyCharacter::MoveRight(float axis)
 	const FRotator Rotation = Controller->GetControlRotation();
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
 	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-	AddMovementInput(Direction, axis);
+	float modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
+	AddMovementInput(Direction* modifier, axis);
 }
 
 void AMyCharacter::MoveForward(float axis)
@@ -84,7 +84,8 @@ void AMyCharacter::MoveForward(float axis)
 	const FRotator Rotation = Controller->GetControlRotation();
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
 	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	AddMovementInput(Direction, axis);
+	float modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
+	AddMovementInput(Direction * modifier, axis);
 }
 
 void AMyCharacter::ZoomCamera(float axis)

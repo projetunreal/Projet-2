@@ -36,14 +36,19 @@ void AShelter::Tick(float DeltaTime)
 void AShelter::OnStaticMeshBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	
 	if(OtherActor->GetClass()->IsChildOf(AFood::StaticClass()))
 	{
 		OtherActor->Destroy();
 		
 		AInGameHUD* HUD = Cast<AInGameHUD>(UGameplayStatics::GetPlayerController(this, 0)->GetHUD());
 		HUD->UpdateFoodCount(1);
-
+		
 		//TODO: Change current animation
+	}
+	else if(OtherActor->GetClass()->IsChildOf(AFoodUserActor::StaticClass()))
+	{
+		Cast<AFoodUserActor>(OtherActor)->DropFood();
 	}
 }
 
