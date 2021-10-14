@@ -13,22 +13,12 @@ void AEnnemyAIController::Tick(float DeltaTime)
 	{
 		BlackboardComp->SetValueAsVector("LastKnownPlayerLocation", TargetActor->GetActorLocation());
 		BlackboardComp->SetValueAsVector("LastKnownPlayerDirection", TargetActor->GetActorForwardVector());
-		//LastTimePlayerWasSeen = GetWorld()->GetTimeSeconds();
 	}
 	else
 	{
 		FVector TargetLocation = AIChar->GetActorLocation() + BlackboardComp->GetValueAsVector("LastKnownPlayerDirection") *(AIChar->GetVelocity().Size() * DeltaTime + SearchDistance);
 		BlackboardComp->SetValueAsVector("SearchPlayerLocation", TargetLocation);
 	}
-	/*if (Blackboard->GetValueAsBool("CanSeePlayer"))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("true"));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("false"));
-	}*/
-	UE_LOG(LogTemp, Warning, TEXT("%f"), (AIChar->GetVelocity().Size() * DeltaTime + SearchDistance));
 }
 
 AEnnemyAIController::AEnnemyAIController()
