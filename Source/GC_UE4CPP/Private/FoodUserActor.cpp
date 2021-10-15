@@ -56,7 +56,7 @@ void AFoodUserActor::PutFoodOnSpot(USceneComponent* otherMesh)
 		FoodHeld->StaticMesh->SetCollisionProfileName(TEXT("BlockAll"));
 
 		FoodHeld->StaticMesh->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, false));
-		FoodHeld->StaticMesh->AttachToComponent(otherMesh, FAttachmentTransformRules::KeepWorldTransform, TEXT("FoodSocket"));
+		FoodHeld->StaticMesh->AttachToComponent(otherMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("FoodSocket"));
 		FoodHeld = nullptr;
 	}
 }

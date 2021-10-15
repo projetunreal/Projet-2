@@ -9,7 +9,7 @@ void AMyCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 	if (OtherActor->ActorHasTag("Food") )
 	{
 		
-		PickUpFood(Cast<AFood>(OtherActor));
+		//PickUpFood(Cast<AFood>(OtherActor));
 		
 		//OtherActor->K2_AttachToActor(this, OtherActor->GetAttachParentSocketName(), EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, true);
 	}
@@ -109,6 +109,28 @@ void AMyCharacter::FoodAction()
 	{
 
 		DropFood();
+	}
+	else 
+	{
+		FHitResult OutHit;
+
+		FVector Start = Camera->GetComponentLocation();
+		FVector ForwardVec = Camera->GetForwardVector();
+
+		Start += (ForwardVec * CameraBoom->TargetArmLength);
+		FVector End = Start + (ForwardVec * 200.0f);
+		
+		FCollisionQueryParams CollisionParams;
+		CollisionParams.AddIgnoredActor(GetOwner());
+
+		//
+		//DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1, 0, 1);
+		bool IsHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams);
+		if (IsHit)
+		{
+			if(OutHit.GetActor()->GetClass()->IsChildOf(AFood::StaticClass()))
+				PickUpFood(Cast<AFood>(OutHit.GetActor()));
+		}
 	}
 }
 

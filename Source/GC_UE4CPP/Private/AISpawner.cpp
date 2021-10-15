@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
+#include "AISpawner.h"
 #include "Math/UnrealMathUtility.h"
 #include "EnnemyAIController.h"
-#include "AISpawner.h"
+
 
 // Sets default values
 AAISpawner::AAISpawner()
