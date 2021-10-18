@@ -16,10 +16,9 @@ void AMyCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 	else if(OtherActor->ActorHasTag("FoodSlot"))
 	{
 
-		UE_LOG(LogTemp, Warning, TEXT("Test"));
 		
 		AFoodSpot* spot = Cast<AFoodSpot>(OtherActor);
-		PutFoodOnSpot(spot->getMesh());
+		PutFoodOnSpot(spot);
 		//DropFood();
 	}
 }
@@ -105,33 +104,42 @@ void AMyCharacter::ZoomCamera(float axis)
 void AMyCharacter::FoodAction()
 {
 
-	if (FoodHeld)
-	{
+	//if (FoodHeld)
+	//{
 
-		DropFood();
-	}
-	else 
-	{
-		FHitResult OutHit;
+	//	DropFood();
+	//}
+	bool bHavepick = false ;
+	FHitResult OutHit;
 
-		FVector Start = Camera->GetComponentLocation();
-		FVector ForwardVec = Camera->GetForwardVector();
+	FVector Start = Camera->GetComponentLocation();
+	FVector ForwardVec = Camera->GetForwardVector();
 
-		Start += (ForwardVec * CameraBoom->TargetArmLength);
-		FVector End = Start + (ForwardVec * 200.0f);
-		
-		FCollisionQueryParams CollisionParams;
-		CollisionParams.AddIgnoredActor(GetOwner());
+	Start += (ForwardVec * CameraBoom->TargetArmLength);
+	FVector End = Start + (ForwardVec * 200.0f);
+	
+	FCollisionQueryParams CollisionParams;
+	CollisionParams.AddIgnoredActor(GetOwner());
 
 		//
 		//DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1, 0, 1);
-		bool IsHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams);
-		if (IsHit)
+	bool IsHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams);
+	if (IsHit)
+	{
+		if (OutHit.GetActor()->GetClass()->IsChildOf(AFoodSpot::StaticClass()))
 		{
-			if(OutHit.GetActor()->GetClass()->IsChildOf(AFood::StaticClass()))
-				PickUpFood(Cast<AFood>(OutHit.GetActor()));
+			bHavepick = true;
+			PickUpFoodFromSpot(Cast<AFoodSpot>(OutHit.GetActor()));
+		}
+		else if (OutHit.GetActor()->GetClass()->IsChildOf(AFood::StaticClass()) && !FoodHeld)
+		{
+			bHavepick = true;
+			PickUpFood(Cast<AFood>(OutHit.GetActor()));
 		}
 	}
+	if (!bHavepick && FoodHeld)
+		DropFood();
+
 }
 
 void AMyCharacter::PlusReleased()

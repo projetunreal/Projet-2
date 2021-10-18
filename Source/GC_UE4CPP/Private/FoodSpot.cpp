@@ -29,3 +29,18 @@ UStaticMeshComponent* AFoodSpot::getMesh()
 {
 	return StaticMesh;
 }
+bool AFoodSpot::IsFoodOn()
+{
+	return FoodHeld != nullptr;
+
+}
+void AFoodSpot::SetFood(AFood* food)
+{
+	FoodHeld = food;
+
+}
+AFood* AFoodSpot::GetFood()
+{
+	return FoodHeld;
+
+}
