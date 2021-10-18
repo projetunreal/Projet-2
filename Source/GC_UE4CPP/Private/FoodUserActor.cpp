@@ -44,19 +44,34 @@ void AFoodUserActor::PickUpFood(AFood* food)
 		FoodHeld->StaticMesh->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("FoodSocket"));
 	}
 }
+void AFoodUserActor::PickUpFoodFromSpot(AFoodSpot* spot)
+{
+	if (spot->IsFoodOn())
+	{
+		
+		FoodHeld = spot->GetFood();
+		FoodHeld->StaticMesh->SetSimulatePhysics(false);
+		FoodHeld->StaticMesh->SetCollisionProfileName(TEXT("OverlapAll"));
+		FName socketFood = TEXT("FoodSocket");
+		FAttachmentTransformRules rules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false);
+		FoodHeld->StaticMesh->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("FoodSocket"));
+		spot->SetFood(nullptr);
+	}
+}
 void AFoodUserActor::FoodAction()
 {
-	DropFood(); //placeHolder Might get removed
+  //placeHolder Might get removed
 }
-void AFoodUserActor::PutFoodOnSpot(USceneComponent* otherMesh)
+void AFoodUserActor::PutFoodOnSpot(AFoodSpot* spot)
 {
-	if (FoodHeld)
+	if ( FoodHeld && !spot->IsFoodOn() )
 	{
 		FoodHeld->StaticMesh->SetSimulatePhysics(false);
-		FoodHeld->StaticMesh->SetCollisionProfileName(TEXT("BlockAll"));
+		FoodHeld->StaticMesh->SetCollisionProfileName(TEXT("IgnoreAll"));
 
 		FoodHeld->StaticMesh->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, false));
-		FoodHeld->StaticMesh->AttachToComponent(otherMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("FoodSocket"));
+		spot->SetFood(FoodHeld);
+		FoodHeld->StaticMesh->AttachToComponent(spot->getMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("FoodSocket"));
 		FoodHeld = nullptr;
 	}
 }

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "FoodSpot.h"
 #include "Food.h"
 
 #include "FoodUserActor.generated.h"
@@ -33,7 +34,7 @@ public:
 	bool IsHoldingFood();
 	void DropFood();
 	void PickUpFood(AFood* food);
-	void PutFoodOnSpot(USceneComponent* obj);
+	void PutFoodOnSpot(AFoodSpot* spot);
 protected :
 	
 	virtual void FoodAction();
