@@ -35,6 +35,7 @@ public:
 	void DropFood();
 	void PickUpFood(AFood* food);
 	void PutFoodOnSpot(AFoodSpot* spot);
+	void PickUpFoodFromSpot(AFoodSpot* spot);
 protected :
 	
 	virtual void FoodAction();
