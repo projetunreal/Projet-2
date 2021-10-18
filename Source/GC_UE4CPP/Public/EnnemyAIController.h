@@ -13,6 +13,7 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "MyCharacter.h"
+#include "FoodSpotHandler.h"
 
 #include "EnnemyAIController.generated.h"
 
@@ -48,6 +49,11 @@ class GC_UE4CPP_API AEnnemyAIController : public AAIController
 
 	void SetupPerceptionSystem();
 
+private:
+
+	AFoodSpotHandler* FoodSpotHandler;
+
+
 public:
 
 	// Called every frame
@@ -60,6 +66,9 @@ public:
 	FORCEINLINE TArray<AActor*> GetAvailableTargetPoints() { return EnnemyTargetPoints; }
 
 	AAICharacter* GetAICharacter();
+
+	void SetFoodSpotHandler(AFoodSpotHandler* SomeFoodSpotHandler);
+	AFoodSpotHandler* GetFoodSpotHandler();
 
 	void JobIsDone();
 	bool IsJobDone();

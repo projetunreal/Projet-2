@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "AICharacter.h"
+#include "FoodSpotHandler.h"
 
 #include "AISpawner.generated.h"
 
@@ -28,6 +29,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<AAICharacter> AICharacterBP;
+
+	UPROPERTY(EditAnywhere)
+		AFoodSpotHandler* FoodSpotHandler;
 
 private:
 

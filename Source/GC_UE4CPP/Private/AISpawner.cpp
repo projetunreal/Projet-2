@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "AISpawner.h"
 #include "Math/UnrealMathUtility.h"
+#include "FoodUserActor.h"
 #include "EnnemyAIController.h"
 
 
@@ -18,12 +19,24 @@ void AAISpawner::SpawnIA()
 	{
 		FActorSpawnParameters p;
 		p.Owner = this;
-	
-		AAICharacter* AIChar = GetWorld()->SpawnActor<AAICharacter>(AICharacterBP, GetActorLocation() + FVector(0,0,125.549332), GetActorRotation(), p);
+		
+		FVector AICharPos = GetActorLocation() + FVector(0, 0, 125.549332);
+		AAICharacter* AIChar = GetWorld()->SpawnActor<AAICharacter>(AICharacterBP, AICharPos, GetActorRotation(), p);
 		AEnnemyAIController* AICon = Cast<AEnnemyAIController>(AIChar->GetController());
 		if (AICon)
 		{
-			AICon->GetBlackboardComp()->SetValueAsObject("Spawner", this);
+			UBlackboardComponent* BlackboardComp = AICon->GetBlackboardComp();
+			BlackboardComp->SetValueAsObject("Spawner", this);
+			AICon->SetFoodSpotHandler(FoodSpotHandler);
+
+			TSubclassOf<AFood> FoodBP = AIChar->GetFoodBP();
+			if (FoodBP)
+			{
+				p.Owner = AIChar;
+				AFood* Food = GetWorld()->SpawnActor<AFood>(FoodBP, AICharPos, GetActorRotation(), p);
+				AIChar->PickUpFood(Food);
+				BlackboardComp->SetValueAsObject("Food", Food);
+			}
 			SpawnedAI.Add(AIChar);
 		}
 	}

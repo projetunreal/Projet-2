@@ -19,6 +19,12 @@ void AEnnemyAIController::Tick(float DeltaTime)
 		FVector TargetLocation = AIChar->GetActorLocation() + BlackboardComp->GetValueAsVector("LastKnownPlayerDirection") *(AIChar->GetVelocity().Size() * DeltaTime + SearchDistance);
 		BlackboardComp->SetValueAsVector("SearchPlayerLocation", TargetLocation);
 	}
+
+	AFood* Food = Cast<AFood>(BlackboardComp->GetValueAsObject("Food"));
+	if (Food && AIChar->IsHoldingFood())
+	{
+		BlackboardComp->SetValueAsVector("LastKnownFoodLocation", Food->GetActorLocation());
+	}
 }
 
 AEnnemyAIController::AEnnemyAIController()
@@ -33,6 +39,16 @@ AEnnemyAIController::AEnnemyAIController()
 AAICharacter* AEnnemyAIController::GetAICharacter()
 {
 	return AIChar;
+}
+
+void AEnnemyAIController::SetFoodSpotHandler(AFoodSpotHandler* SomeFoodSpotHandler)
+{
+	FoodSpotHandler = SomeFoodSpotHandler;
+}
+
+AFoodSpotHandler* AEnnemyAIController::GetFoodSpotHandler()
+{
+	return FoodSpotHandler;
 }
 
 void AEnnemyAIController::JobIsDone()
@@ -55,9 +71,8 @@ void AEnnemyAIController::OnPossess(APawn* SomePawn)
 		if (AIChar->BehaviorTree->BlackboardAsset)
 		{
 			BlackboardComp->InitializeBlackboard(*(AIChar->BehaviorTree->BlackboardAsset));
+			BlackboardComp->SetValueAsObject("FoodSpotHandler", FoodSpotHandler);
 		}
-
-		UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEnnemyTargetPoint::StaticClass(), EnnemyTargetPoints);
 
 		BehaviorComp->StartTree(*AIChar->BehaviorTree);
 

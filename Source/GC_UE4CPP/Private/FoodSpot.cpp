@@ -29,3 +29,8 @@ UStaticMeshComponent* AFoodSpot::getMesh()
 {
 	return StaticMesh;
 }
+
+FVector AFoodSpot::GetUserLocation()
+{
+	return GetActorLocation() + GetActorRightVector() * UserDistanceFromCenter;
+}

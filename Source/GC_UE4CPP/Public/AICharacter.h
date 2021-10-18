@@ -19,6 +19,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "AI")
 		class UBehaviorTree* BehaviorTree;
 
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<AFood> FoodBP;
+	
 private:
 
 protected:
@@ -31,4 +34,5 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	TSubclassOf<AFood> GetFoodBP();
 };

@@ -32,10 +32,10 @@ public:
 
 	bool IsHoldingFood();
 	void DropFood();
-protected :
 	void PickUpFood(AFood* food);
+	void PutFoodOnSpot(USceneComponent* obj);
+protected :
 	
 	virtual void FoodAction();
-	void PutFoodOnSpot(USceneComponent* obj);
 	
 };
