@@ -3,6 +3,8 @@
 
 #include "FoodCountWidget.h"
 
+#include "MyGC_UE4CPPGameModeBase.h"
+
 UFoodCountWidget::UFoodCountWidget(const FObjectInitializer& ObjectInitializer):Super(ObjectInitializer)
 {
 	CurrentValue = 0;
@@ -10,14 +12,21 @@ UFoodCountWidget::UFoodCountWidget(const FObjectInitializer& ObjectInitializer):
 
 void UFoodCountWidget::UpdateFoodCount(int32 Value)
 {
+	AMyGC_UE4CPPGameModeBase* GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
 	if(FoodTxt && FoodBar)
 	{
 		CurrentValue+=Value;
+		
 		if (CurrentValue > 5) {CurrentValue--;}
 		if (CurrentValue < 0) {CurrentValue++;}
 		
 		FoodBar->SetPercent((static_cast<float>(CurrentValue)/100)*20);
 		FoodTxt->SetText(FText::FromString(FString::FromInt(CurrentValue) + "/5"));
+
+		if (CurrentValue >= 5)
+		{
+			GameMode->WinGame();
+		}
 	}
 }
 

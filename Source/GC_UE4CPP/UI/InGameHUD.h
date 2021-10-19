@@ -4,8 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
-
-#include "Components/WidgetComponent.h"
 #include "FoodCountWidget.h"
 
 #include "InGameHUD.generated.h"
@@ -31,7 +29,7 @@ public:
 	void UpdateFoodCount(int32 Value);
 
 	UFUNCTION()
-	void ResetCombo();
+	void ResetCount();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 	TSubclassOf<UUserWidget> FoodCountWidgetClass;

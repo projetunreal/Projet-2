@@ -41,7 +41,7 @@ void AInGameHUD::UpdateFoodCount(int32 Value)
 	}
 }
 
-void AInGameHUD::ResetCombo()
+void AInGameHUD::ResetCount()
 {
 	if(FoodCountWidget)
 	{

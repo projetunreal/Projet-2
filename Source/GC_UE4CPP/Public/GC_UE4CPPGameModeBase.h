@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "GC_UE4CPP/UI/EndScreen.h"
 #include "GC_UE4CPPGameModeBase.generated.h"
 
 /**
