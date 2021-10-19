@@ -27,7 +27,6 @@ void AAICharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
-
 TSubclassOf<AFood> AAICharacter::GetFoodBP()
 {
 	return FoodBP;

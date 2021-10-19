@@ -2,18 +2,29 @@
 
 
 #include "MyAnimatedInstance.h"
-UMyAnimatedInstance::UMyAnimatedInstance() 
+UMyAnimatedInstance::UMyAnimatedInstance()
 {
-	Moving = false;
-	Holding = false;
+	bMove = false;
+	bHold = false;
+	bWin = false;
+	bLoose = false;
+	//
+	//
 }
+
 void UMyAnimatedInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
-	if (Actor)
+	if (Actor  && GameMode )
 	{
-		Moving  = (Actor->GetVelocity().Size()>0);
-		Holding = Actor->IsHoldingFood();
+		bMove = (Actor->GetVelocity().Size() > 0);
+		bHold = Actor->IsHoldingFood();
+		bLoose = GameMode->IsLoose();
+		bWin = GameMode->IsWin();
+
 	}
 	else
-		Actor =Cast<AFoodUserActor>(GetOwningActor());
+	{
+		Actor = Cast<AFoodUserActor>(GetOwningActor());
+		GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+	}
 }

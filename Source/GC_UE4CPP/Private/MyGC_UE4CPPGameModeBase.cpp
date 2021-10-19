@@ -77,3 +77,13 @@ void AMyGC_UE4CPPGameModeBase::LoseGame()
 	}
 }
 
+bool AMyGC_UE4CPPGameModeBase::IsWin()
+{
+	return bPlayerWon;
+}
+
+bool AMyGC_UE4CPPGameModeBase::IsLoose()
+{
+	return bPlayerLost;
+}
+

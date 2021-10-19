@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
 #include "FoodUserActor.h"
+#include "MyGC_UE4CPPGameModeBase.h"
 #include "MyAnimatedInstance.generated.h"
 
 /**
@@ -18,9 +19,16 @@ public:
 	UMyAnimatedInstance();
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generic")
-		bool Moving;
+		bool bMove;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generic")
-		bool Holding;
+		bool bHold;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generic")
+		bool bWin;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generic")
+		bool bLoose;
+	
+	AMyGC_UE4CPPGameModeBase* GameMode;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generic")
 		AFoodUserActor* Actor;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;

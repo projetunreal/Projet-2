@@ -37,7 +37,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 	TSubclassOf<UUserWidget> EndScreenClass;
-
+	bool IsWin();
+	bool IsLoose();
 private:
 	UEndScreen* EndScreenWidget;
 };
