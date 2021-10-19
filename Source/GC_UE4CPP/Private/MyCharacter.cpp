@@ -3,9 +3,12 @@
 
 #include "MyCharacter.h"
 
+#include "AICharacter.h"
+#include "MyGC_UE4CPPGameModeBase.h"
+
 void AMyCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-
+	
 	if (OtherActor->ActorHasTag("Food") )
 	{
 		
@@ -20,6 +23,17 @@ void AMyCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 		AFoodSpot* spot = Cast<AFoodSpot>(OtherActor);
 		PutFoodOnSpot(spot);
 		//DropFood();
+	}
+}
+
+void AMyCharacter::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,
+	bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+{
+	Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
+	if (Other->GetClass()->IsChildOf(AAICharacter::StaticClass()))
+	{
+		AMyGC_UE4CPPGameModeBase* GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+		GameMode->LoseGame();
 	}
 }
 
