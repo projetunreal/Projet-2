@@ -12,7 +12,15 @@ EBTNodeResult::Type UBTDropFoodOnSpot::ExecuteTask(UBehaviorTreeComponent& Owner
 	{
 		UBlackboardComponent* BlackboardComp = AICon->GetBlackboardComp();
 		AFoodSpot* FoodSpot = Cast<AFoodSpot>(BlackboardComp->GetValueAsObject("FoodSpot"));
-		//AICon->GetAICharacter()->PutFoodOnSpot(FoodSpot);
+		if (!FoodSpot->IsFoodOn())
+		{
+			AICon->GetAICharacter()->PutFoodOnSpot(FoodSpot);
+			return EBTNodeResult::Succeeded;
+		}
+		else
+		{
+			return EBTNodeResult::Failed;
+		}
 	}
-	return EBTNodeResult::Type();
+	return EBTNodeResult::Failed;
 }

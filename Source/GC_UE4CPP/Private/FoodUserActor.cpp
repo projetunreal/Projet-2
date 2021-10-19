@@ -48,7 +48,6 @@ void AFoodUserActor::PickUpFoodFromSpot(AFoodSpot* spot)
 {
 	if (spot->IsFoodOn())
 	{
-		
 		FoodHeld = spot->GetFood();
 		FoodHeld->StaticMesh->SetSimulatePhysics(false);
 		FoodHeld->StaticMesh->SetCollisionProfileName(TEXT("OverlapAll"));

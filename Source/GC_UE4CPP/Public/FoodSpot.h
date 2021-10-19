@@ -30,6 +30,7 @@ public:
 	bool IsFoodOn();
 	void SetFood(AFood* food);
 	AFood* GetFood();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

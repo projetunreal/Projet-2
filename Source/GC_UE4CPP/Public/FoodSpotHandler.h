@@ -3,8 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
 #include "FoodSpot.h"
+#include "GameFramework/Actor.h"
+
 #include "FoodSpotHandler.generated.h"
 
 UCLASS()
@@ -19,9 +20,6 @@ public:
 	UPROPERTY(EditAnywhere)
 		TArray<AFoodSpot*> FoodSpots;
 
-private:
-	int EmptyFoodSpotsCount;
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -31,6 +29,4 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	AFoodSpot* GetRandomEmptyFoodSpot();
-	void IncreaseEmptyFoodSpotsCount();
-	void DecreaseEmptyFoodSpotsCount();
 };

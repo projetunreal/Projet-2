@@ -15,7 +15,7 @@ AFoodSpotHandler::AFoodSpotHandler()
 void AFoodSpotHandler::BeginPlay()
 {
 	Super::BeginPlay();
-	EmptyFoodSpotsCount = FoodSpots.Num();
+
 }
 
 // Called every frame
@@ -27,24 +27,23 @@ void AFoodSpotHandler::Tick(float DeltaTime)
 
 AFoodSpot* AFoodSpotHandler::GetRandomEmptyFoodSpot()
 {
-	if (EmptyFoodSpotsCount == 0)
+	TArray<AFoodSpot*> EmptyFoodSpots;
+	for (int i = 0; i < FoodSpots.Num(); i++)
+	{
+		AFoodSpot* FoodSpot = FoodSpots[i];
+		if (!FoodSpot->GetFood())
+		{
+			EmptyFoodSpots.Add(FoodSpot);
+		}
+	}
+
+	if (EmptyFoodSpots.Num() == 0)
 	{
 		return nullptr;
 	}
 	else
 	{
-		return Cast<AFoodSpot>(FoodSpots[FMath::RandRange(0, FoodSpots.Num() - 1)]);
+		return EmptyFoodSpots[FMath::RandRange(0, EmptyFoodSpots.Num() - 1)];
 	}
-	
-}
-
-void AFoodSpotHandler::IncreaseEmptyFoodSpotsCount()
-{
-	EmptyFoodSpotsCount++;
-}
-
-void AFoodSpotHandler::DecreaseEmptyFoodSpotsCount()
-{
-	EmptyFoodSpotsCount--;
 }
 
