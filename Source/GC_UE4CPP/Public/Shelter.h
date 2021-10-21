@@ -4,9 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Food.h"
 #include "FoodUserActor.h"
-#include "../UI/InGameHUD.h"
 
 #include "Shelter.generated.h"
 

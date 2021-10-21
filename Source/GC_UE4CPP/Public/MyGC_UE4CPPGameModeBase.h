@@ -11,6 +11,7 @@
 
 #include "MyGC_UE4CPPGameModeBase.generated.h"
 
+class UFoodCountWidget;
 /**
  * 
  */
@@ -41,16 +42,24 @@ public:
 
 	void UnpauseGame();
 	void ToggleMouseCursor(bool boolean);
+	void TogglePlayerInput(bool boolean);
 
+	UFUNCTION()
+	void UpdateFoodCount(int32 Value);
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 	TSubclassOf<UUserWidget> EndScreenClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 	TSubclassOf<UUserWidget> PauseWidgetClass;
 	
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
+	TSubclassOf<UUserWidget> FoodCountWidgetClass;
+	
 	bool IsWin();
 	bool IsLoose();
 private:
 	UEndScreen* EndScreenWidget;
 	UPauseWidget* PauseWidget;
+	UFoodCountWidget* FoodCountWidget;
 };

@@ -3,6 +3,8 @@
 
 #include "EndScreen.h"
 
+#include "MyGC_UE4CPPGameModeBase.h"
+
 
 UEndScreen::UEndScreen(const FObjectInitializer& ObjectInitializer):Super(ObjectInitializer)
 {
@@ -11,6 +13,10 @@ UEndScreen::UEndScreen(const FObjectInitializer& ObjectInitializer):Super(Object
 
 void UEndScreen::OnClickButton()
 {
+	AMyGC_UE4CPPGameModeBase* GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+	GameMode->ToggleMouseCursor(false);
+	GameMode->TogglePlayerInput(true);
+	
 	UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
 }
 

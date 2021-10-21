@@ -3,7 +3,7 @@
 
 #include "Shelter.h"
 
-#include "Kismet/GameplayStatics.h"
+#include "MyGC_UE4CPPGameModeBase.h"
 
 // Sets default values
 AShelter::AShelter()
@@ -41,8 +41,8 @@ void AShelter::OnStaticMeshBeginOverlap(UPrimitiveComponent* OverlappedComponent
 	{
 		OtherActor->Destroy();
 		
-		AInGameHUD* HUD = Cast<AInGameHUD>(UGameplayStatics::GetPlayerController(this, 0)->GetHUD());
-		HUD->UpdateFoodCount(1);
+		AMyGC_UE4CPPGameModeBase* GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+		GameMode->UpdateFoodCount(1);
 		
 		//TODO: Change current animation
 	}

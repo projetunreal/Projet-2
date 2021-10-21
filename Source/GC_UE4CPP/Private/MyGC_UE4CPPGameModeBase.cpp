@@ -3,6 +3,8 @@
 
 #include "MyGC_UE4CPPGameModeBase.h"
 
+#include "GC_UE4CPP/UI/FoodCountWidget.h"
+
 AMyGC_UE4CPPGameModeBase::AMyGC_UE4CPPGameModeBase()
 {
 	
@@ -11,6 +13,16 @@ AMyGC_UE4CPPGameModeBase::AMyGC_UE4CPPGameModeBase()
 void AMyGC_UE4CPPGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if(FoodCountWidgetClass)
+	{
+		FoodCountWidget = CreateWidget<UFoodCountWidget>(GetWorld(), FoodCountWidgetClass);
+		if (FoodCountWidget)
+		{
+			FoodCountWidget->AddToViewport();
+		}
+	}
+	
 	bGamePaused = false;
 	
 }
@@ -20,14 +32,11 @@ void AMyGC_UE4CPPGameModeBase::WinGame()
 	if (bPlayerLost || bPlayerWon) {return;}
 	
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString("Game Won"));
-
-	//Disable player input
-	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-	PlayerController->GetPawn()->DisableInput(PlayerController);
-
-	//Change animation
+	
+	//Change animation and AI behavior
 	bPlayerWon = true;
-
+	
+	TogglePlayerInput(false);
 	ToggleMouseCursor(true);
 
 	//Widget spawn
@@ -51,13 +60,10 @@ void AMyGC_UE4CPPGameModeBase::LoseGame()
 {
 	if (bPlayerLost || bPlayerWon) {return;}
 	
-	//Disable player input
-	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-	PlayerController->GetPawn()->DisableInput(PlayerController);
-
-	//Change animation
+	//Change animation and AI behavior
 	bPlayerLost = true;
 
+	TogglePlayerInput(false);
 	ToggleMouseCursor(true);
 	
 	//Widget spawn
@@ -133,6 +139,27 @@ void AMyGC_UE4CPPGameModeBase::ToggleMouseCursor(bool boolean)
 	{
 		FInputModeGameOnly FInputMode;
 		PlayerController->SetInputMode(FInputMode);
+	}
+}
+
+void AMyGC_UE4CPPGameModeBase::TogglePlayerInput(bool boolean)
+{
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if (boolean)
+	{
+		PlayerController->GetPawn()->EnableInput(PlayerController);
+	}
+	else
+	{
+		PlayerController->GetPawn()->DisableInput(PlayerController);
+	}
+}
+
+void AMyGC_UE4CPPGameModeBase::UpdateFoodCount(int32 Value)
+{
+	if(FoodCountWidget)
+	{
+		FoodCountWidget->UpdateFoodCount(Value);
 	}
 }
 
