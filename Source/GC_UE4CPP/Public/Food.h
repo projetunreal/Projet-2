@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/BoxComponent.h"
 #include "Food.generated.h"
 
 UCLASS()
@@ -17,15 +18,14 @@ public:
 	AFood();
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* StaticMesh;
+	UPROPERTY(EditAnywhere)
+		UBoxComponent* Box;
+	UStaticMeshComponent* GetMesh();
+	UBoxComponent* GetBox();
 
 private:
 
 	bool bOnFloor = false;
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-	virtual void Tick(float DeltaTime) override;
 
 public:
 
