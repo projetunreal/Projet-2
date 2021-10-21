@@ -13,5 +13,6 @@ UCLASS()
 class GC_UE4CPP_API UBTTakeFood : public UBTTaskNode
 {
 	GENERATED_BODY()
-	
+
+	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };

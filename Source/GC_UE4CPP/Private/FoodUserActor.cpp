@@ -42,6 +42,7 @@ void AFoodUserActor::PickUpFood(AFood* food)
 		FName socketFood = TEXT("FoodSocket");
 		FAttachmentTransformRules rules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false);
 		FoodHeld->StaticMesh->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("FoodSocket"));
+		FoodHeld->SetOnFloor(false);
 	}
 }
 void AFoodUserActor::PickUpFoodFromSpot(AFoodSpot* spot)
@@ -55,7 +56,12 @@ void AFoodUserActor::PickUpFoodFromSpot(AFoodSpot* spot)
 		FAttachmentTransformRules rules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false);
 		FoodHeld->StaticMesh->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("FoodSocket"));
 		spot->SetFood(nullptr);
+		FoodHeld->SetOnFloor(false);
 	}
+}
+AFood* AFoodUserActor::GetFood()
+{
+	return FoodHeld;
 }
 void AFoodUserActor::FoodAction()
 {
@@ -71,6 +77,7 @@ void AFoodUserActor::PutFoodOnSpot(AFoodSpot* spot)
 		FoodHeld->StaticMesh->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, false));
 		spot->SetFood(FoodHeld);
 		FoodHeld->StaticMesh->AttachToComponent(spot->getMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("FoodSocket"));
+		FoodHeld->SetOnFloor(false);
 		FoodHeld = nullptr;
 	}
 }
@@ -82,11 +89,11 @@ void AFoodUserActor::DropFood()
 {
 	if (FoodHeld)
 	{
-
 		FoodHeld->StaticMesh->SetSimulatePhysics(true);
 		FoodHeld->StaticMesh->SetCollisionProfileName(TEXT("BlockAll"));
 
 		FoodHeld->StaticMesh->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, false));
+		FoodHeld->SetOnFloor(true);
 		FoodHeld = nullptr;
 	}
 }

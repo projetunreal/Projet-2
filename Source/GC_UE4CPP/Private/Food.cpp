@@ -27,3 +27,13 @@ void AFood::Tick(float DeltaTime)
 
 }
 
+void AFood::SetOnFloor(bool FoodAccessible)
+{
+	bOnFloor = FoodAccessible;
+}
+
+bool AFood::GetOnFloor()
+{
+	return bOnFloor;
+}
+

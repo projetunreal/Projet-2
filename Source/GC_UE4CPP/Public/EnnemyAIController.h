@@ -38,7 +38,8 @@ class GC_UE4CPP_API AEnnemyAIController : public AAIController
 
 	AAICharacter* AIChar;
 
-	float SearchDistance = 15;
+	UPROPERTY(EditAnywhere)
+		float SearchDistance = 15;
 
 	//float LastTimePlayerWasSeen = 0;
 	

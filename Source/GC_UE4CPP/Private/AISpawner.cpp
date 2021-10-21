@@ -34,6 +34,7 @@ void AAISpawner::SpawnIA()
 			{
 				p.Owner = AIChar;
 				AFood* Food = GetWorld()->SpawnActor<AFood>(FoodBP, AICharPos, GetActorRotation(), p);
+				Food->SetOnFloor(false);
 				AIChar->PickUpFood(Food);
 				BlackboardComp->SetValueAsObject("Food", Food);
 			}

@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include "Food.h"
+#include "MyGC_UE4CPPGameModeBase.h"
 #include "EnnemyAIController.h"
 
 
@@ -9,7 +10,7 @@ void AEnnemyAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (Blackboard->GetValueAsBool("CanSeePlayer"))
+	if (BlackboardComp->GetValueAsBool("CanSeePlayer"))
 	{
 		BlackboardComp->SetValueAsVector("LastKnownPlayerLocation", TargetActor->GetActorLocation());
 		BlackboardComp->SetValueAsVector("LastKnownPlayerDirection", TargetActor->GetActorForwardVector());
@@ -20,11 +21,26 @@ void AEnnemyAIController::Tick(float DeltaTime)
 		BlackboardComp->SetValueAsVector("SearchPlayerLocation", TargetLocation);
 	}
 
+	AMyGC_UE4CPPGameModeBase* GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+	if (GameMode)
+	{
+		if (GameMode->IsWin() || GameMode->IsLoose())
+		{
+			BlackboardComp->SetValueAsBool("GameOver", true);
+		}
+	}
+
 	AFood* Food = Cast<AFood>(BlackboardComp->GetValueAsObject("Food"));
+	if (Food)
+	{
+		BlackboardComp->SetValueAsBool("FoodOnFloor", Food->GetOnFloor());
+	}
+
+	/*AFood* Food = Cast<AFood>(BlackboardComp->GetValueAsObject("Food"));
 	if (Food && AIChar->IsHoldingFood())
 	{
 		BlackboardComp->SetValueAsVector("LastKnownFoodLocation", Food->GetActorLocation());
-	}
+	}*/
 }
 
 AEnnemyAIController::AEnnemyAIController()
@@ -72,6 +88,7 @@ void AEnnemyAIController::OnPossess(APawn* SomePawn)
 		{
 			BlackboardComp->InitializeBlackboard(*(AIChar->BehaviorTree->BlackboardAsset));
 			BlackboardComp->SetValueAsObject("FoodSpotHandler", FoodSpotHandler);
+			BlackboardComp->SetValueAsBool("GameOver", false);
 		}
 
 		BehaviorComp->StartTree(*AIChar->BehaviorTree);
