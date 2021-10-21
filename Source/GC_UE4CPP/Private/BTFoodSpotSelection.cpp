@@ -17,10 +17,13 @@ EBTNodeResult::Type UBTFoodSpotSelection::ExecuteTask(UBehaviorTreeComponent& Ow
         if (FoodSpot)
         {
             BlackboardComp->SetValueAsObject("FoodSpot", FoodSpot);
-            BlackboardComp->SetValueAsVector("FoodSpotUserLocation", FoodSpot->GetUserLocation());
-            return EBTNodeResult::Succeeded;
+            AActor* FoodSpotUserPlace = FoodSpot->GetFoodSpotUserPlace();
+            if (FoodSpotUserPlace)
+            {
+                BlackboardComp->SetValueAsObject("FoodSpotUserPlace", FoodSpotUserPlace);
+                return EBTNodeResult::Succeeded;
+            }
         }
-        return EBTNodeResult::Failed;
     }
     return EBTNodeResult::Failed;
 }

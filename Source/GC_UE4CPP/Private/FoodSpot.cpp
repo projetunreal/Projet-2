@@ -45,7 +45,7 @@ AFood* AFoodSpot::GetFood()
 
 }
 
-FVector AFoodSpot::GetUserLocation()
+AActor* AFoodSpot::GetFoodSpotUserPlace()
 {
-	return GetActorLocation() + GetActorRightVector() * UserDistanceFromCenter;
+	return FoodSpotUserPlace;
 }
