@@ -11,11 +11,14 @@ AMyGC_UE4CPPGameModeBase::AMyGC_UE4CPPGameModeBase()
 void AMyGC_UE4CPPGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
+	bGamePaused = false;
 	
 }
 
 void AMyGC_UE4CPPGameModeBase::WinGame()
 {
+	if (bPlayerLost || bPlayerWon) {return;}
+	
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString("Game Won"));
 
 	//Disable player input
@@ -25,9 +28,7 @@ void AMyGC_UE4CPPGameModeBase::WinGame()
 	//Change animation
 	bPlayerWon = true;
 
-	//Get mouse cursor
-	PlayerController->bShowMouseCursor = true;
-	PlayerController->bEnableClickEvents = true;
+	ToggleMouseCursor(true);
 
 	//Widget spawn
 	if (EndScreenClass)
@@ -39,9 +40,8 @@ void AMyGC_UE4CPPGameModeBase::WinGame()
 
 			UTextBlock* Text = EndScreenWidget->WinLoseTextBlock;
 			Text->SetText(FText::FromString("You won!"));
-			Text->SetColorAndOpacity(FSlateColor(FLinearColor(0.0f, 1.0f, 0.0f)));
-			Text->Font.Size = 138;
-			
+			Text->SetJustification(ETextJustify::Center);
+			Text->SetColorAndOpacity(FSlateColor(FLinearColor(0.0f, 1.0f, 0.0f)));			
 		}
 	}
 	
@@ -49,6 +49,8 @@ void AMyGC_UE4CPPGameModeBase::WinGame()
 
 void AMyGC_UE4CPPGameModeBase::LoseGame()
 {
+	if (bPlayerLost || bPlayerWon) {return;}
+	
 	//Disable player input
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 	PlayerController->GetPawn()->DisableInput(PlayerController);
@@ -56,10 +58,8 @@ void AMyGC_UE4CPPGameModeBase::LoseGame()
 	//Change animation
 	bPlayerLost = true;
 
-	//Get mouse cursor
-	PlayerController->bShowMouseCursor = true;
-	PlayerController->bEnableClickEvents = true;
-
+	ToggleMouseCursor(true);
+	
 	//Widget spawn
 	if (EndScreenClass)
 	{
@@ -70,10 +70,69 @@ void AMyGC_UE4CPPGameModeBase::LoseGame()
 
 			UTextBlock* Text = EndScreenWidget->WinLoseTextBlock;
 			Text->SetText(FText::FromString("You lost!"));
+			Text->SetJustification(ETextJustify::Center);
 			Text->SetColorAndOpacity(FSlateColor(FLinearColor(1.0f, 0.0f, 0.0f)));
-			Text->Font.Size = 138;
-			
 		}
+	}
+}
+
+void AMyGC_UE4CPPGameModeBase::PauseGame()
+{
+	if (bGamePaused) {return;}
+	
+	//Widget spawn
+	if (PauseWidgetClass)
+	{
+		PauseWidget = CreateWidget<UPauseWidget>(GetWorld(), PauseWidgetClass);
+		if (PauseWidget)
+		{
+			//Pause locally
+			bGamePaused = true;
+			APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+			PlayerController->SetPause(bGamePaused);
+
+			ToggleMouseCursor(true);
+
+
+			//Add Pause Screen
+			PauseWidget->AddToViewport();
+			
+			UTextBlock* Text = PauseWidget->PauseTextBlock;
+			Text->SetText(FText::FromString("PAUSE"));
+			Text->SetJustification(ETextJustify::Center);
+
+			UImage* BackgroundImage = PauseWidget->BackgroundImage;
+			BackgroundImage->SetColorAndOpacity(FLinearColor(0.0f, 0.0f, 0.5f, 0.1f));
+		}
+	}
+}
+
+void AMyGC_UE4CPPGameModeBase::UnpauseGame()
+{
+	bGamePaused = false;
+	PauseWidget->RemoveFromViewport();
+	
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	PlayerController->SetPause(bGamePaused);
+
+	ToggleMouseCursor(false);
+}
+
+void AMyGC_UE4CPPGameModeBase::ToggleMouseCursor(bool boolean)
+{
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	PlayerController->bShowMouseCursor = boolean;
+	PlayerController->bEnableClickEvents = boolean;
+
+	if (boolean)
+	{
+		FInputModeUIOnly FInputMode;
+		PlayerController->SetInputMode(FInputMode);
+	}
+	else
+	{
+		FInputModeGameOnly FInputMode;
+		PlayerController->SetInputMode(FInputMode);
 	}
 }
 

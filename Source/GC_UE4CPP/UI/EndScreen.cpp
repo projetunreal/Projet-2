@@ -3,6 +3,7 @@
 
 #include "EndScreen.h"
 
+
 UEndScreen::UEndScreen(const FObjectInitializer& ObjectInitializer):Super(ObjectInitializer)
 {
 	

@@ -47,12 +47,9 @@ public:
 	void MoveRight(float axis);
 	void MoveForward(float axis);
 	void ZoomCamera(float axis);
-
-
+	
 	UFUNCTION()
-	void PlusReleased();
-	UFUNCTION()
-	void MinusReleased();
+	void PauseGame();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
