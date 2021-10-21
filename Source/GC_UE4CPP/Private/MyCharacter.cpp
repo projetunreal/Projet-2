@@ -85,9 +85,7 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAxis("MoveForward", this, &AMyCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("Zoom", this, &AMyCharacter::ZoomCamera);
 	
-	PlayerInputComponent->BindAction("AddProgressBar", IE_Released, this, &AMyCharacter::PlusReleased);
-	PlayerInputComponent->BindAction("SubstractProgressBar", IE_Released, this, &AMyCharacter::MinusReleased);
-
+	PlayerInputComponent->BindAction("Pause", IE_Pressed, this, &AMyCharacter::PauseGame);
 
 	PlayerInputComponent->BindAction("FoodAction", IE_Pressed,this, &AMyCharacter::FoodAction);
 }
@@ -115,6 +113,13 @@ void AMyCharacter::ZoomCamera(float axis)
 	if (CameraBoom->TargetArmLength + axis * ZOOM_INCREMENT > 0 && CameraBoom->TargetArmLength + axis * ZOOM_INCREMENT < ZOOM_MAX)
 		CameraBoom->TargetArmLength += axis * ZOOM_INCREMENT;
 }
+
+void AMyCharacter::PauseGame()
+{
+	AMyGC_UE4CPPGameModeBase* GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+	GameMode->PauseGame();
+}
+
 void AMyCharacter::FoodAction()
 {
 
@@ -154,17 +159,5 @@ void AMyCharacter::FoodAction()
 	if (!bHavepick && FoodHeld)
 		DropFood();
 
-}
-
-void AMyCharacter::PlusReleased()
-{
-	AInGameHUD* HUD = Cast<AInGameHUD>(UGameplayStatics::GetPlayerController(this, 0)->GetHUD());
-	HUD->UpdateFoodCount(1);
-}
-
-void AMyCharacter::MinusReleased()
-{
-	AInGameHUD* HUD = Cast<AInGameHUD>(UGameplayStatics::GetPlayerController(this, 0)->GetHUD());
-	HUD->UpdateFoodCount(-1);
 }
 

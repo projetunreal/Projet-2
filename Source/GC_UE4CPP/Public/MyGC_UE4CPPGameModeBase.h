@@ -7,6 +7,7 @@
 #include "GC_UE4CPPGameModeBase.h"
 #include "Components/WidgetComponent.h"
 #include "../UI/EndScreen.h"
+#include "GC_UE4CPP/UI/PauseWidget.h"
 
 #include "MyGC_UE4CPPGameModeBase.generated.h"
 
@@ -21,8 +22,8 @@ class GC_UE4CPP_API AMyGC_UE4CPPGameModeBase : public AGC_UE4CPPGameModeBase
 protected:
 	
 	bool bPlayerWon;
-
 	bool bPlayerLost;
+	bool bGamePaused;
 	
 public:
 	AMyGC_UE4CPPGameModeBase();
@@ -35,10 +36,21 @@ public:
 	UFUNCTION()
 	void LoseGame();
 
+	UFUNCTION()
+	void PauseGame();
+
+	void UnpauseGame();
+	void ToggleMouseCursor(bool boolean);
+
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 	TSubclassOf<UUserWidget> EndScreenClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
+	TSubclassOf<UUserWidget> PauseWidgetClass;
+	
 	bool IsWin();
 	bool IsLoose();
 private:
 	UEndScreen* EndScreenWidget;
+	UPauseWidget* PauseWidget;
 };
