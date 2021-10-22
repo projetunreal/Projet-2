@@ -4,6 +4,7 @@
 #include "BTDropFood.h"
 #include "EnnemyAIController.h"
 
+
 EBTNodeResult::Type UBTDropFood::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	AEnnemyAIController* AICon = Cast<AEnnemyAIController>(OwnerComp.GetAIOwner());

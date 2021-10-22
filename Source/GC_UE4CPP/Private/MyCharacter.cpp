@@ -6,25 +6,7 @@
 #include "AICharacter.h"
 #include "MyGC_UE4CPPGameModeBase.h"
 
-void AMyCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	
-	if (OtherActor->ActorHasTag("Food") )
-	{
-		
-		//PickUpFood(Cast<AFood>(OtherActor));
-		
-		//OtherActor->K2_AttachToActor(this, OtherActor->GetAttachParentSocketName(), EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, true);
-	}
-	else if(OtherActor->ActorHasTag("FoodSlot"))
-	{
 
-		
-		AFoodSpot* spot = Cast<AFoodSpot>(OtherActor);
-		PutFoodOnSpot(spot);
-		//DropFood();
-	}
-}
 
 void AMyCharacter::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,
 	bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
@@ -55,6 +37,7 @@ AMyCharacter::AMyCharacter()
 	//CameraBoom->bDrawDebugLagMarkers = true;
 	Camera = CreateDefaultSubobject<UCameraComponent>(FName(TEXT("Camera")));
 	TriggerCapsule = GetCapsuleComponent();
+	TriggerCapsule = GetCapsuleComponent();
 	Camera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	CameraBoom->TargetArmLength = 300.0f;
 
@@ -65,22 +48,15 @@ AMyCharacter::AMyCharacter()
 void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	TriggerCapsule->OnComponentBeginOverlap.AddDynamic(this, &AMyCharacter::OnOverlapBegin);
-}
-
-// Called every frame
-void AMyCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-	
 }
 
 // Called to bind functionality to input
 void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	PlayerInputComponent->BindAxis("Horizontal", this, &APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("Vertical", this, &APawn::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("Horizontal", this, &AMyCharacter::MoveCameraRight);
+	PlayerInputComponent->BindAxis("Vertical", this, &AMyCharacter::MoveCameraDown);
+
 	PlayerInputComponent->BindAxis("MoveRight", this, &AMyCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("MoveForward", this, &AMyCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("Zoom", this, &AMyCharacter::ZoomCamera);
@@ -90,28 +66,35 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction("FoodAction", IE_Pressed,this, &AMyCharacter::FoodAction);
 }
 
-void AMyCharacter::MoveRight(float axis)
+void AMyCharacter::MoveRight(float Axis)
 {
-	const FRotator Rotation = Controller->GetControlRotation();
-	const FRotator YawRotation(0, Rotation.Yaw, 0);
-	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-	float modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
-	AddMovementInput(Direction* modifier, axis);
+	if (!bSit)
+	{
+		const FRotator Rotation = Controller->GetControlRotation();
+		const FRotator YawRotation(0, Rotation.Yaw, 0);
+		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+		float modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
+		AddMovementInput(Direction * modifier, Axis);
+	}
 }
 
-void AMyCharacter::MoveForward(float axis)
+void AMyCharacter::MoveForward(float Axis)
 {
-	const FRotator Rotation = Controller->GetControlRotation();
-	const FRotator YawRotation(0, Rotation.Yaw, 0);
-	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	float modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
-	AddMovementInput(Direction * modifier, axis);
+	if (!bSit)
+	{
+		const FRotator Rotation = Controller->GetControlRotation();
+		const FRotator YawRotation(0, Rotation.Yaw, 0);
+		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+		float modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
+		AddMovementInput(Direction * modifier, Axis);
+
+	}
 }
 
-void AMyCharacter::ZoomCamera(float axis)
+void AMyCharacter::ZoomCamera(float Axis)
 {
-	if (CameraBoom->TargetArmLength + axis * ZOOM_INCREMENT > 0 && CameraBoom->TargetArmLength + axis * ZOOM_INCREMENT < ZOOM_MAX)
-		CameraBoom->TargetArmLength += axis * ZOOM_INCREMENT;
+	if (!bSit &&CameraBoom->TargetArmLength + Axis * ZOOM_INCREMENT > 0 && CameraBoom->TargetArmLength + Axis * ZOOM_INCREMENT < ZOOM_MAX)
+		CameraBoom->TargetArmLength += Axis * ZOOM_INCREMENT;
 }
 
 void AMyCharacter::PauseGame()
@@ -120,6 +103,20 @@ void AMyCharacter::PauseGame()
 	GameMode->PauseGame();
 }
 
+void AMyCharacter::MoveCameraRight(float Axis)
+{
+	if (!bSit)
+		AddControllerYawInput(Axis);
+}
+void AMyCharacter::MoveCameraDown(float Axis)
+{
+	if (!bSit)
+		AddControllerPitchInput(Axis);
+}
+bool AMyCharacter::IsSit()
+{
+	return bSit;
+}
 void AMyCharacter::FoodAction()
 {
 
@@ -135,14 +132,15 @@ void AMyCharacter::FoodAction()
 	FVector ForwardVec = Camera->GetForwardVector();
 
 	Start += (ForwardVec * CameraBoom->TargetArmLength);
-	FVector End = Start + (ForwardVec * 200.0f);
+	FVector End = Start + (ForwardVec * 300.0);
 	
 	FCollisionQueryParams CollisionParams;
 	CollisionParams.AddIgnoredActor(GetOwner());
 
 		//
-		//DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1, 0, 1);
+	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1, 0, 1);
 	bool IsHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams);
+	//DrawDebugLine(GetWorld(), Start, OutHit.ImpactPoint, FColor::Green, false, 1, 0, 1);
 	if (IsHit)
 	{
 		if (OutHit.GetActor()->GetClass()->IsChildOf(AFoodSpot::StaticClass()))
@@ -155,9 +153,28 @@ void AMyCharacter::FoodAction()
 			bHavepick = true;
 			PickUpFood(Cast<AFood>(OutHit.GetActor()));
 		}
+		else if (OutHit.GetActor()->ActorHasTag("Chair"))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("test"));
+			GetMesh()->SetSimulatePhysics(false);
+			GetMesh()->SetCollisionProfileName(TEXT("OverlapAll"));
+			FAttachmentTransformRules rules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false);
+			GetMesh()->AttachToComponent(Cast<AStaticMeshActor >(OutHit.GetActor())->GetStaticMeshComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("SitSocket"));
+			bSit = true;
+			CameraBoom->bUsePawnControlRotation = false;
+			//FRotator NewRotation=FRotator(0.0, OutHit.GetActor()->GetActorRotation().Yaw-180 ,0.0);
+			//FVector NewLocation = FVector(0.0, 0.0, 0); 
+			//CameraBoom->SetWorldRotation(NewRotation,false);
+		}
 	}
 	if (!bHavepick && FoodHeld)
 		DropFood();
 
 }
-
+/*
+void AMyCharacter::PlusReleased()
+{
+	AInGameHUD* HUD = Cast<AInGameHUD>(UGameplayStatics::GetPlayerController(this, 0)->GetHUD());
+	HUD->UpdateFoodCount(1);
+}
+*/

@@ -6,25 +6,24 @@
 // Sets default values
 AFood::AFood()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Static Mesh"));
+	Box = CreateDefaultSubobject<UBoxComponent>(FName("Box Collider"));
 
+	Box->SetupAttachment(StaticMesh);
+	Box->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f), false);
 }
 
-// Called when the game starts or when spawned
-void AFood::BeginPlay()
+UStaticMeshComponent* AFood::GetMesh()
 {
-	Super::BeginPlay();
-	
+	return StaticMesh;
 }
 
-// Called every frame
-void AFood::Tick(float DeltaTime)
+UBoxComponent* AFood::GetBox()
 {
-	Super::Tick(DeltaTime);
-
+	return Box;
 }
 
 void AFood::SetOnFloor(bool FoodAccessible)

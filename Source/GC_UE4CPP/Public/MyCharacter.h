@@ -34,8 +34,7 @@ class GC_UE4CPP_API AMyCharacter : public AFoodUserActor
 		float ZOOM_INCREMENT = 60;
 	UPROPERTY(VisibleAnywhere)
 		float ZOOM_MAX = 500;
-	UFUNCTION()
-		void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
 	UFUNCTION()
 		virtual void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 
@@ -46,19 +45,25 @@ public:
 	void MoveRight(float axis);
 	void MoveForward(float axis);
 	void ZoomCamera(float axis);
-	
+
+	void MoveCameraRight(float axis);
+	void MoveCameraDown(float axis);
+	bool IsSit();
 	UFUNCTION()
 	void PauseGame();
+	//void PlusReleased();
+	//UFUNCTION()
+	//void MinusReleased();
+
+
+
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	void FoodAction();
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+private :
+	bool bSit = false;
 };
