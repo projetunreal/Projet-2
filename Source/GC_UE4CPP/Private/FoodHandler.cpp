@@ -27,7 +27,6 @@ void AFoodHandler::AddFood(AFood* Food)
 void AFoodHandler::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	UE_LOG(LogTemp, Warning, TEXT("%i"), GetFoodCount());
 }
 
 int AFoodHandler::GetFoodCount()

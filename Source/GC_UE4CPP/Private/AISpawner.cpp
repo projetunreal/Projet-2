@@ -33,7 +33,6 @@ void AAISpawner::SpawnIA()
 			{
 				if (FoodBP)
 				{
-					p.Owner = AIChar;
 					AFood* Food = GetWorld()->SpawnActor<AFood>(FoodBP, AICharPos, GetActorRotation(), p);
 					Food->SetOnFloor(false);
 					AIChar->PickUpFood(Food);
@@ -52,6 +51,22 @@ void AAISpawner::BeginPlay()
 {
 	Super::BeginPlay();
 	BeginTime = GetWorld()->GetTimeSeconds();
+
+	AFoodSpot* FoodSpot = FoodSpotHandler->GetRandomEmptyFoodSpot();
+	if (FoodSpot)
+	{
+		FActorSpawnParameters p;
+		p.Owner = this;
+		AFood* Food = GetWorld()->SpawnActor<AFood>(FoodBP, FoodSpot->GetActorLocation(), GetActorRotation(), p);
+		Food->SetOnFloor(false);
+		Food->SetFoodHandler(FoodHandler);
+		FoodHandler->AddFood(Food);
+		Food->GetMesh()->SetSimulatePhysics(false);
+		Food->GetMesh()->SetCollisionProfileName(TEXT("IgnoreAll"));
+		Food->GetBox()->SetCollisionProfileName(TEXT("IgnoreAll"));
+		Food->StaticMesh->AttachToComponent(FoodSpot->getMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("FoodSocket"));
+		FoodSpot->SetFood(Food);
+	}
 }
 
 // Called every frame
