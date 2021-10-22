@@ -66,7 +66,7 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction("FoodAction", IE_Pressed,this, &AMyCharacter::FoodAction);
 }
 
-void AMyCharacter::MoveRight(float axis)
+void AMyCharacter::MoveRight(float Axis)
 {
 	if (!bSit)
 	{
@@ -74,11 +74,11 @@ void AMyCharacter::MoveRight(float axis)
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		float modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
-		AddMovementInput(Direction * modifier, axis);
+		AddMovementInput(Direction * modifier, Axis);
 	}
 }
 
-void AMyCharacter::MoveForward(float axis)
+void AMyCharacter::MoveForward(float Axis)
 {
 	if (!bSit)
 	{
@@ -86,15 +86,15 @@ void AMyCharacter::MoveForward(float axis)
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		float modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
-		AddMovementInput(Direction * modifier, axis);
+		AddMovementInput(Direction * modifier, Axis);
 
 	}
 }
 
-void AMyCharacter::ZoomCamera(float axis)
+void AMyCharacter::ZoomCamera(float Axis)
 {
-	if (!bSit &&CameraBoom->TargetArmLength + axis * ZOOM_INCREMENT > 0 && CameraBoom->TargetArmLength + axis * ZOOM_INCREMENT < ZOOM_MAX)
-		CameraBoom->TargetArmLength += axis * ZOOM_INCREMENT;
+	if (!bSit &&CameraBoom->TargetArmLength + Axis * ZOOM_INCREMENT > 0 && CameraBoom->TargetArmLength + Axis * ZOOM_INCREMENT < ZOOM_MAX)
+		CameraBoom->TargetArmLength += Axis * ZOOM_INCREMENT;
 }
 
 void AMyCharacter::PauseGame()
@@ -103,15 +103,15 @@ void AMyCharacter::PauseGame()
 	GameMode->PauseGame();
 }
 
-void AMyCharacter::MoveCameraRight(float axis)
+void AMyCharacter::MoveCameraRight(float Axis)
 {
 	if (!bSit)
-		AddControllerYawInput(axis);
+		AddControllerYawInput(Axis);
 }
-void AMyCharacter::MoveCameraDown(float axis)
+void AMyCharacter::MoveCameraDown(float Axis)
 {
 	if (!bSit)
-		AddControllerPitchInput(axis);
+		AddControllerPitchInput(Axis);
 }
 bool AMyCharacter::IsSit()
 {
@@ -140,6 +140,7 @@ void AMyCharacter::FoodAction()
 		//
 	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1, 0, 1);
 	bool IsHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams);
+	//DrawDebugLine(GetWorld(), Start, OutHit.ImpactPoint, FColor::Green, false, 1, 0, 1);
 	if (IsHit)
 	{
 		if (OutHit.GetActor()->GetClass()->IsChildOf(AFoodSpot::StaticClass()))
@@ -161,8 +162,8 @@ void AMyCharacter::FoodAction()
 			GetMesh()->AttachToComponent(Cast<AStaticMeshActor >(OutHit.GetActor())->GetStaticMeshComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("SitSocket"));
 			bSit = true;
 			CameraBoom->bUsePawnControlRotation = false;
-			// NewRotation=FRotator(0.0,0.0,180);
-			//FVector NewLocation = FVector(0.0, 0.0, 0);
+			//FRotator NewRotation=FRotator(0.0, OutHit.GetActor()->GetActorRotation().Yaw-180 ,0.0);
+			//FVector NewLocation = FVector(0.0, 0.0, 0); 
 			//CameraBoom->SetWorldRotation(NewRotation,false);
 		}
 	}

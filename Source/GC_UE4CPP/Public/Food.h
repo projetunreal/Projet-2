@@ -18,7 +18,7 @@ public:
 	AFood();
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* StaticMesh;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UBoxComponent* Box;
 	UStaticMeshComponent* GetMesh();
 	UBoxComponent* GetBox();

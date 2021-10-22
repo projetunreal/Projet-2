@@ -11,6 +11,9 @@ AFood::AFood()
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Static Mesh"));
 	Box = CreateDefaultSubobject<UBoxComponent>(FName("Box Collider"));
+
+	Box->SetupAttachment(StaticMesh);
+	Box->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f), false);
 }
 
 UStaticMeshComponent* AFood::GetMesh()
