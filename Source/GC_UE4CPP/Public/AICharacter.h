@@ -20,7 +20,7 @@ public:
 		class UBehaviorTree* BehaviorTree;
 
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<AFood> FoodBP;
+		float PatrolDistance = 5000;
 	
 private:
 
@@ -34,5 +34,6 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	TSubclassOf<AFood> GetFoodBP();
+
+	float GetPatrolDistance();
 };

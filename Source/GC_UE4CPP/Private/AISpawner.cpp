@@ -29,14 +29,18 @@ void AAISpawner::SpawnIA()
 			BlackboardComp->SetValueAsObject("Spawner", this);
 			AICon->SetFoodSpotHandler(FoodSpotHandler);
 
-			TSubclassOf<AFood> FoodBP = AIChar->GetFoodBP();
-			if (FoodBP)
+			if (FoodHandler->GetFoodCount() < 5)
 			{
-				p.Owner = AIChar;
-				AFood* Food = GetWorld()->SpawnActor<AFood>(FoodBP, AICharPos, GetActorRotation(), p);
-				Food->SetOnFloor(false);
-				AIChar->PickUpFood(Food);
-				BlackboardComp->SetValueAsObject("Food", Food);
+				if (FoodBP)
+				{
+					p.Owner = AIChar;
+					AFood* Food = GetWorld()->SpawnActor<AFood>(FoodBP, AICharPos, GetActorRotation(), p);
+					Food->SetOnFloor(false);
+					AIChar->PickUpFood(Food);
+					BlackboardComp->SetValueAsObject("Food", Food);
+					Food->SetFoodHandler(FoodHandler);
+					FoodHandler->AddFood(Food);
+				}
 			}
 			SpawnedAI.Add(AIChar);
 		}

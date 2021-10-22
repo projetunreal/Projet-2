@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Food.generated.h"
 
+class AFoodHandler;
+
 UCLASS()
 class GC_UE4CPP_API AFood : public AActor
 {
@@ -21,6 +23,7 @@ public:
 private:
 
 	bool bOnFloor = false;
+	AFoodHandler* FoodHandler;
 
 protected:
 	// Called when the game starts or when spawned
@@ -31,4 +34,6 @@ public:
 
 	void SetOnFloor(bool FoodAccessible);
 	bool GetOnFloor();
+	AFoodHandler* GetFoodHandler();
+	void SetFoodHandler(AFoodHandler* SomeFoodHandler);
 };

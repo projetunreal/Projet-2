@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "AICharacter.h"
 #include "FoodSpotHandler.h"
+#include "FoodHandler.h"
+#include "Food.h"
 
 #include "AISpawner.generated.h"
 
@@ -31,7 +33,13 @@ public:
 		TSubclassOf<AAICharacter> AICharacterBP;
 
 	UPROPERTY(EditAnywhere)
+		TSubclassOf<AFood> FoodBP;
+
+	UPROPERTY(EditAnywhere)
 		AFoodSpotHandler* FoodSpotHandler;
+
+	UPROPERTY(EditAnywhere)
+		AFoodHandler* FoodHandler;
 
 private:
 
@@ -51,5 +59,4 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 };

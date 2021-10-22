@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Food.h"
+#include "FoodHandler.h"
 
 // Sets default values
 AFood::AFood()
@@ -35,5 +35,15 @@ void AFood::SetOnFloor(bool FoodAccessible)
 bool AFood::GetOnFloor()
 {
 	return bOnFloor;
+}
+
+AFoodHandler* AFood::GetFoodHandler()
+{
+	return FoodHandler;
+}
+
+void AFood::SetFoodHandler(AFoodHandler* SomeFoodHandler)
+{
+	FoodHandler = SomeFoodHandler;
 }
 

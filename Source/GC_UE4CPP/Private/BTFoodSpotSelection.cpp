@@ -9,19 +9,21 @@
 EBTNodeResult::Type UBTFoodSpotSelection::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
     AEnnemyAIController* AICon = Cast<AEnnemyAIController>(OwnerComp.GetAIOwner());
-
     if (AICon)
     {
         UBlackboardComponent* BlackboardComp = AICon->GetBlackboardComp();
-        AFoodSpot* FoodSpot = AICon->GetFoodSpotHandler()->GetRandomEmptyFoodSpot();
-        if (FoodSpot)
+        if (BlackboardComp)
         {
-            BlackboardComp->SetValueAsObject("FoodSpot", FoodSpot);
-            AActor* FoodSpotUserPlace = FoodSpot->GetFoodSpotUserPlace();
-            if (FoodSpotUserPlace)
+            AFoodSpot* FoodSpot = AICon->GetFoodSpotHandler()->GetRandomEmptyFoodSpot();
+            if (FoodSpot)
             {
-                BlackboardComp->SetValueAsObject("FoodSpotUserPlace", FoodSpotUserPlace);
-                return EBTNodeResult::Succeeded;
+                BlackboardComp->SetValueAsObject("FoodSpot", FoodSpot);
+                AActor* FoodSpotUserPlace = FoodSpot->GetFoodSpotUserPlace();
+                if (FoodSpotUserPlace)
+                {
+                    BlackboardComp->SetValueAsObject("FoodSpotUserPlace", FoodSpotUserPlace);
+                    return EBTNodeResult::Succeeded;
+                }
             }
         }
     }

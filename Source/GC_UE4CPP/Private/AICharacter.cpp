@@ -27,7 +27,8 @@ void AAICharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
-TSubclassOf<AFood> AAICharacter::GetFoodBP()
+
+float AAICharacter::GetPatrolDistance()
 {
-	return FoodBP;
+	return PatrolDistance;
 }

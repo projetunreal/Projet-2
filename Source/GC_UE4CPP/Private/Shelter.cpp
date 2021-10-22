@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Shelter.h"
+#include "FoodHandler.h"
+#include "Food.h"
 
 #include "MyGC_UE4CPPGameModeBase.h"
 
@@ -39,7 +40,16 @@ void AShelter::OnStaticMeshBeginOverlap(UPrimitiveComponent* OverlappedComponent
 	
 	if(OtherActor->GetClass()->IsChildOf(AFood::StaticClass()))
 	{
-		OtherActor->Destroy();
+		AFood* Food = Cast<AFood>(OtherActor);
+		if (Food)
+		{
+			AFoodHandler* FoodHandler = Food->GetFoodHandler();
+			if (FoodHandler)
+			{
+				FoodHandler->Remove(Food);
+			}
+			Food->Destroy();
+		}
 		
 		AMyGC_UE4CPPGameModeBase* GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
 		GameMode->UpdateFoodCount(1);
