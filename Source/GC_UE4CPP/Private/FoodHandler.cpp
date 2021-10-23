@@ -4,7 +4,6 @@
 #include "FoodHandler.h"
 #include "Food.h"
 
-
 // Sets default values
 AFoodHandler::AFoodHandler()
 {

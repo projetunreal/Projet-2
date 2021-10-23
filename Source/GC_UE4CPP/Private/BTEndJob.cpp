@@ -1,13 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "EndJob.h"
-#include "EnnemyAIController.h"
+#include "BTEndJob.h"
+#include "EnemyAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
-
-EBTNodeResult::Type UEndJob::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBTEndJob::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-    AEnnemyAIController* AICon = Cast<AEnnemyAIController>(OwnerComp.GetAIOwner());
+    AEnemyAIController* AICon = Cast<AEnemyAIController>(OwnerComp.GetAIOwner());
     if (!AICon) return EBTNodeResult::Failed;
 
     UBlackboardComponent* BlackboardComp = AICon->GetBlackboardComp();

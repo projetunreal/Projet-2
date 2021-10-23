@@ -6,7 +6,7 @@
 #include "AIController.h"
 #include "Perception/AIPerceptionTypes.h"
 
-#include "EnnemyAIController.generated.h"
+#include "EnemyAIController.generated.h"
 
 class UBehaviorTreeComponent;
 class UBlackboardComponent;
@@ -14,10 +14,10 @@ class AAICharacter;
 class AFoodSpotHandler;
 
 /**
- * 
+ *
  */
 UCLASS()
-class GC_UE4CPP_API AEnnemyAIController : public AAIController
+class GC_UE4CPP_API AEnemyAIController : public AAIController
 {
 	GENERATED_BODY()
 
@@ -49,7 +49,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	AEnnemyAIController();
+	AEnemyAIController();
 
 	FORCEINLINE UBlackboardComponent* GetBlackboardComp() { return BlackboardComp; }
 

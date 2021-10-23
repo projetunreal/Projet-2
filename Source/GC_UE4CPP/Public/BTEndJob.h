@@ -4,15 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "BTTargetPointSelection.generated.h"
+#include "BTEndJob.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class GC_UE4CPP_API UBTTargetPointSelection : public UBTTaskNode
+class GC_UE4CPP_API UBTEndJob : public UBTTaskNode
 {
 	GENERATED_BODY()
-
+	
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };

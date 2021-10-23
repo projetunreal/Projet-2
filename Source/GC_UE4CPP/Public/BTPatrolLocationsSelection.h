@@ -4,15 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "EndJob.generated.h"
+#include "BTPatrolLocationsSelection.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class GC_UE4CPP_API UEndJob : public UBTTaskNode
+class GC_UE4CPP_API UBTPatrolLocationsSelection : public UBTTaskNode
 {
 	GENERATED_BODY()
-
+	
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };

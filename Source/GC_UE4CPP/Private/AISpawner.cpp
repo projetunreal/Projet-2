@@ -2,7 +2,7 @@
 
 #include "AISpawner.h"
 #include "Math/UnrealMathUtility.h"
-#include "EnnemyAIController.h"
+#include "EnemyAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "FoodUserActor.h"
@@ -31,7 +31,7 @@ void AAISpawner::SpawnIA()
 	if (!AIChar) return;
 
 	SpawnedAI.Add(AIChar);
-	AEnnemyAIController* AICon = Cast<AEnnemyAIController>(AIChar->GetController());
+	AEnemyAIController* AICon = Cast<AEnemyAIController>(AIChar->GetController());
 	if (!AICon) return;
 
 	UBlackboardComponent* BlackboardComp = AICon->GetBlackboardComp();
@@ -100,7 +100,7 @@ void AAISpawner::Tick(float DeltaTime)
 		AIChar = SpawnedAI[i];
 		if (!AIChar) return;
 
-		AEnnemyAIController* AIController = Cast<AEnnemyAIController>(AIChar->GetController());
+		AEnemyAIController* AIController = Cast<AEnemyAIController>(AIChar->GetController());
 		if (!AIController) return;
 
 		//UE_LOG(LogTemp, Warning, TEXT("%i"), AIInsideRoomCount);

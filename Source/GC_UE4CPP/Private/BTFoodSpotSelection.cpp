@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BTFoodSpotSelection.h"
-#include "EnnemyAIController.h"
+#include "EnemyAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "FoodSpotHandler.h"
 #include "FoodSpot.h"
@@ -9,7 +9,7 @@
 
 EBTNodeResult::Type UBTFoodSpotSelection::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-    AEnnemyAIController* AICon = Cast<AEnnemyAIController>(OwnerComp.GetAIOwner());
+    AEnemyAIController* AICon = Cast<AEnemyAIController>(OwnerComp.GetAIOwner());
     if (!AICon) return EBTNodeResult::Failed;
 
     UBlackboardComponent* BlackboardComp = AICon->GetBlackboardComp();

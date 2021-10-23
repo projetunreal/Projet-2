@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "EnnemyAIController.h"
+
+#include "EnemyAIController.h"
 #include "Food.h"
 #include "MyGC_UE4CPPGameModeBase.h"
 #include "AICharacter.h"
-#include "EnnemyTargetPoint.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
@@ -15,7 +15,7 @@
 #include "FoodSpotHandler.h"
 
 
-void AEnnemyAIController::Tick(float DeltaTime)
+void AEnemyAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
@@ -26,7 +26,7 @@ void AEnnemyAIController::Tick(float DeltaTime)
 	}
 	else
 	{
-		FVector TargetLocation = AIChar->GetActorLocation() + BlackboardComp->GetValueAsVector("LastKnownPlayerDirection") *(AIChar->GetVelocity().Size() * DeltaTime + SearchDistance);
+		FVector TargetLocation = AIChar->GetActorLocation() + BlackboardComp->GetValueAsVector("LastKnownPlayerDirection") * (AIChar->GetVelocity().Size() * DeltaTime + SearchDistance);
 		BlackboardComp->SetValueAsVector("SearchPlayerLocation", TargetLocation);
 	}
 
@@ -46,7 +46,7 @@ void AEnnemyAIController::Tick(float DeltaTime)
 	}
 }
 
-AEnnemyAIController::AEnnemyAIController()
+AEnemyAIController::AEnemyAIController()
 {
 	BehaviorComp = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("BehaviorComp"));
 	BlackboardComp = CreateDefaultSubobject<UBlackboardComponent>(TEXT("BlackboardComp"));
@@ -55,22 +55,22 @@ AEnnemyAIController::AEnnemyAIController()
 	SetGenericTeamId(FGenericTeamId(1));
 }
 
-void AEnnemyAIController::SetFoodSpotHandler(AFoodSpotHandler* SomeFoodSpotHandler)
+void AEnemyAIController::SetFoodSpotHandler(AFoodSpotHandler* SomeFoodSpotHandler)
 {
 	FoodSpotHandler = SomeFoodSpotHandler;
 }
 
-void AEnnemyAIController::JobIsDone()
+void AEnemyAIController::JobIsDone()
 {
 	BlackboardComp->SetValueAsBool("bJobDone", true);
 }
 
-bool AEnnemyAIController::IsJobDone() const
+bool AEnemyAIController::IsJobDone() const
 {
 	return BlackboardComp->GetValueAsBool("bJobDone");
 }
 
-void AEnnemyAIController::OnPossess(APawn* SomePawn)
+void AEnemyAIController::OnPossess(APawn* SomePawn)
 {
 	Super::OnPossess(SomePawn);
 
@@ -94,7 +94,7 @@ void AEnnemyAIController::OnPossess(APawn* SomePawn)
 	SetupPerceptionSystem();
 }
 
-void AEnnemyAIController::OnTargetUpdated(AActor* Actor, FAIStimulus Stimulus)
+void AEnemyAIController::OnTargetUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
 	AMyCharacter* const Char = Cast<AMyCharacter>(Actor);
 	if (Char)
@@ -104,7 +104,8 @@ void AEnnemyAIController::OnTargetUpdated(AActor* Actor, FAIStimulus Stimulus)
 	}
 }
 
-void AEnnemyAIController::SetupPerceptionSystem()
+void AEnemyAIController::SetupPerceptionSystem()
 {
-	GetPerceptionComponent()->OnTargetPerceptionUpdated.AddDynamic(this, &AEnnemyAIController::OnTargetUpdated);
+	GetPerceptionComponent()->OnTargetPerceptionUpdated.AddDynamic(this, &AEnemyAIController::OnTargetUpdated);
 }
+
