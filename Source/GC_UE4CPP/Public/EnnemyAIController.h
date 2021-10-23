@@ -4,18 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
-#include "AICharacter.h"
-#include "EnnemyTargetPoint.h"
-#include "BehaviorTree/BlackboardComponent.h"
-#include "BehaviorTree/BehaviorTreeComponent.h"
-#include "BehaviorTree/BehaviorTree.h"
-#include "Kismet/GameplayStatics.h"
-#include "Perception/AIPerceptionComponent.h"
-#include "Perception/AISenseConfig_Sight.h"
-#include "MyCharacter.h"
-#include "FoodSpotHandler.h"
+#include "Perception/AIPerceptionTypes.h"
 
 #include "EnnemyAIController.generated.h"
+
+class UBehaviorTreeComponent;
+class UBlackboardComponent;
+class AAICharacter;
+class AFoodSpotHandler;
 
 /**
  * 
@@ -25,6 +21,10 @@ class GC_UE4CPP_API AEnnemyAIController : public AAIController
 {
 	GENERATED_BODY()
 
+private:
+
+	AFoodSpotHandler* FoodSpotHandler;
+
 	UBehaviorTreeComponent* BehaviorComp;
 
 	UBlackboardComponent* BlackboardComp;
@@ -32,8 +32,6 @@ class GC_UE4CPP_API AEnnemyAIController : public AAIController
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
 		FName LocationToGoKey;
 
-	TArray<AActor*> EnnemyTargetPoints;
-	
 	AActor* TargetActor;
 
 	AAICharacter* AIChar;
@@ -41,18 +39,9 @@ class GC_UE4CPP_API AEnnemyAIController : public AAIController
 	UPROPERTY(EditAnywhere)
 		float SearchDistance = 15;
 
-	//float LastTimePlayerWasSeen = 0;
-	
 	virtual void OnPossess(APawn* SomePawn) override;
 
-	UFUNCTION()
-	void OnTargetUpdated(AActor* Actor, FAIStimulus const Stimulus);
-
 	void SetupPerceptionSystem();
-
-private:
-
-	AFoodSpotHandler* FoodSpotHandler;
 
 
 public:
@@ -62,15 +51,16 @@ public:
 
 	AEnnemyAIController();
 
-	FORCEINLINE UBlackboardComponent* GetBlackboardComp() const { return BlackboardComp; }
+	FORCEINLINE UBlackboardComponent* GetBlackboardComp() { return BlackboardComp; }
 
-	FORCEINLINE TArray<AActor*> GetAvailableTargetPoints() { return EnnemyTargetPoints; }
-
-	AAICharacter* GetAICharacter();
+	FORCEINLINE AAICharacter* GetAICharacter() { return AIChar; };
 
 	void SetFoodSpotHandler(AFoodSpotHandler* SomeFoodSpotHandler);
-	AFoodSpotHandler* GetFoodSpotHandler();
+	FORCEINLINE AFoodSpotHandler* GetFoodSpotHandler() { return FoodSpotHandler; };
+
+	UFUNCTION()
+		void OnTargetUpdated(AActor* Actor, FAIStimulus const Stimulus);
 
 	void JobIsDone();
-	bool IsJobDone();
+	bool IsJobDone() const;
 };

@@ -2,6 +2,8 @@
 
 
 #include "FoodHandler.h"
+#include "Food.h"
+
 
 // Sets default values
 AFoodHandler::AFoodHandler()
@@ -29,21 +31,8 @@ void AFoodHandler::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-int AFoodHandler::GetFoodCount()
-{
-	return Foods.Num();
-}
-
 void AFoodHandler::Remove(AFood* Food)
 {
-	/*for (int i = 0; i < Foods.Num(); i++)
-	{
-		if (Foods[i] == Food)
-		{
-			Foods.RemoveAtSwap(i);
-			return;
-		}
-	}*/
 	Foods.RemoveSwap(Food);
 }
 

@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "BehaviorTree/BlackboardData.h"
 #include "BTTargetPointSelection.generated.h"
 
 /**

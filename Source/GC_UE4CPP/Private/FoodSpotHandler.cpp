@@ -2,6 +2,7 @@
 
 
 #include "FoodSpotHandler.h"
+#include "FoodSpot.h"
 
 // Sets default values
 AFoodSpotHandler::AFoodSpotHandler()
@@ -31,9 +32,12 @@ AFoodSpot* AFoodSpotHandler::GetRandomEmptyFoodSpot()
 	for (int i = 0; i < FoodSpots.Num(); i++)
 	{
 		AFoodSpot* FoodSpot = FoodSpots[i];
-		if (!FoodSpot->GetFood())
+		if (FoodSpot)
 		{
-			EmptyFoodSpots.Add(FoodSpot);
+			if (!FoodSpot->GetFood())
+			{
+				EmptyFoodSpots.Add(FoodSpot);
+			}
 		}
 	}
 

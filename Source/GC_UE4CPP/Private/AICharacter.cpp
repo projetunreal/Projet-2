@@ -27,8 +27,3 @@ void AAICharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
-
-float AAICharacter::GetPatrolDistance()
-{
-	return PatrolDistance;
-}

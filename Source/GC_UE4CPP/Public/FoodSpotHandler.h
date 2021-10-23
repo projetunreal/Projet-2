@@ -3,10 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FoodSpot.h"
 #include "GameFramework/Actor.h"
 
 #include "FoodSpotHandler.generated.h"
+
+class AFoodSpot;
 
 UCLASS()
 class GC_UE4CPP_API AFoodSpotHandler : public AActor

@@ -26,23 +26,3 @@ UBoxComponent* AFood::GetBox()
 	return Box;
 }
 
-void AFood::SetOnFloor(bool FoodAccessible)
-{
-	bOnFloor = FoodAccessible;
-}
-
-bool AFood::GetOnFloor()
-{
-	return bOnFloor;
-}
-
-AFoodHandler* AFood::GetFoodHandler()
-{
-	return FoodHandler;
-}
-
-void AFood::SetFoodHandler(AFoodHandler* SomeFoodHandler)
-{
-	FoodHandler = SomeFoodHandler;
-}
-

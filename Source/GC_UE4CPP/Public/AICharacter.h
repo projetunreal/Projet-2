@@ -12,28 +12,30 @@ class GC_UE4CPP_API AAICharacter : public AFoodUserActor
 {
 	GENERATED_BODY()
 
-public:
-	// Sets default values for this character's properties
-	AAICharacter();
-
-	UPROPERTY(EditAnywhere, Category = "AI")
-		class UBehaviorTree* BehaviorTree;
+private:
 
 	UPROPERTY(EditAnywhere)
 		float PatrolDistance = 5000;
-	
-private:
+
+	UPROPERTY(EditAnywhere, Category = "AI")
+		class UBehaviorTree* BehaviorTree;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
+
+	// Sets default values for this character's properties
+	AAICharacter();
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	float GetPatrolDistance();
+	FORCEINLINE float GetPatrolDistance() const { return PatrolDistance; }
+
+	FORCEINLINE UBehaviorTree* GetBehaviorTree() { return BehaviorTree; };
 };

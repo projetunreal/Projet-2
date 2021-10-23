@@ -32,8 +32,9 @@ private:
 
 public:
 
-	void SetOnFloor(bool FoodAccessible);
-	bool GetOnFloor();
-	AFoodHandler* GetFoodHandler();
-	void SetFoodHandler(AFoodHandler* SomeFoodHandler);
+	FORCEINLINE bool GetOnFloor() const { return bOnFloor; };
+	FORCEINLINE void SetOnFloor(bool bFoodAccessible) { bOnFloor = bFoodAccessible; };
+
+	FORCEINLINE AFoodHandler* GetFoodHandler() { return FoodHandler; };
+	FORCEINLINE void SetFoodHandler(AFoodHandler* SomeFoodHandler) { FoodHandler = SomeFoodHandler; };
 };

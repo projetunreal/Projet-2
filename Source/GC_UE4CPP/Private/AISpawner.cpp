@@ -1,8 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
+
 #include "AISpawner.h"
 #include "Math/UnrealMathUtility.h"
-#include "FoodUserActor.h"
 #include "EnnemyAIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "FoodUserActor.h"
+#include "FoodSpotHandler.h"
+#include "FoodHandler.h"
+#include "Food.h"
+#include "AICharacter.h"
 
 
 // Sets default values
@@ -15,58 +22,68 @@ AAISpawner::AAISpawner()
 
 void AAISpawner::SpawnIA()
 {
-	if (AICharacterBP)
-	{
-		FActorSpawnParameters p;
-		p.Owner = this;
-		
-		FVector AICharPos = GetActorLocation() + FVector(0, 0, 125.549332);
-		AAICharacter* AIChar = GetWorld()->SpawnActor<AAICharacter>(AICharacterBP, AICharPos, GetActorRotation(), p);
-		AEnnemyAIController* AICon = Cast<AEnnemyAIController>(AIChar->GetController());
-		if (AICon)
-		{
-			UBlackboardComponent* BlackboardComp = AICon->GetBlackboardComp();
-			BlackboardComp->SetValueAsObject("Spawner", this);
-			AICon->SetFoodSpotHandler(FoodSpotHandler);
+	//AI Character creation
+	if (!AICharacterBP) return;
+	FActorSpawnParameters p;
+	p.Owner = this;
+	FVector AICharPos = GetActorLocation() + FVector(0, 0, 1) * Cast<AAICharacter>(AICharacterBP->GetDefaultObject())->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+	AAICharacter* AIChar = GetWorld()->SpawnActor<AAICharacter>(AICharacterBP, AICharPos, GetActorRotation(), p);
+	if (!AIChar) return;
 
-			if (FoodHandler->GetFoodCount() < 5)
-			{
-				if (FoodBP)
-				{
-					AFood* Food = GetWorld()->SpawnActor<AFood>(FoodBP, AICharPos, GetActorRotation(), p);
-					Food->SetOnFloor(false);
-					AIChar->PickUpFood(Food);
-					BlackboardComp->SetValueAsObject("Food", Food);
-					Food->SetFoodHandler(FoodHandler);
-					FoodHandler->AddFood(Food);
-				}
-			}
-			SpawnedAI.Add(AIChar);
-		}
-	}
+	SpawnedAI.Add(AIChar);
+	AEnnemyAIController* AICon = Cast<AEnnemyAIController>(AIChar->GetController());
+	if (!AICon) return;
+
+	UBlackboardComponent* BlackboardComp = AICon->GetBlackboardComp();
+	if (!BlackboardComp) return;
+
+	BlackboardComp->SetValueAsObject("Spawner", this);
+
+	if (!FoodSpotHandler) return;
+	AICon->SetFoodSpotHandler(FoodSpotHandler);
+
+	if (!FoodHandler || !(FoodHandler->GetFoodCount() < 5) || !FoodBP) return;
+
+	//Food creation
+	AFood* Food = GetWorld()->SpawnActor<AFood>(FoodBP, AICharPos, GetActorRotation(), p);
+
+	//Initialization
+	Food->SetOnFloor(false);
+	FoodHandler->AddFood(Food);
+	Food->SetFoodHandler(FoodHandler);
+
+	//Attaching to food user
+	AIChar->PickUpFood(Food);
+	BlackboardComp->SetValueAsObject("Food", Food);
 }
 
 // Called when the game starts or when spawned
 void AAISpawner::BeginPlay()
 {
 	Super::BeginPlay();
+
 	BeginTime = GetWorld()->GetTimeSeconds();
 
 	AFoodSpot* FoodSpot = FoodSpotHandler->GetRandomEmptyFoodSpot();
-	if (FoodSpot)
-	{
-		FActorSpawnParameters p;
-		p.Owner = this;
-		AFood* Food = GetWorld()->SpawnActor<AFood>(FoodBP, FoodSpot->GetActorLocation(), GetActorRotation(), p);
-		Food->SetOnFloor(false);
-		Food->SetFoodHandler(FoodHandler);
-		FoodHandler->AddFood(Food);
-		Food->GetMesh()->SetSimulatePhysics(false);
-		Food->GetMesh()->SetCollisionProfileName(TEXT("IgnoreAll"));
-		Food->GetBox()->SetCollisionProfileName(TEXT("IgnoreAll"));
-		Food->StaticMesh->AttachToComponent(FoodSpot->getMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("FoodSocket"));
-		FoodSpot->SetFood(Food);
-	}
+	if (!FoodSpot) return;
+
+	//Food creation
+	FActorSpawnParameters p;
+	p.Owner = this;
+	AFood* Food = GetWorld()->SpawnActor<AFood>(FoodBP, FoodSpot->GetActorLocation(), GetActorRotation(), p);
+
+	//Initialization
+	Food->SetOnFloor(false);
+	FoodHandler->AddFood(Food);
+	Food->SetFoodHandler(FoodHandler);
+
+	//Attaching to food spot
+	Food->GetMesh()->SetSimulatePhysics(false);
+	Food->GetMesh()->SetCollisionProfileName(TEXT("IgnoreAll"));
+	Food->GetBox()->SetCollisionProfileName(TEXT("IgnoreAll"));
+	Food->StaticMesh->AttachToComponent(FoodSpot->getMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("FoodSocket"));
+
+	FoodSpot->SetFood(Food);
 }
 
 // Called every frame
@@ -81,17 +98,18 @@ void AAISpawner::Tick(float DeltaTime)
 	for (int i = AIInsideRoomCount-1; i >= 0; i--)
 	{
 		AIChar = SpawnedAI[i];
-		AEnnemyAIController* AIController = Cast<AEnnemyAIController>(AIChar->GetController());
-		if (AIController)
-		{
-			//UE_LOG(LogTemp, Warning, TEXT("%i"), AIInsideRoomCount);
-			if (AIController->IsJobDone() && FVector::Distance(GetActorLocation(), AIChar->GetActorLocation()) < DestroyRadius)
-			{
-				AIChar->Destroy();
-				SpawnedAI.RemoveAtSwap(i);
+		if (!AIChar) return;
 
-				RespawnTimes.Add(GetWorld()->GetTimeSeconds() + FMath::RandRange(RespawnMinCooldown, RespawnMaxCooldown));
-			}
+		AEnnemyAIController* AIController = Cast<AEnnemyAIController>(AIChar->GetController());
+		if (!AIController) return;
+
+		//UE_LOG(LogTemp, Warning, TEXT("%i"), AIInsideRoomCount);
+		if (AIController->IsJobDone() && FVector::Distance(GetActorLocation(), AIChar->GetActorLocation()) < DestroyRadius)
+		{
+			AIChar->Destroy();
+			SpawnedAI.RemoveAtSwap(i);
+
+			RespawnTimes.Add(GetWorld()->GetTimeSeconds() + FMath::RandRange(RespawnMinCooldown, RespawnMaxCooldown));
 		}
 	}
 
@@ -101,7 +119,6 @@ void AAISpawner::Tick(float DeltaTime)
 		SpawnIA();
 		SpawnIA();
 		AICount+= 2;
-		//UE_LOG(LogTemp, Warning, TEXT("pop"));
 	}
 	else if(AICount == 2 && GetWorld()->GetTimeSeconds() - BeginTime > 60)
 	{

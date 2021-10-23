@@ -4,17 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Food.h"
+
 #include "FoodHandler.generated.h"
+
+class AFood;
 
 UCLASS()
 class GC_UE4CPP_API AFoodHandler : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	AFoodHandler();
+
+private:
 
 	UPROPERTY(EditAnywhere)
 		TArray<AFood*> Foods;
@@ -23,13 +23,16 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-private:
+public:
 
-public:	
+	// Sets default values for this actor's properties
+	AFoodHandler();
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	int GetFoodCount();
+	FORCEINLINE int GetFoodCount() const { return Foods.Num(); };
+
 	void Remove(AFood* Food);
 	void AddFood(AFood* Food);
 };

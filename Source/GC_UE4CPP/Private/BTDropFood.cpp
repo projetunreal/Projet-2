@@ -3,28 +3,26 @@
 
 #include "BTDropFood.h"
 #include "EnnemyAIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "AICharacter.h"
 
 
 EBTNodeResult::Type UBTDropFood::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	AEnnemyAIController* AICon = Cast<AEnnemyAIController>(OwnerComp.GetAIOwner());
-	if (AICon)
+	if (!AICon) return EBTNodeResult::Failed;
+
+	UBlackboardComponent* BlackboardComp = AICon->GetBlackboardComp();
+	if (!BlackboardComp) return EBTNodeResult::Failed;
+
+	AAICharacter* AIChar = AICon->GetAICharacter();
+	if (!AIChar) return EBTNodeResult::Failed;
+
+	AFood* Food = AIChar->GetFood();
+	if (Food)
 	{
-		UBlackboardComponent* BlackboardComp = AICon->GetBlackboardComp();
-		if (BlackboardComp)
-		{
-			AAICharacter* AIChar = AICon->GetAICharacter();
-			if (AIChar)
-			{
-				AFood* Food = AIChar->GetFood();
-				if (Food)
-				{
-					AIChar->DropFood();
-					BlackboardComp->SetValueAsBool("DroppedFood", true);
-				}
-				return EBTNodeResult::Succeeded;
-			}
-		}
+		AIChar->DropFood();
+		BlackboardComp->SetValueAsBool("bDroppedFood", true);
 	}
-	return EBTNodeResult::Failed;
+	return EBTNodeResult::Succeeded;
 }

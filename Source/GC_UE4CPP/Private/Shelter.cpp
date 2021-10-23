@@ -37,28 +37,26 @@ void AShelter::Tick(float DeltaTime)
 void AShelter::OnStaticMeshBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	
-	if(OtherActor->GetClass()->IsChildOf(AFood::StaticClass()))
+	AFood* Food = Cast<AFood>(OtherActor);
+	if(Food)
 	{
-		AFood* Food = Cast<AFood>(OtherActor);
-		if (Food)
+		AFoodHandler* FoodHandler = Food->GetFoodHandler();
+		if (FoodHandler)
 		{
-			AFoodHandler* FoodHandler = Food->GetFoodHandler();
-			if (FoodHandler)
-			{
-				FoodHandler->Remove(Food);
-			}
-			Food->Destroy();
+			FoodHandler->Remove(Food);
 		}
+		Food->Destroy();
 		
 		AMyGC_UE4CPPGameModeBase* GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
 		GameMode->UpdateFoodCount(1);
 		
 		//TODO: Change current animation
 	}
-	else if(OtherActor->GetClass()->IsChildOf(AFoodUserActor::StaticClass()))
+
+	AFoodUserActor* FoodUser = Cast<AFoodUserActor>(OtherActor);
+	if(FoodUser)
 	{
-		Cast<AFoodUserActor>(OtherActor)->DropFood();
+		FoodUser->DropFood();
 	}
 }
 

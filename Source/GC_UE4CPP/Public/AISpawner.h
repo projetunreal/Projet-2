@@ -4,21 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "AICharacter.h"
-#include "FoodSpotHandler.h"
-#include "FoodHandler.h"
-#include "Food.h"
-
 #include "AISpawner.generated.h"
+
+class AAICharacter;
+class AFoodSpotHandler;
+class AFoodHandler;
+class AFood;
+
 
 UCLASS()
 class GC_UE4CPP_API AAISpawner : public AActor
 {
 	GENERATED_BODY()
 	
-public:	
-	// Sets default values for this actor's properties
-	AAISpawner();
+private:
 	
 	UPROPERTY(EditAnywhere)
 		float DestroyRadius = 150;
@@ -41,8 +40,6 @@ public:
 	UPROPERTY(EditAnywhere)
 		AFoodHandler* FoodHandler;
 
-private:
-
 	int AICount;
 
 	TArray<AAICharacter*> SpawnedAI;
@@ -56,7 +53,10 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
+	// Sets default values for this actor's properties
+	AAISpawner();
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 };

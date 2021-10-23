@@ -3,15 +3,23 @@
 #include "EnnemyAIController.h"
 #include "Food.h"
 #include "MyGC_UE4CPPGameModeBase.h"
-
-
+#include "AICharacter.h"
+#include "EnnemyTargetPoint.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "BehaviorTree/BehaviorTreeComponent.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "Kismet/GameplayStatics.h"
+#include "Perception/AIPerceptionComponent.h"
+#include "Perception/AISenseConfig_Sight.h"
+#include "MyCharacter.h"
+#include "FoodSpotHandler.h"
 
 
 void AEnnemyAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (BlackboardComp->GetValueAsBool("CanSeePlayer"))
+	if (BlackboardComp->GetValueAsBool("bCanSeePlayer"))
 	{
 		BlackboardComp->SetValueAsVector("LastKnownPlayerLocation", TargetActor->GetActorLocation());
 		BlackboardComp->SetValueAsVector("LastKnownPlayerDirection", TargetActor->GetActorForwardVector());
@@ -27,21 +35,15 @@ void AEnnemyAIController::Tick(float DeltaTime)
 	{
 		if (GameMode->IsWin() || GameMode->IsLoose())
 		{
-			BlackboardComp->SetValueAsBool("GameOver", true);
+			BlackboardComp->SetValueAsBool("bGameOver", true);
 		}
 	}
 
 	AFood* Food = Cast<AFood>(BlackboardComp->GetValueAsObject("Food"));
 	if (Food)
 	{
-		BlackboardComp->SetValueAsBool("FoodOnFloor", Food->GetOnFloor());
+		BlackboardComp->SetValueAsBool("bFoodOnFloor", Food->GetOnFloor());
 	}
-
-	/*AFood* Food = Cast<AFood>(BlackboardComp->GetValueAsObject("Food"));
-	if (Food && AIChar->IsHoldingFood())
-	{
-		BlackboardComp->SetValueAsVector("LastKnownFoodLocation", Food->GetActorLocation());
-	}*/
 }
 
 AEnnemyAIController::AEnnemyAIController()
@@ -53,29 +55,19 @@ AEnnemyAIController::AEnnemyAIController()
 	SetGenericTeamId(FGenericTeamId(1));
 }
 
-AAICharacter* AEnnemyAIController::GetAICharacter()
-{
-	return AIChar;
-}
-
 void AEnnemyAIController::SetFoodSpotHandler(AFoodSpotHandler* SomeFoodSpotHandler)
 {
 	FoodSpotHandler = SomeFoodSpotHandler;
 }
 
-AFoodSpotHandler* AEnnemyAIController::GetFoodSpotHandler()
-{
-	return FoodSpotHandler;
-}
-
 void AEnnemyAIController::JobIsDone()
 {
-	BlackboardComp->SetValueAsBool("JobIsDone", true);
+	BlackboardComp->SetValueAsBool("bJobDone", true);
 }
 
-bool AEnnemyAIController::IsJobDone()
+bool AEnnemyAIController::IsJobDone() const
 {
-	return BlackboardComp->GetValueAsBool("JobIsDone");
+	return BlackboardComp->GetValueAsBool("bJobDone");
 }
 
 void AEnnemyAIController::OnPossess(APawn* SomePawn)
@@ -83,26 +75,31 @@ void AEnnemyAIController::OnPossess(APawn* SomePawn)
 	Super::OnPossess(SomePawn);
 
 	AIChar = Cast<AAICharacter>(SomePawn);
-	if (AIChar)
+	if (!AIChar) return;
+
+	UBehaviorTree* BehaviorTree = AIChar->GetBehaviorTree();
+	if (BehaviorTree->BlackboardAsset)
 	{
-		if (AIChar->BehaviorTree->BlackboardAsset)
+		if (BlackboardComp)
 		{
-			BlackboardComp->InitializeBlackboard(*(AIChar->BehaviorTree->BlackboardAsset));
-			BlackboardComp->SetValueAsObject("FoodSpotHandler", FoodSpotHandler);
-			BlackboardComp->SetValueAsBool("GameOver", false);
+			BlackboardComp->InitializeBlackboard(*(BehaviorTree->BlackboardAsset));
+			BlackboardComp->SetValueAsBool("bGameOver", false);
+
+			if (FoodSpotHandler) BlackboardComp->SetValueAsObject("FoodSpotHandler", FoodSpotHandler);
 		}
-
-		BehaviorComp->StartTree(*AIChar->BehaviorTree);
-
-		SetupPerceptionSystem();
 	}
+
+	BehaviorComp->StartTree(*BehaviorTree);
+
+	SetupPerceptionSystem();
 }
 
 void AEnnemyAIController::OnTargetUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
-	if (auto const Ch = Cast<AMyCharacter>(Actor))
+	AMyCharacter* const Char = Cast<AMyCharacter>(Actor);
+	if (Char)
 	{
-		BlackboardComp->SetValueAsBool("CanSeePlayer", Stimulus.WasSuccessfullySensed());
+		BlackboardComp->SetValueAsBool("bCanSeePlayer", Stimulus.WasSuccessfullySensed());
 		TargetActor = Actor;
 	}
 }
