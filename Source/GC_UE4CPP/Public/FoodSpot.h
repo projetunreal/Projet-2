@@ -25,15 +25,12 @@ public:
 	UPROPERTY(EditAnywhere)
 		AActor* FoodSpotUserPlace;
 	
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 	bool IsFoodOn();
+	
 	void SetFood(AFood* food);
 	AFood* GetFood();
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 	UStaticMeshComponent* getMesh();
 	AActor* GetFoodSpotUserPlace();
 };

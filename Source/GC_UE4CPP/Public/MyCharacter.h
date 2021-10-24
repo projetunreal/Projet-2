@@ -20,20 +20,16 @@ UCLASS()
 class GC_UE4CPP_API AMyCharacter : public AFoodUserActor
 {
 	GENERATED_BODY()
-	UPROPERTY(VisibleAnywhere, Category = "Trigger Capsule")
-		UCapsuleComponent* TriggerCapsule;
 	UPROPERTY(VisibleAnywhere)
-		USceneComponent* SC_Scene;
+		FTransform CharacterFeetPos;
 	UPROPERTY(VisibleAnywhere)
 		USpringArmComponent* CameraBoom;
 	UPROPERTY(VisibleAnywhere)
 		UCameraComponent* Camera;
-
-
 	UPROPERTY(VisibleAnywhere)
-		float ZOOM_INCREMENT = 60;
-	UPROPERTY(VisibleAnywhere)
-		float ZOOM_MAX = 500;
+		UStaticMeshComponent* Chair;
+
+	
 
 	UFUNCTION()
 		virtual void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
@@ -46,8 +42,7 @@ public:
 	void MoveForward(float axis);
 	void ZoomCamera(float axis);
 
-	void MoveCameraRight(float axis);
-	void MoveCameraDown(float axis);
+	
 	bool IsSit();
 	UFUNCTION()
 	void PauseGame();
@@ -63,7 +58,13 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void FoodAction();
+	void InteractWithObject();
 private :
 	bool bSit = false;
+	
+	const float ZoomIncrement = 60;
+	const float ZoomMax = 500;
+
+	void SitOnChair(AActor* Chair);
+	void StandUp();
 };
