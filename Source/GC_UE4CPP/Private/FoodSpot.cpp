@@ -11,20 +11,6 @@ AFoodSpot::AFoodSpot()
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Static Mesh"));
 }
 
-// Called when the game starts or when spawned
-void AFoodSpot::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
-// Called every frame
-void AFoodSpot::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
 UStaticMeshComponent* AFoodSpot::getMesh()
 {
 	return StaticMesh;
