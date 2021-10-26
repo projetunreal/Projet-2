@@ -4,31 +4,30 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Runtime/UMG/Public/UMG.h"
-#include "Components/Button.h"
-
-#include "EndScreen.generated.h"
+#include "MainMenuWidget.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class GC_UE4CPP_API UEndScreen : public UUserWidget
+class GC_UE4CPP_API UMainMenuWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
 public:
-	UEndScreen(const FObjectInitializer& ObjectInitializer);
-
+	
 	UFUNCTION()
-	void OnClickButton();
+	void OnClickPlayButton();
+	
+	UFUNCTION()
+	void OnClickQuitButton();
 
 	UFUNCTION()
 	virtual void NativeConstruct() override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+	class UButton* PlayButton;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-	class UButton* PlayAgainButton;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-	class UTextBlock* WinLoseTextBlock;
+	class UButton* QuitButton;
 };

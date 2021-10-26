@@ -5,14 +5,10 @@
 
 #include "MyGC_UE4CPPGameModeBase.h"
 
-class AMyGC_UE4CPPGameModeBase;
-
 void UPauseWidget::OnClickButton()
 {
 	AMyGC_UE4CPPGameModeBase* GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
-	GameMode->UnpauseGame();
-	
-	
+	GameMode->UnpauseGame();	
 }
 
 void UPauseWidget::NativeConstruct()
