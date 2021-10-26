@@ -9,13 +9,11 @@
 void UMainMenuWidget::OnClickPlayButton()
 {
 	UGameplayStatics::OpenLevel(GetWorld(), "Game");
-	UE_LOG(LogTemp, Warning, TEXT("Play button pressed"))
 }
 
 void UMainMenuWidget::OnClickQuitButton()
 {
 	GetWorld()->GetFirstPlayerController()->ConsoleCommand("quit");
-	UE_LOG(LogTemp, Warning, TEXT("Quit button pressed"))
 }
 
 void UMainMenuWidget::NativeConstruct()

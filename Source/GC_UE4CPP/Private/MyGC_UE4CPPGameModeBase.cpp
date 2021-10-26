@@ -33,8 +33,6 @@ void AMyGC_UE4CPPGameModeBase::WinGame()
 {
 	if (bPlayerLost || bPlayerWon) {return;}
 	
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString("Game Won"));
-	
 	//Change animation and AI behavior
 	bPlayerWon = true;
 	
