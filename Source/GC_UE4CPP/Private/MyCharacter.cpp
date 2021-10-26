@@ -6,7 +6,22 @@
 
 #include "MyGC_UE4CPPGameModeBase.h"
 
-
+ void AMyCharacter::Tick(float DeltaSeconds)
+{
+	 const FRotator Rotation = Controller->GetControlRotation();
+	 float Modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
+	 if (InputDirection.X + InputDirection.Y == 2)
+	 {
+		 InputDirection.X = 0.5;
+		 InputDirection.Y = 0.5;
+	 }
+	 const FRotator YawRotation(0, Rotation.Yaw, 0);
+	 FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y) * InputDirection.Y;
+	 Direction += FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X) * InputDirection.X;
+	 AddMovementInput(Direction, Modifier);
+	 InputDirection.X = 0;
+	 InputDirection.Y = 0;
+}
 
 void AMyCharacter::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,
 	bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
@@ -69,21 +84,25 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void AMyCharacter::MoveRight(float Axis)
 {
+	/*
 	const FRotator Rotation = Controller->GetControlRotation();
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
 	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 	float modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
 	AddMovementInput(Direction * modifier, Axis);
+	*/
+	InputDirection.Y += Axis;
 }
 
 void AMyCharacter::MoveForward(float Axis)
 {
 	
-	const FRotator Rotation = Controller->GetControlRotation();
-	const FRotator YawRotation(0, Rotation.Yaw, 0);
-	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	float modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
-	AddMovementInput(Direction * modifier, Axis);
+	//const FRotator Rotation = Controller->GetControlRotation();
+	//const FRotator YawRotation(0, Rotation.Yaw, 0);
+	//const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+	//float modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
+	//AddMovementInput(Direction * modifier, Axis);
+	InputDirection.X += Axis;
 }
 
 void AMyCharacter::ZoomCamera(float Axis)
@@ -129,7 +148,7 @@ void AMyCharacter::InteractWithObject()
 		{
 			PickUpFoodFromSpot(Cast<AFoodSpot>(OutHit.GetActor()));
 		}
-		else if (OutHit.GetActor()->GetClass()->IsChildOf(AFood::StaticClass()) && !FoodHeld)
+		else if (OutHit.GetActor()->GetClass()->IsChildOf(AFood::StaticClass()) )
 		{
 			PickUpFood(Cast<AFood>(OutHit.GetActor()));
 		}

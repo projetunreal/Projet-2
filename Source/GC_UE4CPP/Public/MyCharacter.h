@@ -57,13 +57,14 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	virtual void Tick(float DeltaSeconds) override;
 	void InteractWithObject();
 private :
 	bool bSit = false;
 	
 	const float ZoomIncrement = 60;
 	const float ZoomMax = 500;
+	FVector InputDirection;
 
 	void SitOnChair(AActor* Chair);
 	void StandUp();
