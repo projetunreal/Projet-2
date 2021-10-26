@@ -2,6 +2,11 @@
 
 
 #include "AICharacter.h"
+#include "SightCone.h"
+#include "EnemyAIController.h"
+#include "Perception/AIPerceptionComponent.h"
+#include "Perception/AISense_Sight.h"
+#include "Perception/AISenseConfig_Sight.h"
 
 // Sets default values
 AAICharacter::AAICharacter()
@@ -14,6 +19,24 @@ AAICharacter::AAICharacter()
 void AAICharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	FActorSpawnParameters p;
+	p.Owner = this;
+	SightCone = GetWorld()->SpawnActor<ASightCone>(SightConeBP, GetActorLocation(), GetActorRotation(), p);
+	SightCone->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	SightCone->SetAICharacter(this);
+
+	AEnemyAIController* EnemyAIController = Cast<AEnemyAIController>(GetController());
+	if (!EnemyAIController) return;
+
+	UAIPerceptionComponent* AIPerceptionComponent = EnemyAIController->GetAIPerceptionComponent();
+	if (!AIPerceptionComponent) return;
+
+	UAISenseConfig_Sight* AISenseConfig = Cast<UAISenseConfig_Sight>(AIPerceptionComponent->GetSenseConfig(UAISense::GetSenseID<UAISense_Sight>()));
+	if (!AISenseConfig) return;
+
+	SightCone->SetSightRadius(AISenseConfig->SightRadius);
+	SightCone->SetVisionAngle(AISenseConfig->PeripheralVisionAngleDegrees);
 }
 
 // Called every frame
@@ -26,4 +49,9 @@ void AAICharacter::Tick(float DeltaTime)
 void AAICharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+void AAICharacter::DestroySightCone()
+{
+	SightCone->Destroy();
 }

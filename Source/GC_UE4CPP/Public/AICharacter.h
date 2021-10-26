@@ -7,6 +7,8 @@
 #include "FoodUserActor.h"
 #include "AICharacter.generated.h"
 
+class SightCone;
+
 UCLASS()
 class GC_UE4CPP_API AAICharacter : public AFoodUserActor
 {
@@ -14,11 +16,19 @@ class GC_UE4CPP_API AAICharacter : public AFoodUserActor
 
 private:
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "AI")
 		float PatrolDistance = 5000;
+	UPROPERTY(EditAnywhere, Category = "AI")
+		float EyeHeightFromCenter = 40.0f;
 
 	UPROPERTY(EditAnywhere, Category = "AI")
 		class UBehaviorTree* BehaviorTree;
+
+	UPROPERTY(EditAnywhere, Category = "AI")
+		class ASightCone* SightCone;
+
+	UPROPERTY(EditAnywhere, Category = "AI")
+		class TSubclassOf<ASightCone> SightConeBP;
 
 protected:
 	// Called when the game starts or when spawned
@@ -36,6 +46,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	FORCEINLINE float GetPatrolDistance() const { return PatrolDistance; }
+	FORCEINLINE float GetEyeHeightFromCenter() const { return EyeHeightFromCenter; }
 
 	FORCEINLINE UBehaviorTree* GetBehaviorTree() { return BehaviorTree; };
+	void DestroySightCone();
 };

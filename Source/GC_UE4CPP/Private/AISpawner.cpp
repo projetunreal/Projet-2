@@ -106,6 +106,7 @@ void AAISpawner::Tick(float DeltaTime)
 		//UE_LOG(LogTemp, Warning, TEXT("%i"), AIInsideRoomCount);
 		if (AIController->IsJobDone() && FVector::Distance(GetActorLocation(), AIChar->GetActorLocation()) < DestroyRadius)
 		{
+			AIChar->DestroySightCone();
 			AIChar->Destroy();
 			SpawnedAI.RemoveAtSwap(i);
 

@@ -60,6 +60,7 @@ void AFoodUserActor::PutFoodOnSpot(AFoodSpot* Spot)
 		FoodHeld->GetMesh()->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, false));
 		Spot->SetFood(FoodHeld);
 		FoodHeld->GetMesh()->AttachToComponent(Spot->getMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("FoodSocket"));
+		FoodHeld->SetOnFloor(false);
 		FoodHeld = nullptr;
 	}
 }
@@ -76,6 +77,7 @@ void AFoodUserActor::DropFood()
 		FoodHeld->GetMesh()->SetCollisionProfileName(TEXT("BlockAll"));
 		FoodHeld->GetBox()->SetCollisionProfileName(TEXT("FoodBox"));
 		FoodHeld->GetMesh()->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, false));
+		FoodHeld->SetOnFloor(true);
 		FoodHeld = nullptr;
 	}
 }

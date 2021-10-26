@@ -8,7 +8,7 @@ public class GC_UE4CPP : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "GameplayTasks", "Slate", "SlateCore", "UMG" , "NavigationSystem" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "GameplayTasks", "Slate", "SlateCore", "UMG" , "NavigationSystem", "ProceduralMeshComponent" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
