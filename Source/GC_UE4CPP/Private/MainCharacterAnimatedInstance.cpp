@@ -2,7 +2,7 @@
 
 
 #include "MainCharacterAnimatedInstance.h"
-
+#include "MyCharacter.h"
 
 
 

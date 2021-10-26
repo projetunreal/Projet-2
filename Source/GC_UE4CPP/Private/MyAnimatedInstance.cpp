@@ -2,6 +2,9 @@
 
 
 #include "MyAnimatedInstance.h"
+#include "FoodUserActor.h"
+#include "MyGC_UE4CPPGameModeBase.h"
+
 UMyAnimatedInstance::UMyAnimatedInstance()
 {
 	bMove = false;
@@ -14,7 +17,7 @@ UMyAnimatedInstance::UMyAnimatedInstance()
 
 void UMyAnimatedInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
-	if (Actor  || GameMode )
+	if (Actor  && GameMode )
 	{
 		bMove = (Actor->GetVelocity().Size() > 0);
 		bHold = Actor->IsHoldingFood();

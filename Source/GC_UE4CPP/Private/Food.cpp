@@ -2,6 +2,7 @@
 
 
 #include "Food.h"
+
 #include "FoodHandler.h"
 
 // Sets default values

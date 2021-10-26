@@ -3,19 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
-#include "Components/SkeletalMeshComponent.h"
-#include "Components/SceneComponent.h"
-#include "GameFramework/SpringArmComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
-#include "Components/CapsuleComponent.h"
-#include "Camera/CameraComponent.h"
-#include "Food.h"
-#include "FoodSpot.h"
-
 #include "FoodUserActor.h"
 #include "MyCharacter.generated.h"
 
+class USpringArmComponent;
+class UCameraComponent;
 UCLASS()
 class GC_UE4CPP_API AMyCharacter : public AFoodUserActor
 {
@@ -46,10 +38,6 @@ public:
 	bool IsSit();
 	UFUNCTION()
 	void PauseGame();
-	//void PlusReleased();
-	//UFUNCTION()
-	//void MinusReleased();
-
 
 
 	// Called to bind functionality to input
@@ -64,6 +52,7 @@ private :
 	
 	const float ZoomIncrement = 60;
 	const float ZoomMax = 500;
+	const float InteractRange = 500;
 	FVector InputDirection;
 
 	void SitOnChair(AActor* Chair);

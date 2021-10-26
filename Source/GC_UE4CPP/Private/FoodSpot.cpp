@@ -2,6 +2,8 @@
 
 
 #include "FoodSpot.h"
+#include "GameFramework/Actor.h"
+#include "Components/StaticMeshComponent.h"
 
 // Sets default values
 AFoodSpot::AFoodSpot()

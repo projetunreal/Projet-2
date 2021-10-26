@@ -4,13 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
-#include "FoodUserActor.h"
-#include "MyGC_UE4CPPGameModeBase.h"
+
 #include "MyAnimatedInstance.generated.h"
 
-/**
- * 
- */
+class AFoodUserActor;
+class AMyGC_UE4CPPGameModeBase;
 UCLASS(transient, Blueprintable, hideCategories = AnimInstance, BlueprintType)
 class GC_UE4CPP_API UMyAnimatedInstance : public UAnimInstance
 {

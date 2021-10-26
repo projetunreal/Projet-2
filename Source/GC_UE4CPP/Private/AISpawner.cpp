@@ -8,6 +8,7 @@
 #include "FoodUserActor.h"
 #include "FoodSpotHandler.h"
 #include "FoodHandler.h"
+#include "FoodSpot.h"
 #include "Food.h"
 #include "AICharacter.h"
 
