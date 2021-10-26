@@ -46,6 +46,7 @@ void AMyGC_UE4CPPGameModeBase::WinGame()
 		if (EndScreenWidget)
 		{
 			EndScreenWidget->AddToViewport();
+			EndScreenWidget->SetAnchorsInViewport()
 
 			UTextBlock* Text = EndScreenWidget->WinLoseTextBlock;
 			Text->SetText(FText::FromString("You won!"));
