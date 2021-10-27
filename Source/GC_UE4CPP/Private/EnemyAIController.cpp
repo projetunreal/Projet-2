@@ -33,7 +33,7 @@ void AEnemyAIController::Tick(float DeltaTime)
 	AMyGC_UE4CPPGameModeBase* GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
 	if (GameMode)
 	{
-		if (GameMode->IsWin() || GameMode->IsLoose())
+		if (GameMode->IsWin() || GameMode->IsLose())
 		{
 			BlackboardComp->SetValueAsBool("bGameOver", true);
 		}

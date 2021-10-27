@@ -11,22 +11,6 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "MyGC_UE4CPPGameModeBase.h"
 
- void AMyCharacter::Tick(float DeltaSeconds)
-{
-	 const FRotator Rotation = Controller->GetControlRotation();
-	 const FRotator YawRotation(0, Rotation.Yaw, 0);
-	 float Modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
-	 //if (InputDirection.X + InputDirection.Y == 2)
-	 {
-	//	 InputDirection.X = 0.5;
-	//	 InputDirection.Y = 0.5;
-	 }	 
-	 FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y) * InputDirection.Y;
-	 Direction += FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X) * InputDirection.X;
-	 AddMovementInput(Direction, Modifier);
-	 InputDirection.X = 0;
-	 InputDirection.Y = 0;
-}
 
 void AMyCharacter::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,
 	bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
@@ -42,19 +26,15 @@ void AMyCharacter::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimit
 // Sets default values
 AMyCharacter::AMyCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
-	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 700.0f, 0.0f);
+
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(FName(TEXT("CameraBoom")));
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->bEnableCameraLag = true;
-	//CameraBoom->bDrawDebugLagMarkers = true;
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(FName(TEXT("Camera")));
 	Camera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
@@ -88,18 +68,25 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void AMyCharacter::MoveRight(float Axis)
 {
-	InputDirection.Y += Axis;
+	const FRotator Rotation = Controller->GetControlRotation();
+	const FRotator YawRotation(0, Rotation.Yaw, 0);
+	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+	float Modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
+	AddMovementInput(Direction, Axis * Modifier);
 }
 
 void AMyCharacter::MoveForward(float Axis)
 {
-	
-	InputDirection.X += Axis;
+	const FRotator Rotation = Controller->GetControlRotation(); 
+	const FRotator YawRotation(0, Rotation.Yaw, 0); 
+	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X); 
+	float Modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f; 
+	AddMovementInput(Direction , Axis* Modifier);
 }
 
 void AMyCharacter::ZoomCamera(float Axis)
 {
-	if (!bSit &&CameraBoom->TargetArmLength + Axis * ZoomIncrement > 0 && CameraBoom->TargetArmLength + Axis * ZoomIncrement < ZoomMax)
+	if (!IsSit() &&CameraBoom->TargetArmLength + Axis * ZoomIncrement > 0 && CameraBoom->TargetArmLength + Axis * ZoomIncrement < ZoomMax)
 		CameraBoom->TargetArmLength += Axis * ZoomIncrement;
 }
 
@@ -109,11 +96,11 @@ void AMyCharacter::PauseGame()
 	GameMode->PauseGame();
 }
 
-
 bool AMyCharacter::IsSit()
 {
-	return bSit;
+	return Chair != nullptr;
 }
+
 void AMyCharacter::InteractWithObject()
 {
 	FHitResult OutHit;
@@ -126,39 +113,32 @@ void AMyCharacter::InteractWithObject()
 	FCollisionQueryParams CollisionParams;
 	CollisionParams.AddIgnoredActor(GetOwner());
 
-	//DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1, 0, 1);
-	bool IsHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams);
-	if (FoodHeld)
+	bool bHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams);
+	if ( FoodHeld )
 		DropFood();
-	else if (bSit)
-	{
+	else if ( Chair ) 
 		StandUp();
-	}
-	else if (IsHit)
+	else if ( bHit )
 	{
-		if (OutHit.GetActor()->GetClass()->IsChildOf(AFoodSpot::StaticClass()))
-		{
+		if ( OutHit.GetActor()->GetClass()->IsChildOf(AFoodSpot::StaticClass()) )
 			PickUpFoodFromSpot(Cast<AFoodSpot>(OutHit.GetActor()));
-		}
-		else if (OutHit.GetActor()->GetClass()->IsChildOf(AFood::StaticClass()) )
-		{
+		
+		else if ( OutHit.GetActor()->GetClass()->IsChildOf(AFood::StaticClass()) )
 			PickUpFood(Cast<AFood>(OutHit.GetActor()));
-		}
-		else if (OutHit.GetActor()->ActorHasTag("Chair"))
-		{
+
+		else if ( OutHit.GetActor()->ActorHasTag("Chair") )
 			SitOnChair(OutHit.GetActor());
-		}
 	}
 }
 void AMyCharacter::SitOnChair(AActor* NewChair)
 {
+	GetController()->SetIgnoreMoveInput(true);
 	GetMesh()->SetSimulatePhysics(false);
 	GetMesh()->SetCollisionProfileName(TEXT("OverlapAll"));
 	FAttachmentTransformRules rules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false);
 
 	GetMesh()->AttachToComponent(Cast<AStaticMeshActor >(NewChair)->GetStaticMeshComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("SitSocket"));
 	GetCapsuleComponent()->AttachToComponent(Cast<AStaticMeshActor >(NewChair)->GetStaticMeshComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("SitSocket"));
-	bSit = true;
 	CameraBoom->bUsePawnControlRotation = false;
 	FRotator NewRotation = FRotator(0.0, 270.0, 0.0);
 	CameraBoom->SetRelativeRotation(NewRotation, false);
@@ -166,6 +146,7 @@ void AMyCharacter::SitOnChair(AActor* NewChair)
 }
 void AMyCharacter::StandUp()
 {
+	GetController()->SetIgnoreMoveInput(false);
 	GetCapsuleComponent()->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, false));
 	GetMesh()->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, false));
 
@@ -177,7 +158,6 @@ void AMyCharacter::StandUp()
 	GetCapsuleComponent()->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, false));
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Pawn"));
 
-	bSit = false;
 	CameraBoom->bUsePawnControlRotation = true;
 	Chair = nullptr;
 }

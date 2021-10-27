@@ -168,7 +168,7 @@ bool AMyGC_UE4CPPGameModeBase::IsWin()
 	return bPlayerWon;
 }
 
-bool AMyGC_UE4CPPGameModeBase::IsLoose()
+bool AMyGC_UE4CPPGameModeBase::IsLose()
 {
 	return bPlayerLost;
 }

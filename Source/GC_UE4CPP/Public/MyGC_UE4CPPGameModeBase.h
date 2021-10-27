@@ -57,7 +57,7 @@ public:
 	TSubclassOf<UUserWidget> FoodCountWidgetClass;
 	
 	bool IsWin();
-	bool IsLoose();
+	bool IsLose();
 private:
 	UEndScreen* EndScreenWidget;
 	UPauseWidget* PauseWidget;

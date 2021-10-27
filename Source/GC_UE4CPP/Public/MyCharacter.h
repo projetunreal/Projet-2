@@ -41,20 +41,18 @@ public:
 
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	virtual void Tick(float DeltaSeconds) override;
 	void InteractWithObject();
 private :
-	bool bSit = false;
 	
 	const float ZoomIncrement = 60;
 	const float ZoomMax = 500;
 	const float InteractRange = 500;
-	FVector InputDirection;
 
 	void SitOnChair(AActor* Chair);
 	void StandUp();
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 };

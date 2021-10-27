@@ -8,8 +8,6 @@
 // Sets default values
 AFoodSpot::AFoodSpot()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Static Mesh"));
 }
 
@@ -20,17 +18,14 @@ UStaticMeshComponent* AFoodSpot::getMesh()
 bool AFoodSpot::IsFoodOn()
 {
 	return FoodHeld != nullptr;
-
 }
-void AFoodSpot::SetFood(AFood* food)
+void AFoodSpot::SetFood(AFood* Food)
 {
-	FoodHeld = food;
-
+	FoodHeld = Food;
 }
 AFood* AFoodSpot::GetFood()
 {
 	return FoodHeld;
-
 }
 
 AActor* AFoodSpot::GetFoodSpotUserPlace()
