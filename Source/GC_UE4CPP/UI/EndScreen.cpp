@@ -6,14 +6,9 @@
 #include "MyGC_UE4CPPGameModeBase.h"
 
 
-UEndScreen::UEndScreen(const FObjectInitializer& ObjectInitializer):Super(ObjectInitializer)
-{
-	
-}
-
 void UEndScreen::OnClickButton()
 {
-	AMyGC_UE4CPPGameModeBase* GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+	const AMyGC_UE4CPPGameModeBase* GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
 	GameMode->ToggleMouseCursor(false);
 	GameMode->TogglePlayerInput(true);
 	

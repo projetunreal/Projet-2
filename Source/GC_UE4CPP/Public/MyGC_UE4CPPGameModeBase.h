@@ -16,7 +16,7 @@ class UFoodCountWidget;
  * 
  */
 UCLASS()
-class GC_UE4CPP_API AMyGC_UE4CPPGameModeBase : public AGC_UE4CPPGameModeBase
+class GC_UE4CPP_API AMyGC_UE4CPPGameModeBase final : public AGC_UE4CPPGameModeBase
 {
 	GENERATED_BODY()
 
@@ -40,11 +40,11 @@ public:
 	void PauseGame();
 
 	void UnpauseGame();
-	void ToggleMouseCursor(bool boolean);
-	void TogglePlayerInput(bool boolean);
+	void ToggleMouseCursor(bool Boolean) const;
+	void TogglePlayerInput(bool Boolean) const;
 
 	UFUNCTION()
-	void UpdateFoodCount(int32 Value);
+	void UpdateFoodCount(int32 Value) const;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 	TSubclassOf<UUserWidget> EndScreenClass;
@@ -55,8 +55,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 	TSubclassOf<UUserWidget> FoodCountWidgetClass;
 	
-	bool IsWin();
-	bool IsLose();
+	bool IsWin() const;
+	bool IsLose() const;
 private:
 	UEndScreen* EndScreenWidget;
 	UPauseWidget* PauseWidget;

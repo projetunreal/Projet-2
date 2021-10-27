@@ -13,13 +13,11 @@
  * 
  */
 UCLASS()
-class GC_UE4CPP_API UEndScreen : public UUserWidget
+class GC_UE4CPP_API UEndScreen final : public UUserWidget
 {
 	GENERATED_BODY()
 
 public:
-	UEndScreen(const FObjectInitializer& ObjectInitializer);
-
 	UFUNCTION()
 	void OnClickButton();
 

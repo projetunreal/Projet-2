@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class GC_UE4CPP_API UMainMenuWidget : public UUserWidget
+class GC_UE4CPP_API UMainMenuWidget final : public UUserWidget
 {
 	GENERATED_BODY()
 

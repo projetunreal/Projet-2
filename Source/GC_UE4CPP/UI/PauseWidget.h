@@ -12,7 +12,7 @@
  * 
  */
 UCLASS()
-class GC_UE4CPP_API UPauseWidget : public UUserWidget
+class GC_UE4CPP_API UPauseWidget final : public UUserWidget
 {
 	GENERATED_BODY()
 

@@ -122,28 +122,28 @@ void AMyGC_UE4CPPGameModeBase::UnpauseGame()
 	ToggleMouseCursor(false);
 }
 
-void AMyGC_UE4CPPGameModeBase::ToggleMouseCursor(bool boolean)
+void AMyGC_UE4CPPGameModeBase::ToggleMouseCursor(const bool Boolean) const
 {
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-	PlayerController->bShowMouseCursor = boolean;
-	PlayerController->bEnableClickEvents = boolean;
+	PlayerController->bShowMouseCursor = Boolean;
+	PlayerController->bEnableClickEvents = Boolean;
 
-	if (boolean)
+	if (Boolean)
 	{
-		FInputModeUIOnly FInputMode;
+		const FInputModeUIOnly FInputMode;
 		PlayerController->SetInputMode(FInputMode);
 	}
 	else
 	{
-		FInputModeGameOnly FInputMode;
+		const FInputModeGameOnly FInputMode;
 		PlayerController->SetInputMode(FInputMode);
 	}
 }
 
-void AMyGC_UE4CPPGameModeBase::TogglePlayerInput(bool boolean)
+void AMyGC_UE4CPPGameModeBase::TogglePlayerInput(const bool Boolean) const
 {
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-	if (boolean)
+	if (Boolean)
 	{
 		PlayerController->GetPawn()->EnableInput(PlayerController);
 	}
@@ -153,7 +153,7 @@ void AMyGC_UE4CPPGameModeBase::TogglePlayerInput(bool boolean)
 	}
 }
 
-void AMyGC_UE4CPPGameModeBase::UpdateFoodCount(int32 Value)
+void AMyGC_UE4CPPGameModeBase::UpdateFoodCount(const int32 Value) const
 {
 	if(FoodCountWidget)
 	{
@@ -161,12 +161,12 @@ void AMyGC_UE4CPPGameModeBase::UpdateFoodCount(int32 Value)
 	}
 }
 
-bool AMyGC_UE4CPPGameModeBase::IsWin()
+bool AMyGC_UE4CPPGameModeBase::IsWin() const
 {
 	return bPlayerWon;
 }
 
-bool AMyGC_UE4CPPGameModeBase::IsLose()
+bool AMyGC_UE4CPPGameModeBase::IsLose() const
 {
 	return bPlayerLost;
 }

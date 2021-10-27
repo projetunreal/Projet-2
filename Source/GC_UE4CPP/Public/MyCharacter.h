@@ -30,12 +30,12 @@ public:
 	// Sets default values for this character's properties
 	AMyCharacter();
 
-	void MoveRight(float axis);
-	void MoveForward(float axis);
-	void ZoomCamera(float axis);
+	void MoveRight(float Axis);
+	void MoveForward(float Axis);
+	void ZoomCamera(float Axis);
 
 	
-	bool IsSit();
+	bool IsSit() const;
 	UFUNCTION()
 	void PauseGame();
 

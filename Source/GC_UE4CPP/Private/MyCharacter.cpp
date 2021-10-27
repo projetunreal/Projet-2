@@ -7,13 +7,11 @@
 #include "FoodSpot.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Camera/CameraComponent.h"
-#include "GameFramework/SpringArmComponent.h"
 #include "MyGC_UE4CPPGameModeBase.h"
 
 
 void AMyCharacter::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,
-	bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+const bool bSelfMoved, const FVector HitLocation, const FVector HitNormal, const FVector NormalImpulse, const FHitResult& Hit)
 {
 	Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
 	if (Other->GetClass()->IsChildOf(AAICharacter::StaticClass()))
@@ -66,25 +64,25 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction("Interact", IE_Pressed,this, &AMyCharacter::InteractWithObject);
 }
 
-void AMyCharacter::MoveRight(float Axis)
+void AMyCharacter::MoveRight(const float Axis)
 {
 	const FRotator Rotation = Controller->GetControlRotation();
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
 	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-	float Modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
+	const float Modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
 	AddMovementInput(Direction, Axis * Modifier);
 }
 
-void AMyCharacter::MoveForward(float Axis)
+void AMyCharacter::MoveForward(const float Axis)
 {
 	const FRotator Rotation = Controller->GetControlRotation(); 
 	const FRotator YawRotation(0, Rotation.Yaw, 0); 
-	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X); 
-	float Modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f; 
+	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+	const float Modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f; 
 	AddMovementInput(Direction , Axis* Modifier);
 }
 
-void AMyCharacter::ZoomCamera(float Axis)
+void AMyCharacter::ZoomCamera(const float Axis)
 {
 	if (!IsSit() &&CameraBoom->TargetArmLength + Axis * ZoomIncrement > 0 && CameraBoom->TargetArmLength + Axis * ZoomIncrement < ZoomMax)
 		CameraBoom->TargetArmLength += Axis * ZoomIncrement;
@@ -96,7 +94,7 @@ void AMyCharacter::PauseGame()
 	GameMode->PauseGame();
 }
 
-bool AMyCharacter::IsSit()
+bool AMyCharacter::IsSit() const
 {
 	return Chair != nullptr;
 }

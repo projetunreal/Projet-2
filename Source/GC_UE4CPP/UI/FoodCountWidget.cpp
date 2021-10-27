@@ -10,7 +10,7 @@ UFoodCountWidget::UFoodCountWidget(const FObjectInitializer& ObjectInitializer):
 	CurrentValue = 0;
 }
 
-void UFoodCountWidget::UpdateFoodCount(int32 Value)
+void UFoodCountWidget::UpdateFoodCount(const int32 Value)
 {
 	AMyGC_UE4CPPGameModeBase* GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
 	if(FoodTxt && FoodBar)
@@ -30,7 +30,7 @@ void UFoodCountWidget::UpdateFoodCount(int32 Value)
 	}
 }
 
-void UFoodCountWidget::ResetCount()
+void UFoodCountWidget::ResetCount() const
 {
 	FoodBar->SetPercent(0.0f);
 	FoodTxt->SetText(FText::FromString("0/5"));

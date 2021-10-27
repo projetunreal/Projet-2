@@ -11,7 +11,7 @@ class UMainMenuWidget;
  * 
  */
 UCLASS()
-class GC_UE4CPP_API AMainMenuGameModeBase : public AGameModeBase
+class GC_UE4CPP_API AMainMenuGameModeBase final : public AGameModeBase
 {
 	GENERATED_BODY()
 

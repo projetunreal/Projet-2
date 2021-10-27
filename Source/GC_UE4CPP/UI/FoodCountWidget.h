@@ -11,16 +11,16 @@
  * 
  */
 UCLASS()
-class GC_UE4CPP_API UFoodCountWidget : public UUserWidget
+class GC_UE4CPP_API UFoodCountWidget final : public UUserWidget
 {
 	GENERATED_BODY()
 
 public:
-	UFoodCountWidget(const FObjectInitializer& ObjectInitializer);
+	explicit UFoodCountWidget(const FObjectInitializer& ObjectInitializer);
 	
 	void UpdateFoodCount(int32 Value);
 
-	void ResetCount();
+	void ResetCount() const;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UOverlay* FoodHUD;
