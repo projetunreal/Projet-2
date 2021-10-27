@@ -9,7 +9,14 @@
 void AMainMenuGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
+    
+    const FInputModeUIOnly FInputMode;
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 
+	PlayerController->SetInputMode(FInputMode);
+	PlayerController->bShowMouseCursor = true;
+	PlayerController->bEnableClickEvents = true;
+    		
 	if(MainMenuWidgetClass)
 	{
 		MainMenuWidget = CreateWidget<UMainMenuWidget>(GetWorld(), MainMenuWidgetClass);

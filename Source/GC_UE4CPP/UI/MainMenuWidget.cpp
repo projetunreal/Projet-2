@@ -8,11 +8,19 @@
 
 void UMainMenuWidget::OnClickPlayButton()
 {
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+
+	PlayerController->bShowMouseCursor = false;
+	PlayerController->bEnableClickEvents = false;
 	UGameplayStatics::OpenLevel(GetWorld(), "Game");
 }
 
 void UMainMenuWidget::OnClickQuitButton()
 {
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+
+	PlayerController->bShowMouseCursor = false;
+	PlayerController->bEnableClickEvents = false;
 	GetWorld()->GetFirstPlayerController()->ConsoleCommand("quit");
 }
 
