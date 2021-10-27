@@ -104,7 +104,6 @@ void AAISpawner::Tick(float DeltaTime)
 		AEnemyAIController* AIController = Cast<AEnemyAIController>(AIChar->GetController());
 		if (!AIController) return;
 
-		//UE_LOG(LogTemp, Warning, TEXT("%i"), AIInsideRoomCount);
 		if (AIController->IsJobDone() && FVector::Distance(GetActorLocation(), AIChar->GetActorLocation()) < DestroyRadius)
 		{
 			AIChar->DestroySightCone();
