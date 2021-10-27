@@ -80,33 +80,6 @@ void ASightCone::Tick(float DeltaTime)
 	Tangents.Init(FProcMeshTangent(1.0f, 0.0f, 0.0f), RayAmount + 1);
 
 	ProcMeshComp->CreateMeshSection_LinearColor(0, Vertices, Triangles, Normals, UVs, VertexColors, Tangents, false);
-
-	/*Vertices.Add(FVector(0.0f, 0.0f, 0.0f));
-	Vertices.Add(FVector(letest, 0.0f, 0.0f));
-	Vertices.Add(FVector(0.0f, 100.0f, 0.0f));
-
-	Triangles.Add(0);
-	Triangles.Add(2);
-	Triangles.Add(1);
-
-	Normals.Add(FVector(0.0f, 0.0f, 1.0f));
-	Normals.Add(FVector(0.0f, 0.0f, 1.0f));
-	Normals.Add(FVector(0.0f, 0.0f, 1.0f));
-
-	UVs.Add(FVector2D(0.0f, 0.0f));
-	UVs.Add(FVector2D(1.0f, 0.0f));
-	UVs.Add(FVector2D(0.0f, 1.0f));
-
-
-
-	//UVs.Init(FVector2D(0.0f, 0.0f), 3);
-
-	//Normals.Init(FVector(0.0f, 0.0f, 1.0f), 4);
-	VertexColors.Init(FLinearColor(1.0f, 0.0f, 0.0f, 1.0f), 3);
-	Tangents.Init(FProcMeshTangent(1.0f, 0.0f, 0.0f), 3);
-
-	//Function that creates mesh section
-	ProcMeshComp->CreateMeshSection_LinearColor(0, Vertices, Triangles, Normals, UVs, VertexColors, Tangents, false);*/
 }
 
 void ASightCone::OnConstruction(const FTransform& Transform)
