@@ -27,7 +27,6 @@ protected:
 	bool bGamePaused;
 	
 public:
-	AMyGC_UE4CPPGameModeBase();
 	
 	virtual void BeginPlay() override;
 	

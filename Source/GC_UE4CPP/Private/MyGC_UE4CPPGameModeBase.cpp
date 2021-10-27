@@ -5,11 +5,6 @@
 
 #include "GC_UE4CPP/UI/FoodCountWidget.h"
 
-AMyGC_UE4CPPGameModeBase::AMyGC_UE4CPPGameModeBase()
-{
-	
-}
-
 void AMyGC_UE4CPPGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
@@ -31,6 +26,7 @@ void AMyGC_UE4CPPGameModeBase::BeginPlay()
 
 void AMyGC_UE4CPPGameModeBase::WinGame()
 {
+	//Avoid duplicate spawn
 	if (bPlayerLost || bPlayerWon) {return;}
 	
 	//Change animation and AI behavior
@@ -58,6 +54,7 @@ void AMyGC_UE4CPPGameModeBase::WinGame()
 
 void AMyGC_UE4CPPGameModeBase::LoseGame()
 {
+	//Avoid duplicate spawn
 	if (bPlayerLost || bPlayerWon) {return;}
 	
 	//Change animation and AI behavior
@@ -84,6 +81,7 @@ void AMyGC_UE4CPPGameModeBase::LoseGame()
 
 void AMyGC_UE4CPPGameModeBase::PauseGame()
 {
+	//Avoid duplicate spawn
 	if (bGamePaused) {return;}
 	
 	//Widget spawn
