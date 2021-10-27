@@ -27,7 +27,7 @@ public:
 	
 	bool IsFoodOn();
 	
-	void SetFood(AFood* food);
+	void SetFood(AFood* Food);
 	AFood* GetFood();
 
 public:	

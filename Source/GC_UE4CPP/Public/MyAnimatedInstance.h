@@ -24,7 +24,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generic")
 		bool bWin;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generic")
-		bool bLoose;
+		bool bLose;
 	
 	AMyGC_UE4CPPGameModeBase* GameMode;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generic")

@@ -10,9 +10,7 @@ UMyAnimatedInstance::UMyAnimatedInstance()
 	bMove = false;
 	bHold = false;
 	bWin = false;
-	bLoose = false;
-	//
-	//
+	bLose = false;
 }
 
 void UMyAnimatedInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -21,7 +19,7 @@ void UMyAnimatedInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		bMove = (Actor->GetVelocity().Size() > 0);
 		bHold = Actor->IsHoldingFood();
-		bLoose = GameMode->IsLoose();
+		bLose = GameMode->IsLose();
 		bWin = GameMode->IsWin();
 
 	}
