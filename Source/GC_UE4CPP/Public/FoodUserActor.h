@@ -4,11 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "FoodSpot.h"
-#include "Food.h"
 
 #include "FoodUserActor.generated.h"
-
+class AFood;
+class AFoodSpot;
 UCLASS()
 class  GC_UE4CPP_API AFoodUserActor : public ACharacter
 {
@@ -29,10 +28,10 @@ public:
 	bool IsHoldingFood();
 
 	void DropFood();
-	void PickUpFood(AFood* food);
+	void PickUpFood(AFood* Food);
 	
-	void PutFoodOnSpot(AFoodSpot* spot);
-	void PickUpFoodFromSpot(AFoodSpot* spot);
+	void PutFoodOnSpot(AFoodSpot* Spot);
+	void PickUpFoodFromSpot(AFoodSpot* Spot);
 	
 	AFood* GetFood();
 	

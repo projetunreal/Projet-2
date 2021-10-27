@@ -3,6 +3,8 @@
 
 #include "FoodUserActor.h"
 
+#include "FoodSpot.h"
+#include "Food.h"
 // Sets default values
 AFoodUserActor::AFoodUserActor()
 {

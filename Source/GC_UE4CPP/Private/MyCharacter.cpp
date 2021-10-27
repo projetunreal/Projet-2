@@ -3,19 +3,24 @@
 
 #include "MyCharacter.h"
 #include "AICharacter.h"
-
+#include "Food.h"
+#include "FoodSpot.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "MyGC_UE4CPPGameModeBase.h"
 
  void AMyCharacter::Tick(float DeltaSeconds)
 {
 	 const FRotator Rotation = Controller->GetControlRotation();
-	 float Modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
-	 if (InputDirection.X + InputDirection.Y == 2)
-	 {
-		 InputDirection.X = 0.5;
-		 InputDirection.Y = 0.5;
-	 }
 	 const FRotator YawRotation(0, Rotation.Yaw, 0);
+	 float Modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
+	 //if (InputDirection.X + InputDirection.Y == 2)
+	 {
+	//	 InputDirection.X = 0.5;
+	//	 InputDirection.Y = 0.5;
+	 }	 
 	 FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y) * InputDirection.Y;
 	 Direction += FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X) * InputDirection.X;
 	 AddMovementInput(Direction, Modifier);
@@ -43,7 +48,6 @@ AMyCharacter::AMyCharacter()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
-	//CharacterFeetPos = CreateDefaultSubobject<USceneComponent>(FName(TEXT("CharacterFeet")));
 	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 700.0f, 0.0f);
@@ -51,11 +55,11 @@ AMyCharacter::AMyCharacter()
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->bEnableCameraLag = true;
 	//CameraBoom->bDrawDebugLagMarkers = true;
-	Camera = CreateDefaultSubobject<UCameraComponent>(FName(TEXT("Camera")));
-	
-	Camera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
-	CameraBoom->TargetArmLength = 300.0f;
 
+	Camera = CreateDefaultSubobject<UCameraComponent>(FName(TEXT("Camera")));
+	Camera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
+	
+	CameraBoom->TargetArmLength = 300.0f;
 	CameraBoom->bUsePawnControlRotation = true;
 }
 
@@ -79,29 +83,17 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	
 	PlayerInputComponent->BindAction("Pause", IE_Pressed, this, &AMyCharacter::PauseGame);
 
-	PlayerInputComponent->BindAction("FoodAction", IE_Pressed,this, &AMyCharacter::InteractWithObject);
+	PlayerInputComponent->BindAction("Interact", IE_Pressed,this, &AMyCharacter::InteractWithObject);
 }
 
 void AMyCharacter::MoveRight(float Axis)
 {
-	/*
-	const FRotator Rotation = Controller->GetControlRotation();
-	const FRotator YawRotation(0, Rotation.Yaw, 0);
-	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-	float modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
-	AddMovementInput(Direction * modifier, Axis);
-	*/
 	InputDirection.Y += Axis;
 }
 
 void AMyCharacter::MoveForward(float Axis)
 {
 	
-	//const FRotator Rotation = Controller->GetControlRotation();
-	//const FRotator YawRotation(0, Rotation.Yaw, 0);
-	//const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	//float modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
-	//AddMovementInput(Direction * modifier, Axis);
 	InputDirection.X += Axis;
 }
 
@@ -129,7 +121,7 @@ void AMyCharacter::InteractWithObject()
 	FVector Start = Camera->GetComponentLocation();
 	FVector ForwardVec = Camera->GetForwardVector();
 	Start += (ForwardVec * CameraBoom->TargetArmLength);
-	FVector End = Start + (ForwardVec * 300.0);
+	FVector End = Start + (ForwardVec * InteractRange);
 	
 	FCollisionQueryParams CollisionParams;
 	CollisionParams.AddIgnoredActor(GetOwner());
@@ -157,7 +149,6 @@ void AMyCharacter::InteractWithObject()
 			SitOnChair(OutHit.GetActor());
 		}
 	}
-
 }
 void AMyCharacter::SitOnChair(AActor* NewChair)
 {

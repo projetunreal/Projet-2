@@ -6,9 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Components/BoxComponent.h"
 #include "Food.generated.h"
-
 class AFoodHandler;
-
 UCLASS()
 class GC_UE4CPP_API AFood : public AActor
 {

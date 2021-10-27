@@ -4,13 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "MyAnimatedInstance.h"
-#include "MyCharacter.h"
 
 #include "MainCharacterAnimatedInstance.generated.h"
 
-/**
- * 
- */
+class AMyCharacter;
 UCLASS()
 class GC_UE4CPP_API UMainCharacterAnimatedInstance : public UMyAnimatedInstance
 {

@@ -2,6 +2,9 @@
 
 
 #include "MyAnimatedInstance.h"
+#include "FoodUserActor.h"
+#include "MyGC_UE4CPPGameModeBase.h"
+
 UMyAnimatedInstance::UMyAnimatedInstance()
 {
 	bMove = false;

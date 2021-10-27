@@ -3,12 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
-#include "Components/StaticMeshComponent.h"
 #include "Food.h"
 
 #include "FoodSpot.generated.h"
 
+class UStaticMeshComponent;
+class AFood;
 UCLASS()
 class GC_UE4CPP_API AFoodSpot : public AActor
 {
