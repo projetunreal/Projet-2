@@ -9,6 +9,8 @@
 void UEndScreen::OnClickButton()
 {
 	const AMyGC_UE4CPPGameModeBase* GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+	if (!GameMode) {return;}
+	
 	GameMode->ToggleMouseCursor(false);
 	GameMode->TogglePlayerInput(true);
 	

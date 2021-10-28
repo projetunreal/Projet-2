@@ -8,6 +8,7 @@
 void UPauseWidget::OnClickButton()
 {
 	AMyGC_UE4CPPGameModeBase* GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+	if (!GameMode) {return;}
 	GameMode->UnpauseGame();	
 }
 

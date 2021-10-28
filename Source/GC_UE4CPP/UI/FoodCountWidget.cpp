@@ -13,6 +13,8 @@ UFoodCountWidget::UFoodCountWidget(const FObjectInitializer& ObjectInitializer):
 void UFoodCountWidget::UpdateFoodCount(const int32 Value)
 {
 	AMyGC_UE4CPPGameModeBase* GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+	if (!GameMode) {return;}
+	
 	if(FoodTxt && FoodBar)
 	{
 		CurrentValue+=Value;

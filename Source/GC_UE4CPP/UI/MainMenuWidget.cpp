@@ -9,6 +9,7 @@
 void UMainMenuWidget::OnClickPlayButton()
 {
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if (!PlayerController) {return;}
 
 	PlayerController->bShowMouseCursor = false;
 	PlayerController->bEnableClickEvents = false;
@@ -18,6 +19,7 @@ void UMainMenuWidget::OnClickPlayButton()
 void UMainMenuWidget::OnClickQuitButton()
 {
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if (!PlayerController) {return;}
 
 	PlayerController->bShowMouseCursor = false;
 	PlayerController->bEnableClickEvents = false;
