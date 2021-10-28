@@ -38,13 +38,15 @@ private:
 	UPROPERTY(EditAnywhere)
 		UMaterialInterface* Material;
 	UPROPERTY(EditAnywhere)
-		float DisplayHeightFromCenter = -80.0f;
+		FVector DisplayLocationFromCenter = FVector(0.0f, 0.0f, -80.0f);
 	UPROPERTY(EditAnywhere)
 		int RayAmount = 50;
 
 	float SightRadius;
 
 	float VisionAngle;
+
+	FCollisionQueryParams CollisionParams;
 
 protected:
 	// Called when the game starts or when spawned
@@ -60,6 +62,9 @@ public:
 	virtual void OnConstruction(const FTransform& Transform) override;
 
 	void ClearMeshData();
+
+	void InitMesh();
+	void AddDetectedVertice(FVector const EyeLocation, FVector RayGlobalVector, FVector RayLocalVector);
 
 	FORCEINLINE void SetAICharacter(AAICharacter* SomeAICharacter) {AICharacter = SomeAICharacter;};
 	FORCEINLINE void SetSightRadius(const float SomeSightRadius) {SightRadius = SomeSightRadius;};
