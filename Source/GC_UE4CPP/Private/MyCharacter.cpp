@@ -27,14 +27,18 @@ AMyCharacter::AMyCharacter()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
-	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, 700.0f, 0.0f);
+	UCharacterMovementComponent* CharacterMovement = GetCharacterMovement();
+	if (!CharacterMovement)	return;
+	CharacterMovement->bOrientRotationToMovement = true;
+	CharacterMovement->RotationRate = FRotator(0.0f, 700.0f, 0.0f);
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(FName(TEXT("CameraBoom")));
+	if (!CameraBoom) return;
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->bEnableCameraLag = true;
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(FName(TEXT("Camera")));
+	if (!Camera) return;
 	Camera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	
 	CameraBoom->TargetArmLength = 300.0f;
@@ -52,6 +56,7 @@ void AMyCharacter::BeginPlay()
 void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	if (!PlayerInputComponent) return;
 	PlayerInputComponent->BindAxis("Horizontal", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("Vertical", this, &APawn::AddControllerPitchInput);
 
@@ -69,8 +74,7 @@ void AMyCharacter::MoveRight(const float Axis)
 	const FRotator Rotation = Controller->GetControlRotation();
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
 	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-	const float Modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
-	AddMovementInput(Direction, Axis * Modifier);
+	AddMovementInput(Direction, Axis );
 }
 
 void AMyCharacter::MoveForward(const float Axis)
@@ -78,8 +82,7 @@ void AMyCharacter::MoveForward(const float Axis)
 	const FRotator Rotation = Controller->GetControlRotation(); 
 	const FRotator YawRotation(0, Rotation.Yaw, 0); 
 	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	const float Modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f; 
-	AddMovementInput(Direction , Axis* Modifier);
+	AddMovementInput(Direction , Axis);
 }
 
 void AMyCharacter::ZoomCamera(const float Axis)
@@ -128,7 +131,7 @@ void AMyCharacter::InteractWithObject()
 			SitOnChair(OutHit.GetActor());
 	}
 }
-void AMyCharacter::SitOnChair(AActor* NewChair)
+void AMyCharacter::SitOnChair(const AActor* NewChair)
 {
 	GetController()->SetIgnoreMoveInput(true);
 	GetMesh()->SetSimulatePhysics(false);
