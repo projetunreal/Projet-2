@@ -18,7 +18,6 @@ void ASightCone::BeginPlay()
 {
 	Super::BeginPlay();
 
-	VisionAngle = 20.0f;
 	CollisionParams.AddIgnoredActor(AICharacter);
 }
 
@@ -32,9 +31,9 @@ void ASightCone::Tick(float DeltaTime)
 	if (!AICharacter) return;
 
 	FVector const UpVector = GetActorUpVector();
+	FVector const EyeLocation = GetActorLocation() + UpVector * AICharacter->GetEyeHeightFromCenter();
 	FVector RayGlobalVector = GetActorForwardVector().RotateAngleAxis(-VisionAngle, UpVector);
 	FVector RayLocalVector = FVector(1.0f, 0.0f, 0.0f).RotateAngleAxis(-VisionAngle, UpVector);
-	FVector const EyeLocation = GetActorLocation() + UpVector * AICharacter->GetEyeHeightFromCenter();
 
 	AddDetectedVertice(EyeLocation, RayGlobalVector, RayLocalVector);
 
