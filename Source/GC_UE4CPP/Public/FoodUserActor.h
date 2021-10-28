@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-
+#include "GameFramework/CharacterMovementComponent.h"
 #include "FoodUserActor.generated.h"
 class AFood;
 class AFoodSpot;
@@ -24,7 +24,8 @@ protected:
 
 public:	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	virtual void Tick(float DeltaSeconds);
+	virtual void BeginPlay();
 	bool IsHoldingFood();
 
 	void DropFood();
@@ -34,5 +35,6 @@ public:
 	void PickUpFoodFromSpot(AFoodSpot* Spot);
 	
 	AFood* GetFood();
-	
+private:
+	 float BaseSpeed;
 };

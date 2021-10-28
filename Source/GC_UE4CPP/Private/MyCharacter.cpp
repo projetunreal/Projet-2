@@ -69,8 +69,7 @@ void AMyCharacter::MoveRight(const float Axis)
 	const FRotator Rotation = Controller->GetControlRotation();
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
 	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-	const float Modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f;
-	AddMovementInput(Direction, Axis * Modifier);
+	AddMovementInput(Direction, Axis );
 }
 
 void AMyCharacter::MoveForward(const float Axis)
@@ -78,8 +77,7 @@ void AMyCharacter::MoveForward(const float Axis)
 	const FRotator Rotation = Controller->GetControlRotation(); 
 	const FRotator YawRotation(0, Rotation.Yaw, 0); 
 	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	const float Modifier = (FoodHeld != nullptr) ? 0.5f : 1.0f; 
-	AddMovementInput(Direction , Axis* Modifier);
+	AddMovementInput(Direction , Axis);
 }
 
 void AMyCharacter::ZoomCamera(const float Axis)
