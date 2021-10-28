@@ -21,7 +21,7 @@ EBTNodeResult::Type UBTPatrolLocationsSelection::ExecuteTask(UBehaviorTreeCompon
 	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetCurrent(GetWorld());
 	if (!NavSystem) return EBTNodeResult::Failed;
 
-	FVector StartPos = AIChar->GetActorLocation();
+	const FVector StartPos = AIChar->GetActorLocation();
 	FNavLocation EndPos = FNavLocation(StartPos);
 
 	if (NavSystem->GetRandomReachablePointInRadius(StartPos, AIChar->GetPatrolDistance(), EndPos))

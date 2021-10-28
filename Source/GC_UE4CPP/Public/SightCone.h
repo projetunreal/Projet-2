@@ -11,7 +11,7 @@
 class AAICharacter;
 
 UCLASS()
-class GC_UE4CPP_API ASightCone : public AActor
+class GC_UE4CPP_API ASightCone final : public AActor
 {
 	GENERATED_BODY()
 	

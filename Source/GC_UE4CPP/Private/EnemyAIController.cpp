@@ -26,7 +26,7 @@ void AEnemyAIController::Tick(float DeltaTime)
 	}
 	else
 	{
-		FVector TargetLocation = AIChar->GetActorLocation() + BlackboardComp->GetValueAsVector("LastKnownPlayerDirection") * (AIChar->GetVelocity().Size() * DeltaTime + SearchDistance);
+		const FVector TargetLocation = AIChar->GetActorLocation() + BlackboardComp->GetValueAsVector("LastKnownPlayerDirection") * (AIChar->GetVelocity().Size() * DeltaTime + SearchDistance);
 		BlackboardComp->SetValueAsVector("SearchPlayerLocation", TargetLocation);
 	}
 
@@ -53,11 +53,6 @@ AEnemyAIController::AEnemyAIController()
 	LocationToGoKey = "LocationToGo";
 
 	SetGenericTeamId(FGenericTeamId(1));
-}
-
-void AEnemyAIController::SetFoodSpotHandler(AFoodSpotHandler* SomeFoodSpotHandler)
-{
-	FoodSpotHandler = SomeFoodSpotHandler;
 }
 
 void AEnemyAIController::JobIsDone()

@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class GC_UE4CPP_API UBTEndPatrol2 : public UBTTaskNode
+class GC_UE4CPP_API UBTEndPatrol2 final : public UBTTaskNode
 {
 	GENERATED_BODY()
 

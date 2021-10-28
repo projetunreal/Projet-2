@@ -10,7 +10,7 @@
 class SightCone;
 
 UCLASS()
-class GC_UE4CPP_API AAICharacter : public AFoodUserActor
+class GC_UE4CPP_API AAICharacter final : public AFoodUserActor
 {
 	GENERATED_BODY()
 

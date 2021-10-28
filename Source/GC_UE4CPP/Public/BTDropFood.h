@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class GC_UE4CPP_API UBTDropFood : public UBTTaskNode
+class GC_UE4CPP_API UBTDropFood final : public UBTTaskNode
 {
 	GENERATED_BODY()
 	

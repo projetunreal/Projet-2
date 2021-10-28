@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class GC_UE4CPP_API UBTFoodSpotSelection : public UBTTaskNode
+class GC_UE4CPP_API UBTFoodSpotSelection final : public UBTTaskNode
 {
 	GENERATED_BODY()
 	

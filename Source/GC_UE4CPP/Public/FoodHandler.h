@@ -10,7 +10,7 @@
 class AFood;
 
 UCLASS()
-class GC_UE4CPP_API AFoodHandler : public AActor
+class GC_UE4CPP_API AFoodHandler final : public AActor
 {
 	GENERATED_BODY()
 

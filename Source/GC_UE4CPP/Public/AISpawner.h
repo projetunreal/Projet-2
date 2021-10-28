@@ -13,7 +13,7 @@ class AFood;
 
 
 UCLASS()
-class GC_UE4CPP_API AAISpawner : public AActor
+class GC_UE4CPP_API AAISpawner final : public AActor
 {
 	GENERATED_BODY()
 	

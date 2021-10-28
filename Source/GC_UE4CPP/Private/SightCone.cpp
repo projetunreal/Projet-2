@@ -33,11 +33,11 @@ void ASightCone::Tick(float DeltaTime)
 	FCollisionQueryParams CollisionParams;
 	CollisionParams.AddIgnoredActor(AICharacter);
 
-	FVector UpVector = GetActorUpVector();
+	FVector const UpVector = GetActorUpVector();
 	FVector RayGlobalVector = GetActorForwardVector().RotateAngleAxis(-VisionAngle, UpVector);
 	FVector RayLocalVector = FVector(1.0f, 0.0f, 0.0f).RotateAngleAxis(-VisionAngle, UpVector);
-	FVector EyeLocation = GetActorLocation() + UpVector * AICharacter->GetEyeHeightFromCenter();
-	FVector DisplayLocation = FVector(0.0f, 0.0f, DisplayHeightFromCenter);
+	FVector const EyeLocation = GetActorLocation() + UpVector * AICharacter->GetEyeHeightFromCenter();
+	FVector const DisplayLocation = FVector(0.0f, 0.0f, DisplayHeightFromCenter);
 
 	bool bHit = GetWorld()->LineTraceSingleByChannel(OutHit, EyeLocation, EyeLocation + RayGlobalVector * SightRadius, ECC_Visibility, CollisionParams);
 	float Distance;

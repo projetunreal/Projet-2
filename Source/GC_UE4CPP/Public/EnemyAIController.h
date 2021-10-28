@@ -17,7 +17,7 @@ class AFoodSpotHandler;
  *
  */
 UCLASS()
-class GC_UE4CPP_API AEnemyAIController : public AAIController
+class GC_UE4CPP_API AEnemyAIController final : public AAIController
 {
 	GENERATED_BODY()
 
@@ -52,11 +52,10 @@ public:
 	AEnemyAIController();
 
 	FORCEINLINE UBlackboardComponent* GetBlackboardComp() { return BlackboardComp; }
-
 	FORCEINLINE AAICharacter* GetAICharacter() { return AIChar; };
-
-	void SetFoodSpotHandler(AFoodSpotHandler* SomeFoodSpotHandler);
 	FORCEINLINE AFoodSpotHandler* GetFoodSpotHandler() { return FoodSpotHandler; };
+
+	FORCEINLINE void SetFoodSpotHandler(AFoodSpotHandler* SomeFoodSpotHandler) { FoodSpotHandler = SomeFoodSpotHandler; };
 
 	UFUNCTION()
 		void OnTargetUpdated(AActor* Actor, FAIStimulus const Stimulus);

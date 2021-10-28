@@ -10,7 +10,7 @@
 class UStaticMeshComponent;
 class AFood;
 UCLASS()
-class GC_UE4CPP_API AFoodSpot : public AActor
+class GC_UE4CPP_API AFoodSpot final : public AActor
 {
 	GENERATED_BODY()
 	
