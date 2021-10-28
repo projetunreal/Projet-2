@@ -92,7 +92,7 @@ void AFoodUserActor::DropFood()
 	if (FoodHeld)
 	{
 		FoodHeld->GetMesh()->SetSimulatePhysics(true);
-		FoodHeld->GetMesh()->SetCollisionProfileName(TEXT("BlockAll"));
+		FoodHeld->GetMesh()->SetCollisionProfileName(TEXT("FoodDroped"));
 		FoodHeld->GetBox()->SetCollisionProfileName(TEXT("FoodBox"));
 		FoodHeld->GetMesh()->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, false));
 		FoodHeld->SetOnFloor(true);

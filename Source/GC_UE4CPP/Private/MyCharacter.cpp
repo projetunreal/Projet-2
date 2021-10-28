@@ -117,21 +117,27 @@ void AMyCharacter::InteractWithObject()
 	CollisionParams.AddIgnoredActor(GetOwner());
 
 	bool bHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams);
-	if ( FoodHeld )
-		DropFood();
-	else if ( Chair ) 
+	
+	if ( Chair ) 
 		StandUp();
 	else if ( bHit )
 	{
-		if ( OutHit.GetActor()->GetClass()->IsChildOf(AFoodSpot::StaticClass()) )
-			PickUpFoodFromSpot(Cast<AFoodSpot>(OutHit.GetActor()));
+		if (OutHit.GetActor()->GetClass()->IsChildOf(AFoodSpot::StaticClass()))
+			if (FoodHeld)
+				PutFoodOnSpot(Cast<AFoodSpot>(OutHit.GetActor()));
+			else
+				PickUpFoodFromSpot(Cast<AFoodSpot>(OutHit.GetActor()));
 		
 		else if ( OutHit.GetActor()->GetClass()->IsChildOf(AFood::StaticClass()) )
 			PickUpFood(Cast<AFood>(OutHit.GetActor()));
 
 		else if ( OutHit.GetActor()->ActorHasTag("Chair") )
 			SitOnChair(OutHit.GetActor());
+		else if (FoodHeld)
+			DropFood();
 	}
+	else if (FoodHeld)
+		DropFood();
 }
 void AMyCharacter::SitOnChair(const AActor* NewChair)
 {
