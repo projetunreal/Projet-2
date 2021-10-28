@@ -8,7 +8,7 @@
 #include "Food.generated.h"
 
 class AFoodHandler;
-
+class AFoodUserActor;
 UCLASS()
 class GC_UE4CPP_API AFood final : public AActor
 {
@@ -31,7 +31,11 @@ public:
 	FORCEINLINE AFoodHandler* GetFoodHandler() const {return FoodHandler;};
 	FORCEINLINE void SetFoodHandler(AFoodHandler* SomeFoodHandler) {FoodHandler = SomeFoodHandler;};
 	
+	FORCEINLINE AFoodUserActor* GetFoodUserActor() const { return FoodUser; };
+	FORCEINLINE void SetFoodUserActor(AFoodUserActor* FoodUserActor) {this->FoodUser = FoodUserActor;};
+
 private:
 	bool bOnFloor = false;
 	AFoodHandler* FoodHandler;
+	AFoodUserActor* FoodUser;
 };

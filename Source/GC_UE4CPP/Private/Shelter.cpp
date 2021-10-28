@@ -5,7 +5,6 @@
 #include "Food.h"
 
 #include "MyGC_UE4CPPGameModeBase.h"
-
 // Sets default values
 AShelter::AShelter()
 {
@@ -33,16 +32,14 @@ void AShelter::OnStaticMeshBeginOverlap(UPrimitiveComponent* OverlappedComponent
 		{
 			FoodHandler->Remove(Food);
 		}
+		AFoodUserActor* Actor = Food->GetFoodUserActor();
+		if (Actor) Actor->DropFood();
+
 		Food->Destroy();
 
 		const AMyGC_UE4CPPGameModeBase* GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+		if (!GameMode) {return;}
 		GameMode->UpdateFoodCount(1);
-	}
-
-	AFoodUserActor* FoodUser = Cast<AFoodUserActor>(OtherActor);
-	if(FoodUser)
-	{
-		FoodUser->DropFood();
 	}
 }
 
