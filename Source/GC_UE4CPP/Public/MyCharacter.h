@@ -30,9 +30,9 @@ public:
 	// Sets default values for this character's properties
 	AMyCharacter();
 
-	void MoveRight(float Axis);
-	void MoveForward(float Axis);
-	void ZoomCamera(float Axis);
+	void MoveRight(const float Axis);
+	void MoveForward(const float Axis);
+	void ZoomCamera(const float Axis);
 
 	
 	bool IsSit() const;
@@ -52,7 +52,7 @@ private :
 	const float ZoomMax = 500;
 	const float InteractRange = 500;
 
-	void SitOnChair(AActor* Chair);
+	void SitOnChair(const AActor* Chair);
 	void StandUp();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 };

@@ -34,7 +34,7 @@ public:
 	void PutFoodOnSpot(AFoodSpot* Spot);
 	void PickUpFoodFromSpot(AFoodSpot* Spot);
 	
-	AFood* GetFood();
+	FORCEINLINE AFood* GetFood() { return FoodHeld; };
 private:
 	 float BaseSpeed;
 };

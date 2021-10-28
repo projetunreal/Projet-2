@@ -33,6 +33,7 @@ void AFoodUserActor::Tick(float DeltaSeconds)
 void AFoodUserActor::BeginPlay()
 {
 	Super::BeginPlay();
+
 	BaseSpeed = GetCharacterMovement()->MaxWalkSpeed;
 }
 void AFoodUserActor::PickUpFood(AFood* Food)
@@ -63,10 +64,6 @@ void AFoodUserActor::PickUpFoodFromSpot(AFoodSpot* Spot)
 		Spot->SetFood(nullptr);
 		FoodHeld->SetOnFloor(false);
 	}
-}
-AFood* AFoodUserActor::GetFood()
-{
-	return FoodHeld;
 }
 void AFoodUserActor::PutFoodOnSpot(AFoodSpot* Spot)
 {
