@@ -19,7 +19,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = "AI")
 		float PatrolDistance = 5000;
 	UPROPERTY(EditAnywhere, Category = "AI")
-		float EyeHeightFromCenter = 40.0f;
+		FVector EyesLocationFromCenter = FVector(0.0f, 0.0f, 40.0f);
 
 	UPROPERTY(EditAnywhere, Category = "AI")
 		class UBehaviorTree* BehaviorTree;
@@ -37,7 +37,7 @@ protected:
 public:
 
 	FORCEINLINE float GetPatrolDistance() const {return PatrolDistance;}
-	FORCEINLINE float GetEyeHeightFromCenter() const {return EyeHeightFromCenter;}
+	FORCEINLINE FVector GetEyesLocationFromCenter() const {return EyesLocationFromCenter;}
 
 	FORCEINLINE UBehaviorTree* GetBehaviorTree() const {return BehaviorTree;};
 	

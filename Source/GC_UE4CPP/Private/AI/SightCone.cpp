@@ -13,14 +13,6 @@ ASightCone::ASightCone()
 	ProcMeshComp = CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("ProceduralMesh"));
 }
 
-// Called when the game starts or when spawned
-void ASightCone::BeginPlay()
-{
-	Super::BeginPlay();
-
-	CollisionParams.AddIgnoredActor(AICharacter);
-}
-
 // Called every frame
 void ASightCone::Tick(float DeltaTime)
 {
@@ -28,16 +20,14 @@ void ASightCone::Tick(float DeltaTime)
 
 	InitMesh();
 
-	if (!AICharacter) return;
-
-	FVector const UpVector = GetActorUpVector();
-	FVector const EyeLocation = GetActorLocation() + UpVector * AICharacter->GetEyeHeightFromCenter();
+	const FVector UpVector = GetActorUpVector();
+	const FVector EyeLocation = GetActorLocation() + EyesLocationFromCenter;
 	FVector RayGlobalVector = GetActorForwardVector().RotateAngleAxis(-VisionAngle, UpVector);
 	FVector RayLocalVector = FVector(1.0f, 0.0f, 0.0f).RotateAngleAxis(-VisionAngle, UpVector);
 
 	AddDetectedVertice(EyeLocation, RayGlobalVector, RayLocalVector);
 
-	float StepAngle = 2 * VisionAngle / (RayAmount-1);
+	float StepAngle = 2 * VisionAngle / (RayAmount - 1);
 	for (int i = 2; i <= RayAmount; i++)
 	{
 		RayGlobalVector = RayGlobalVector.RotateAngleAxis(StepAngle, UpVector);
@@ -47,10 +37,31 @@ void ASightCone::Tick(float DeltaTime)
 
 		Triangles.Add(0);
 		Triangles.Add(i);
-		Triangles.Add(i-1);
+		Triangles.Add(i - 1);
 	}
 
 	ProcMeshComp->CreateMeshSection_LinearColor(0, Vertices, Triangles, Normals, UVs, VertexColors, Tangents, false);
+}
+
+void ASightCone::AddDetectedVertice(FVector const EyeLocation, FVector RayGlobalVector, FVector RayLocalVector)
+{
+	FHitResult OutHit;
+
+	bool bHit = GetWorld()->LineTraceSingleByChannel(OutHit, EyeLocation, EyeLocation + RayGlobalVector * SightRadius, ECC_Visibility, CollisionParams);
+
+	float Distance = bHit ? OutHit.Distance : SightRadius;
+
+	Vertices.Add(DisplayLocationFromCenter + RayLocalVector * Distance);
+}
+
+void ASightCone::ClearMeshData()
+{
+	Vertices.Empty();
+	Normals.Empty();
+	Triangles.Empty();
+	UVs.Empty();
+	VertexColors.Empty();
+	Tangents.Empty();
 }
 
 void ASightCone::OnConstruction(const FTransform& Transform)
@@ -65,16 +76,6 @@ void ASightCone::OnConstruction(const FTransform& Transform)
 	}
 }
 
-void ASightCone::ClearMeshData()
-{
-	Vertices.Empty();
-	Normals.Empty();
-	Triangles.Empty();
-	UVs.Empty();
-	VertexColors.Empty();
-	Tangents.Empty();
-}
-
 void ASightCone::InitMesh()
 {
 	ClearMeshData();
@@ -86,15 +87,13 @@ void ASightCone::InitMesh()
 	Tangents.Init(FProcMeshTangent(1.0f, 0.0f, 0.0f), RayAmount + 1);
 }
 
-void ASightCone::AddDetectedVertice(FVector const EyeLocation, FVector RayGlobalVector, FVector RayLocalVector)
+void ASightCone::InitCone(float SomeSightRadius, float SomeVisionAngle, FVector SomeEyesLocationFromCenter, AAICharacter* SomeAIChar)
 {
-	FHitResult OutHit;
-	float Distance;
+	SightRadius = SomeSightRadius;
+	VisionAngle = SomeVisionAngle;
+	EyesLocationFromCenter = SomeEyesLocationFromCenter;
 
-	bool bHit = GetWorld()->LineTraceSingleByChannel(OutHit, EyeLocation, EyeLocation + RayGlobalVector * SightRadius, ECC_Visibility, CollisionParams);
-
-	Distance = bHit ? OutHit.Distance : SightRadius;
-
-	Vertices.Add(DisplayLocationFromCenter + RayLocalVector * Distance);
+	if (!SomeAIChar) return;
+	CollisionParams.AddIgnoredActor(SomeAIChar);
 }
 

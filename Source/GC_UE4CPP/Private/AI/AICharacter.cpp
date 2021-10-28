@@ -15,9 +15,11 @@ void AAICharacter::BeginPlay()
 
 	FActorSpawnParameters p;
 	p.Owner = this;
+
 	SightCone = GetWorld()->SpawnActor<ASightCone>(SightConeBP, GetActorLocation(), GetActorRotation(), p);
+	if (!SightCone) return;
+
 	SightCone->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
-	SightCone->SetAICharacter(this);
 
 	AEnemyAIController* EnemyAIController = Cast<AEnemyAIController>(GetController());
 	if (!EnemyAIController) return;
@@ -28,9 +30,9 @@ void AAICharacter::BeginPlay()
 	UAISenseConfig_Sight* AISenseConfig = Cast<UAISenseConfig_Sight>(AIPerceptionComponent->GetSenseConfig(UAISense::GetSenseID<UAISense_Sight>()));
 	if (!AISenseConfig) return;
 
-	SightCone->SetSightRadius(AISenseConfig->SightRadius);
-	SightCone->SetVisionAngle(AISenseConfig->PeripheralVisionAngleDegrees);
+	SightCone->InitCone(AISenseConfig->SightRadius, AISenseConfig->PeripheralVisionAngleDegrees, EyesLocationFromCenter, this);
 }
+
 
 void AAICharacter::DestroySightCone() const
 {

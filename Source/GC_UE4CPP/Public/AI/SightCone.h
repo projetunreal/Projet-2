@@ -19,9 +19,6 @@ private:
 	UPROPERTY(VisibleAnywhere)
 		UProceduralMeshComponent* ProcMeshComp;
 
-	UPROPERTY(VisibleAnywhere)
-		AAICharacter* AICharacter;
-
 	UPROPERTY()
 		TArray<FVector> Vertices;
 	UPROPERTY()
@@ -46,11 +43,9 @@ private:
 
 	float VisionAngle;
 
-	FCollisionQueryParams CollisionParams;
+	FVector EyesLocationFromCenter;
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	FCollisionQueryParams CollisionParams;
 
 public:	
 	// Sets default values for this actor's properties
@@ -64,9 +59,7 @@ public:
 	void ClearMeshData();
 
 	void InitMesh();
-	void AddDetectedVertice(FVector const EyeLocation, FVector RayGlobalVector, FVector RayLocalVector);
+	void InitCone(float SomeSightRadius, float SomeVisionAngle, FVector SomeEyesLocationFromCenter, AAICharacter* SomeAIChar);
 
-	FORCEINLINE void SetAICharacter(AAICharacter* SomeAICharacter) {AICharacter = SomeAICharacter;};
-	FORCEINLINE void SetSightRadius(const float SomeSightRadius) {SightRadius = SomeSightRadius;};
-	FORCEINLINE void SetVisionAngle(const float SomeVisionAngle) {VisionAngle = SomeVisionAngle;};
+	void AddDetectedVertice(FVector const EyeLocation, FVector RayGlobalVector, FVector RayLocalVector);
 };
