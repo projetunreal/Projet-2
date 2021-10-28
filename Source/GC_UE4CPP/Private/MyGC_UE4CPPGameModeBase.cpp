@@ -91,6 +91,8 @@ void AMyGC_UE4CPPGameModeBase::PauseGame()
 			//Pause locally
 			bGamePaused = true;
 			APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+			if (!PlayerController) { return; }
+
 			PlayerController->SetPause(bGamePaused);
 
 			ToggleMouseCursor(true);
@@ -115,7 +117,10 @@ void AMyGC_UE4CPPGameModeBase::UnpauseGame()
 	PauseWidget->RemoveFromViewport();
 	
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-	PlayerController->SetPause(bGamePaused);
+	if (PlayerController)
+	{
+		PlayerController->SetPause(bGamePaused);
+	}
 
 	ToggleMouseCursor(false);
 }
@@ -123,6 +128,8 @@ void AMyGC_UE4CPPGameModeBase::UnpauseGame()
 void AMyGC_UE4CPPGameModeBase::ToggleMouseCursor(const bool Boolean) const
 {
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if (!PlayerController) {return;}
+
 	PlayerController->bShowMouseCursor = Boolean;
 	PlayerController->bEnableClickEvents = Boolean;
 
@@ -141,6 +148,8 @@ void AMyGC_UE4CPPGameModeBase::ToggleMouseCursor(const bool Boolean) const
 void AMyGC_UE4CPPGameModeBase::TogglePlayerInput(const bool Boolean) const
 {
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if (!PlayerController) {return;}
+
 	if (Boolean)
 	{
 		PlayerController->GetPawn()->EnableInput(PlayerController);

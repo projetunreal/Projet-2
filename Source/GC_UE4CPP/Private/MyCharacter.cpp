@@ -53,6 +53,7 @@ AMyCharacter::AMyCharacter()
 void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay(); 
+	if (!GetMesh()) { return; }
 	CharacterFeetPos = GetMesh()->GetRelativeTransform();
 }
 
@@ -75,6 +76,7 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void AMyCharacter::MoveRight(const float Axis)
 {
+	if (!Controller) return;
 	const FRotator Rotation = Controller->GetControlRotation();
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
 	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
@@ -83,6 +85,7 @@ void AMyCharacter::MoveRight(const float Axis)
 
 void AMyCharacter::MoveForward(const float Axis)
 {
+	if (!Controller) return;
 	const FRotator Rotation = Controller->GetControlRotation(); 
 	const FRotator YawRotation(0, Rotation.Yaw, 0); 
 	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
@@ -91,7 +94,7 @@ void AMyCharacter::MoveForward(const float Axis)
 
 void AMyCharacter::ZoomCamera(const float Axis)
 {
-	if (!IsSit() &&CameraBoom->TargetArmLength + Axis * ZoomIncrement > 0 && CameraBoom->TargetArmLength + Axis * ZoomIncrement < ZoomMax)
+	if (!IsSit() && CameraBoom && CameraBoom->TargetArmLength + Axis * ZoomIncrement > 0 && CameraBoom->TargetArmLength + Axis * ZoomIncrement < ZoomMax)
 		CameraBoom->TargetArmLength += Axis * ZoomIncrement;
 }
 
@@ -111,9 +114,11 @@ bool AMyCharacter::IsSit() const
 void AMyCharacter::InteractWithObject()
 {
 	FHitResult OutHit;
-
+	if (!Camera) {return;}
 	FVector Start = Camera->GetComponentLocation();
 	FVector ForwardVec = Camera->GetForwardVector();
+
+	if (!CameraBoom) { return; }
 	Start += (ForwardVec * CameraBoom->TargetArmLength);
 	FVector End = Start + (ForwardVec * InteractRange);
 	
@@ -146,23 +151,32 @@ void AMyCharacter::InteractWithObject()
 }
 void AMyCharacter::SitOnChair(const AActor* NewChair)
 {
+	if (!GetController()) {return;}
 	GetController()->SetIgnoreMoveInput(true);
+	
+	if (!GetMesh()) {return;}
 	GetMesh()->SetSimulatePhysics(false);
 	GetMesh()->SetCollisionProfileName(TEXT("OverlapAll"));
 
 	GetMesh()->AttachToComponent(Cast<AStaticMeshActor >(NewChair)->GetStaticMeshComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("SitSocket"));
+
+	if (!GetCapsuleComponent()) {return;}
 	GetCapsuleComponent()->AttachToComponent(Cast<AStaticMeshActor >(NewChair)->GetStaticMeshComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("SitSocket"));
 	CameraBoom->bUsePawnControlRotation = false;
 	const FRotator NewRotation = FRotator(0.0, 270.0, 0.0);
 	CameraBoom->SetRelativeRotation(NewRotation, false);
-	this->Chair = Cast<AStaticMeshActor >(NewChair)->GetStaticMeshComponent();
+	this->Chair = Cast<AStaticMeshActor>(NewChair)->GetStaticMeshComponent();
 }
 void AMyCharacter::StandUp()
 {
+	if (!GetController()) { return; }
 	GetController()->SetIgnoreMoveInput(false);
 	GetCapsuleComponent()->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, false));
+
+	if (!GetMesh()) { return; }
 	GetMesh()->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, false));
 
+	if (!GetCapsuleComponent()) { return; }
 	GetCapsuleComponent()->AttachToComponent(Chair, FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("LeaveSocket"));
 	GetMesh()->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("LeaveSocket"));
 
