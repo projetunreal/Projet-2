@@ -17,6 +17,8 @@ const bool bSelfMoved, const FVector HitLocation, const FVector HitNormal, const
 	if (Other->GetClass()->IsChildOf(AAICharacter::StaticClass()))
 	{
 		AMyGC_UE4CPPGameModeBase* GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+		if (!GameMode) {return;}
+		
 		GameMode->LoseGame();
 	}
 }
@@ -96,6 +98,8 @@ void AMyCharacter::ZoomCamera(const float Axis)
 void AMyCharacter::PauseGame()
 {
 	AMyGC_UE4CPPGameModeBase* GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+	if (!GameMode) {return;}
+	
 	GameMode->PauseGame();
 }
 
@@ -117,22 +121,23 @@ void AMyCharacter::InteractWithObject()
 	CollisionParams.AddIgnoredActor(GetOwner());
 
 	bool bHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams);
+	AActor* OtherActor = OutHit.GetActor();
 	
-	if ( Chair ) 
+	if (Chair) 
 		StandUp();
-	else if ( bHit )
+	else if (bHit && OtherActor)
 	{
-		if (OutHit.GetActor()->GetClass()->IsChildOf(AFoodSpot::StaticClass()))
+		if (OtherActor->GetClass()->IsChildOf(AFoodSpot::StaticClass()))
 			if (FoodHeld)
-				PutFoodOnSpot(Cast<AFoodSpot>(OutHit.GetActor()));
+				PutFoodOnSpot(Cast<AFoodSpot>(OtherActor));
 			else
-				PickUpFoodFromSpot(Cast<AFoodSpot>(OutHit.GetActor()));
+				PickUpFoodFromSpot(Cast<AFoodSpot>(OtherActor));
 		
-		else if ( OutHit.GetActor()->GetClass()->IsChildOf(AFood::StaticClass()) )
-			PickUpFood(Cast<AFood>(OutHit.GetActor()));
+		else if (OtherActor->GetClass()->IsChildOf(AFood::StaticClass()))
+			PickUpFood(Cast<AFood>(OtherActor));
 
-		else if ( OutHit.GetActor()->ActorHasTag("Chair") )
-			SitOnChair(OutHit.GetActor());
+		else if (OtherActor->ActorHasTag("Chair"))
+			SitOnChair(OtherActor);
 		else if (FoodHeld)
 			DropFood();
 	}
