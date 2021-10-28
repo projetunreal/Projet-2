@@ -6,9 +6,7 @@
 #include "BehaviorTree/BTTaskNode.h"
 #include "BTPatrolLocationsSelection.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class GC_UE4CPP_API UBTPatrolLocationsSelection final : public UBTTaskNode
 {

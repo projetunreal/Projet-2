@@ -25,16 +25,13 @@ public:
 	FORCEINLINE UStaticMeshComponent* GetMesh() const {return StaticMesh;};
 	FORCEINLINE UBoxComponent* GetBox() const {return Box;};
 
-private:
-	
-	bool bOnFloor = false;
-	AFoodHandler* FoodHandler;
-
-public:
-
 	FORCEINLINE bool GetOnFloor() const {return bOnFloor;};
 	FORCEINLINE void SetOnFloor(const bool bFoodAccessible) {bOnFloor = bFoodAccessible;};
 
 	FORCEINLINE AFoodHandler* GetFoodHandler() const {return FoodHandler;};
 	FORCEINLINE void SetFoodHandler(AFoodHandler* SomeFoodHandler) {FoodHandler = SomeFoodHandler;};
+	
+private:
+	bool bOnFloor = false;
+	AFoodHandler* FoodHandler;
 };

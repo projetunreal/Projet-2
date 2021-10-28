@@ -6,9 +6,7 @@
 #include "BehaviorTree/BTTaskNode.h"
 #include "BTEndJob.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class GC_UE4CPP_API UBTEndJob final : public UBTTaskNode
 {

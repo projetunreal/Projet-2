@@ -8,14 +8,12 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
-#include "Kismet/GameplayStatics.h"
 #include "Perception/AIPerceptionComponent.h"
-#include "Perception/AISenseConfig_Sight.h"
 #include "MyCharacter.h"
 #include "FoodSpotHandler.h"
 
 
-void AEnemyAIController::Tick(float DeltaTime)
+void AEnemyAIController::Tick(const float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
@@ -52,10 +50,10 @@ AEnemyAIController::AEnemyAIController()
 	BlackboardComp = CreateDefaultSubobject<UBlackboardComponent>(TEXT("BlackboardComp"));
 	LocationToGoKey = "LocationToGo";
 
-	SetGenericTeamId(FGenericTeamId(1));
+	AAIController::SetGenericTeamId(FGenericTeamId(1));
 }
 
-void AEnemyAIController::JobIsDone()
+void AEnemyAIController::JobIsDone() const
 {
 	BlackboardComp->SetValueAsBool("bJobDone", true);
 }
@@ -103,4 +101,3 @@ void AEnemyAIController::SetupPerceptionSystem()
 {
 	GetPerceptionComponent()->OnTargetPerceptionUpdated.AddDynamic(this, &AEnemyAIController::OnTargetUpdated);
 }
-

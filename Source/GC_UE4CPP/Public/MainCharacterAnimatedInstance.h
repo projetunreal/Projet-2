@@ -15,9 +15,8 @@ class GC_UE4CPP_API UMainCharacterAnimatedInstance final : public UMyAnimatedIns
 public :
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generic")
 		bool bSit = false ;
+	AMyCharacter* MainActor;
+	
 protected :
 	virtual void NativeUpdateAnimation(const float DeltaTime) override;
-
-private:
-	AMyCharacter* MainActor;
 };

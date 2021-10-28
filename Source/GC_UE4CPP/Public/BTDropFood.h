@@ -6,9 +6,7 @@
 #include "BehaviorTree/BTTaskNode.h"
 #include "BTDropFood.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class GC_UE4CPP_API UBTDropFood final : public UBTTaskNode
 {

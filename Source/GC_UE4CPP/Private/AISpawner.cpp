@@ -21,13 +21,13 @@ AAISpawner::AAISpawner()
 	AICount = 0;
 }
 
-void AAISpawner::SpawnIA()
+void AAISpawner::SpawnIa()
 {
 	//AI Character creation
 	if (!AICharacterBP) return;
 	FActorSpawnParameters p;
 	p.Owner = this;
-	FVector AICharPos = GetActorLocation() + FVector(0, 0, 1) * Cast<AAICharacter>(AICharacterBP->GetDefaultObject())->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+	const FVector AICharPos = GetActorLocation() + FVector(0, 0, 1) * Cast<AAICharacter>(AICharacterBP->GetDefaultObject())->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 	AAICharacter* AIChar = GetWorld()->SpawnActor<AAICharacter>(AICharacterBP, AICharPos, GetActorRotation(), p);
 	if (!AIChar) return;
 
@@ -88,17 +88,15 @@ void AAISpawner::BeginPlay()
 }
 
 // Called every frame
-void AAISpawner::Tick(float DeltaTime)
+void AAISpawner::Tick(const float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	AAICharacter* AIChar;
-
-	//despawn at entry with job done
-	int AIInsideRoomCount = SpawnedAI.Num();
+	//Destroy at entry with job done
+	const int AIInsideRoomCount = SpawnedAI.Num();
 	for (int i = AIInsideRoomCount-1; i >= 0; i--)
 	{
-		AIChar = SpawnedAI[i];
+		AAICharacter* AIChar = SpawnedAI[i];
 		if (!AIChar) return;
 
 		AEnemyAIController* AIController = Cast<AEnemyAIController>(AIChar->GetController());
@@ -117,13 +115,13 @@ void AAISpawner::Tick(float DeltaTime)
 	//spawn
 	if (AICount == 0)
 	{
-		SpawnIA();
-		SpawnIA();
+		SpawnIa();
+		SpawnIa();
 		AICount+= 2;
 	}
 	else if(AICount == 2 && GetWorld()->GetTimeSeconds() - BeginTime > 60)
 	{
-		SpawnIA();
+		SpawnIa();
 		AICount++;
 	}
 
@@ -132,7 +130,7 @@ void AAISpawner::Tick(float DeltaTime)
 	{
 		if (RespawnTimes[i] - GetWorld()->GetTimeSeconds() < 0 || AIInsideRoomCount == 0)
 		{
-			SpawnIA();
+			SpawnIa();
 			RespawnTimes.RemoveAtSwap(i);
 		}
 	}

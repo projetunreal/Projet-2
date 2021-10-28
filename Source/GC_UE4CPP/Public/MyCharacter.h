@@ -20,9 +20,7 @@ class GC_UE4CPP_API AMyCharacter final : public AFoodUserActor
 		UCameraComponent* Camera;
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* Chair;
-
 	
-
 	UFUNCTION()
 		virtual void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 

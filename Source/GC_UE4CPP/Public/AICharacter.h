@@ -7,7 +7,7 @@
 #include "FoodUserActor.h"
 #include "AICharacter.generated.h"
 
-class SightCone;
+class ASightCone;
 
 UCLASS()
 class GC_UE4CPP_API AAICharacter final : public AFoodUserActor
@@ -34,20 +34,12 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 
-	// Sets default values for this character's properties
-	AAICharacter();
+	FORCEINLINE float GetPatrolDistance() const {return PatrolDistance;}
+	FORCEINLINE float GetEyeHeightFromCenter() const {return EyeHeightFromCenter;}
 
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	FORCEINLINE float GetPatrolDistance() const { return PatrolDistance; }
-	FORCEINLINE float GetEyeHeightFromCenter() const { return EyeHeightFromCenter; }
-
-	FORCEINLINE UBehaviorTree* GetBehaviorTree() { return BehaviorTree; };
-	void DestroySightCone();
+	FORCEINLINE UBehaviorTree* GetBehaviorTree() const {return BehaviorTree;};
+	
+	void DestroySightCone() const;
 };

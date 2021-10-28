@@ -47,7 +47,7 @@ private:
 	float BeginTime;
 	TArray<float> RespawnTimes;
 
-	void SpawnIA();
+	void SpawnIa();
 
 protected:
 	// Called when the game starts or when spawned

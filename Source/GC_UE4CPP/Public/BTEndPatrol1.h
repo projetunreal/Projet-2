@@ -6,9 +6,7 @@
 #include "BehaviorTree/BTTaskNode.h"
 #include "BTEndPatrol1.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class GC_UE4CPP_API UBTEndPatrol1 final : public UBTTaskNode
 {
