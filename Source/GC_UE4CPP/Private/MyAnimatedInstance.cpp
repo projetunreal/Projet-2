@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "MyAnimatedInstance.h"
 #include "FoodUserActor.h"
 #include "MyGC_UE4CPPGameModeBase.h"
@@ -13,9 +12,9 @@ UMyAnimatedInstance::UMyAnimatedInstance()
 	bLose = false;
 }
 
-void UMyAnimatedInstance::NativeUpdateAnimation(float DeltaSeconds)
+void UMyAnimatedInstance::NativeUpdateAnimation(float DeltaTime)
 {
-	if (Actor && GameMode )
+	if (Actor && GameMode)
 	{
 		bMove = (Actor->GetVelocity().Size() > 0);
 		bHold = Actor->IsHoldingFood();

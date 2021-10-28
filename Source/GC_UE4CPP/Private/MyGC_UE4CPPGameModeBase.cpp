@@ -21,7 +21,6 @@ void AMyGC_UE4CPPGameModeBase::BeginPlay()
 	}
 	
 	bGamePaused = false;
-	
 }
 
 void AMyGC_UE4CPPGameModeBase::WinGame()
@@ -49,7 +48,6 @@ void AMyGC_UE4CPPGameModeBase::WinGame()
 			Text->SetColorAndOpacity(FSlateColor(FLinearColor(0.0f, 1.0f, 0.0f)));			
 		}
 	}
-	
 }
 
 void AMyGC_UE4CPPGameModeBase::LoseGame()
@@ -170,4 +168,3 @@ bool AMyGC_UE4CPPGameModeBase::IsLose() const
 {
 	return bPlayerLost;
 }
-

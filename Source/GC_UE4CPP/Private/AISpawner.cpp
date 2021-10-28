@@ -82,7 +82,7 @@ void AAISpawner::BeginPlay()
 	Food->GetMesh()->SetSimulatePhysics(false);
 	Food->GetMesh()->SetCollisionProfileName(TEXT("IgnoreAll"));
 	Food->GetBox()->SetCollisionProfileName(TEXT("IgnoreAll"));
-	Food->StaticMesh->AttachToComponent(FoodSpot->getMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("FoodSocket"));
+	Food->StaticMesh->AttachToComponent(FoodSpot->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("FoodSocket"));
 
 	FoodSpot->SetFood(Food);
 }

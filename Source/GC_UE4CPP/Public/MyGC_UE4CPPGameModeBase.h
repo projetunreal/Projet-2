@@ -21,7 +21,6 @@ class GC_UE4CPP_API AMyGC_UE4CPPGameModeBase final : public AGC_UE4CPPGameModeBa
 	GENERATED_BODY()
 
 protected:
-	
 	bool bPlayerWon;
 	bool bPlayerLost;
 	bool bGamePaused;
@@ -42,6 +41,8 @@ public:
 	void UnpauseGame();
 	void ToggleMouseCursor(bool Boolean) const;
 	void TogglePlayerInput(bool Boolean) const;
+	bool IsWin() const;
+	bool IsLose() const;
 
 	UFUNCTION()
 	void UpdateFoodCount(int32 Value) const;
@@ -55,8 +56,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 	TSubclassOf<UUserWidget> FoodCountWidgetClass;
 	
-	bool IsWin() const;
-	bool IsLose() const;
 private:
 	UEndScreen* EndScreenWidget;
 	UPauseWidget* PauseWidget;

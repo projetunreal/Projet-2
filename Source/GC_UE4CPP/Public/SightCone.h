@@ -16,7 +16,6 @@ class GC_UE4CPP_API ASightCone final : public AActor
 	GENERATED_BODY()
 	
 private:
-
 	UPROPERTY(VisibleAnywhere)
 		UProceduralMeshComponent* ProcMeshComp;
 
@@ -62,7 +61,7 @@ public:
 
 	void ClearMeshData();
 
-	FORCEINLINE void SetAICharacter(AAICharacter* SomeAICharacter) { AICharacter = SomeAICharacter; };
-	FORCEINLINE void SetSightRadius(float SomeSightRadius) { SightRadius = SomeSightRadius; };
-	FORCEINLINE void SetVisionAngle(float SomeVisionAngle) { VisionAngle = SomeVisionAngle; };
+	FORCEINLINE void SetAICharacter(AAICharacter* SomeAICharacter) {AICharacter = SomeAICharacter;};
+	FORCEINLINE void SetSightRadius(const float SomeSightRadius) {SightRadius = SomeSightRadius;};
+	FORCEINLINE void SetVisionAngle(const float SomeVisionAngle) {VisionAngle = SomeVisionAngle;};
 };

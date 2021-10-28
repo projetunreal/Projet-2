@@ -17,6 +17,7 @@ class GC_UE4CPP_API AFoodSpot final : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AFoodSpot();
+	
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* StaticMesh;
 	UPROPERTY(EditAnywhere)
@@ -25,12 +26,11 @@ public:
 	UPROPERTY(EditAnywhere)
 		AActor* FoodSpotUserPlace;
 	
-	bool IsFoodOn();
+	bool IsFoodOn() const;
 	
 	void SetFood(AFood* Food);
-	AFood* GetFood();
-
-public:	
-	UStaticMeshComponent* getMesh();
-	AActor* GetFoodSpotUserPlace();
+	
+	FORCEINLINE AFood* GetFood() const {return FoodHeld;};
+	FORCEINLINE UStaticMeshComponent* GetMesh() const {return StaticMesh;};
+	FORCEINLINE AActor* GetFoodSpotUserPlace() const {return FoodSpotUserPlace;};
 };

@@ -26,8 +26,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generic")
 		bool bLose;
 	
-	AMyGC_UE4CPPGameModeBase* GameMode;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generic")
 		AFoodUserActor* Actor;
-	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+	virtual void NativeUpdateAnimation(float DeltaTime) override;
+
+private:
+	AMyGC_UE4CPPGameModeBase* GameMode;
 };

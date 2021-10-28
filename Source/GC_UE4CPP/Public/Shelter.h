@@ -9,22 +9,17 @@
 #include "Shelter.generated.h"
 
 UCLASS()
-class GC_UE4CPP_API AShelter : public AActor
+class GC_UE4CPP_API AShelter final : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	AShelter();
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
+public:
+	// Sets default values for this actor's properties
+	AShelter();
+	
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* StaticMeshComponent;
 

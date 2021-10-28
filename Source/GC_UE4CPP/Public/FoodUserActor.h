@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "FoodUserActor.generated.h"
+
 class AFood;
 class AFoodSpot;
+
 UCLASS()
 class  GC_UE4CPP_API AFoodUserActor : public ACharacter
 {
@@ -22,11 +23,13 @@ protected:
 	UPROPERTY(EditAnywhere)
 		AFood* FoodHeld;
 
+	virtual void Tick(const float DeltaTime) override;
+	virtual void BeginPlay() override;
+	
 public:	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	virtual void Tick(float DeltaSeconds);
-	virtual void BeginPlay();
-	bool IsHoldingFood();
+	
+	bool IsHoldingFood() const;
 
 	void DropFood();
 	void PickUpFood(AFood* Food);
@@ -34,7 +37,8 @@ public:
 	void PutFoodOnSpot(AFoodSpot* Spot);
 	void PickUpFoodFromSpot(AFoodSpot* Spot);
 	
-	FORCEINLINE AFood* GetFood() { return FoodHeld; };
+	FORCEINLINE AFood* GetFood() const { return FoodHeld; };
+	
 private:
 	 float BaseSpeed;
 };

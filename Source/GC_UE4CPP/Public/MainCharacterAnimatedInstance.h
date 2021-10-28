@@ -9,13 +9,15 @@
 
 class AMyCharacter;
 UCLASS()
-class GC_UE4CPP_API UMainCharacterAnimatedInstance : public UMyAnimatedInstance
+class GC_UE4CPP_API UMainCharacterAnimatedInstance final : public UMyAnimatedInstance
 {
 	GENERATED_BODY()
 public :
-	AMyCharacter* MainActor;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generic")
 		bool bSit = false ;
 protected :
-	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+	virtual void NativeUpdateAnimation(const float DeltaTime) override;
+
+private:
+	AMyCharacter* MainActor;
 };

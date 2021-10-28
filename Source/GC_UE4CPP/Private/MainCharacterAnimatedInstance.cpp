@@ -5,10 +5,9 @@
 #include "MyCharacter.h"
 
 
-
-void UMainCharacterAnimatedInstance::NativeUpdateAnimation(float DeltaSeconds)
+void UMainCharacterAnimatedInstance::NativeUpdateAnimation(const float DeltaTime)
 {
-	UMyAnimatedInstance::NativeUpdateAnimation(DeltaSeconds);
+	UMyAnimatedInstance::NativeUpdateAnimation(DeltaTime);
 	if(MainActor)
 	{
 		bSit = MainActor->IsSit();

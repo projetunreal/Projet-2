@@ -27,10 +27,12 @@ AMyCharacter::AMyCharacter()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
-	UCharacterMovementComponent* CharacterMovement = GetCharacterMovement();
-	if (!CharacterMovement)	return;
-	CharacterMovement->bOrientRotationToMovement = true;
-	CharacterMovement->RotationRate = FRotator(0.0f, 700.0f, 0.0f);
+	
+	UCharacterMovementComponent* CharMovement = GetCharacterMovement();
+	if (!CharMovement)	return;
+	
+	CharMovement->bOrientRotationToMovement = true;
+	CharMovement->RotationRate = FRotator(0.0f, 700.0f, 0.0f);
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(FName(TEXT("CameraBoom")));
 	if (!CameraBoom) return;
@@ -136,12 +138,11 @@ void AMyCharacter::SitOnChair(const AActor* NewChair)
 	GetController()->SetIgnoreMoveInput(true);
 	GetMesh()->SetSimulatePhysics(false);
 	GetMesh()->SetCollisionProfileName(TEXT("OverlapAll"));
-	FAttachmentTransformRules rules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false);
 
 	GetMesh()->AttachToComponent(Cast<AStaticMeshActor >(NewChair)->GetStaticMeshComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("SitSocket"));
 	GetCapsuleComponent()->AttachToComponent(Cast<AStaticMeshActor >(NewChair)->GetStaticMeshComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("SitSocket"));
 	CameraBoom->bUsePawnControlRotation = false;
-	FRotator NewRotation = FRotator(0.0, 270.0, 0.0);
+	const FRotator NewRotation = FRotator(0.0, 270.0, 0.0);
 	CameraBoom->SetRelativeRotation(NewRotation, false);
 	this->Chair = Cast<AStaticMeshActor >(NewChair)->GetStaticMeshComponent();
 }

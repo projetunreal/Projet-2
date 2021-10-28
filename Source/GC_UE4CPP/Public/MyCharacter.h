@@ -9,7 +9,7 @@
 class USpringArmComponent;
 class UCameraComponent;
 UCLASS()
-class GC_UE4CPP_API AMyCharacter : public AFoodUserActor
+class GC_UE4CPP_API AMyCharacter final : public AFoodUserActor
 {
 	GENERATED_BODY()
 	UPROPERTY(VisibleAnywhere)

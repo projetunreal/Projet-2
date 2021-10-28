@@ -6,33 +6,35 @@
 #include "GameFramework/Actor.h"
 #include "Components/BoxComponent.h"
 #include "Food.generated.h"
+
 class AFoodHandler;
+
 UCLASS()
-class GC_UE4CPP_API AFood : public AActor
+class GC_UE4CPP_API AFood final : public AActor
 {
 	GENERATED_BODY()
-
-
 public:
 	// Sets default values for this actor's properties
 	AFood();
+	
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* StaticMesh;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UBoxComponent* Box;
-	UStaticMeshComponent* GetMesh();
-	UBoxComponent* GetBox();
+	
+	FORCEINLINE UStaticMeshComponent* GetMesh() const {return StaticMesh;};
+	FORCEINLINE UBoxComponent* GetBox() const {return Box;};
 
 private:
-
+	
 	bool bOnFloor = false;
 	AFoodHandler* FoodHandler;
 
 public:
 
-	FORCEINLINE bool GetOnFloor() const { return bOnFloor; };
-	FORCEINLINE void SetOnFloor(bool bFoodAccessible) { bOnFloor = bFoodAccessible; };
+	FORCEINLINE bool GetOnFloor() const {return bOnFloor;};
+	FORCEINLINE void SetOnFloor(const bool bFoodAccessible) {bOnFloor = bFoodAccessible;};
 
-	FORCEINLINE AFoodHandler* GetFoodHandler() { return FoodHandler; };
-	FORCEINLINE void SetFoodHandler(AFoodHandler* SomeFoodHandler) { FoodHandler = SomeFoodHandler; };
+	FORCEINLINE AFoodHandler* GetFoodHandler() const {return FoodHandler;};
+	FORCEINLINE void SetFoodHandler(AFoodHandler* SomeFoodHandler) {FoodHandler = SomeFoodHandler;};
 };

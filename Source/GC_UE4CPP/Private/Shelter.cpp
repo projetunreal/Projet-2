@@ -9,12 +9,7 @@
 // Sets default values
 AShelter::AShelter()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(FName("StaticMesh"));
-
-	
 }
 
 // Called when the game starts or when spawned
@@ -25,13 +20,6 @@ void AShelter::BeginPlay()
 	StaticMeshComponent->SetVisibility(false);
 
 	StaticMeshComponent->OnComponentBeginOverlap.AddDynamic(this, &AShelter::AShelter::OnStaticMeshBeginOverlap);
-}
-
-// Called every frame
-void AShelter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
 }
 
 void AShelter::OnStaticMeshBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -46,11 +34,9 @@ void AShelter::OnStaticMeshBeginOverlap(UPrimitiveComponent* OverlappedComponent
 			FoodHandler->Remove(Food);
 		}
 		Food->Destroy();
-		
-		AMyGC_UE4CPPGameModeBase* GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+
+		const AMyGC_UE4CPPGameModeBase* GameMode = Cast<AMyGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
 		GameMode->UpdateFoodCount(1);
-		
-		//TODO: Change current animation
 	}
 
 	AFoodUserActor* FoodUser = Cast<AFoodUserActor>(OtherActor);

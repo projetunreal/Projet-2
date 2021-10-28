@@ -5,13 +5,12 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "FoodSpot.h"
 #include "Food.h"
-#include "..\Public\FoodUserActor.h"
+
 // Sets default values
 AFoodUserActor::AFoodUserActor()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	
 }
 
 // Called to bind functionality to input
@@ -19,8 +18,11 @@ void AFoodUserActor::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
-void AFoodUserActor::Tick(float DeltaSeconds)
+
+void AFoodUserActor::Tick(const float DeltaTime)
 {
+	Super::Tick(DeltaTime);
+
 	if (FoodHeld)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed / 2;
@@ -30,12 +32,14 @@ void AFoodUserActor::Tick(float DeltaSeconds)
 		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
 	}
 }
+
 void AFoodUserActor::BeginPlay()
 {
 	Super::BeginPlay();
 
 	BaseSpeed = GetCharacterMovement()->MaxWalkSpeed;
 }
+
 void AFoodUserActor::PickUpFood(AFood* Food)
 {
 	if (!FoodHeld)
@@ -44,12 +48,11 @@ void AFoodUserActor::PickUpFood(AFood* Food)
 		FoodHeld->GetMesh()->SetSimulatePhysics(false);
 		FoodHeld->GetMesh()->SetCollisionProfileName(TEXT("OverlapAll"));
 		FoodHeld->GetBox()->SetCollisionProfileName(TEXT("IgnoreAll"));
-		FName socketFood = TEXT("FoodSocket");
-		FAttachmentTransformRules rules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false);
 		FoodHeld->GetMesh()->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("FoodSocket"));
 		FoodHeld->SetOnFloor(false);
 	}
 }
+
 void AFoodUserActor::PickUpFoodFromSpot(AFoodSpot* Spot)
 {
 	if (Spot->IsFoodOn())
@@ -58,13 +61,12 @@ void AFoodUserActor::PickUpFoodFromSpot(AFoodSpot* Spot)
 		FoodHeld->GetMesh()->SetSimulatePhysics(false);
 		FoodHeld->GetMesh()->SetCollisionProfileName(TEXT("OverlapAll"));
 		FoodHeld->GetBox()->SetCollisionProfileName(TEXT("IgnoreAll"));
-		FName socketFood = TEXT("FoodSocket");
-		FAttachmentTransformRules rules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false);
 		FoodHeld->GetMesh()->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("FoodSocket"));
 		Spot->SetFood(nullptr);
 		FoodHeld->SetOnFloor(false);
 	}
 }
+
 void AFoodUserActor::PutFoodOnSpot(AFoodSpot* Spot)
 {
 	if ( FoodHeld && !Spot->IsFoodOn() )
@@ -74,20 +76,21 @@ void AFoodUserActor::PutFoodOnSpot(AFoodSpot* Spot)
 		FoodHeld->GetBox()->SetCollisionProfileName(TEXT("IgnoreAll"));
 		FoodHeld->GetMesh()->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, false));
 		Spot->SetFood(FoodHeld);
-		FoodHeld->GetMesh()->AttachToComponent(Spot->getMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("FoodSocket"));
+		FoodHeld->GetMesh()->AttachToComponent(Spot->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("FoodSocket"));
 		FoodHeld->SetOnFloor(false);
 		FoodHeld = nullptr;
 	}
 }
-bool AFoodUserActor::IsHoldingFood()
+
+bool AFoodUserActor::IsHoldingFood() const
 {
 	return FoodHeld != nullptr;
 }
+
 void AFoodUserActor::DropFood()
 {
 	if (FoodHeld)
 	{
-
 		FoodHeld->GetMesh()->SetSimulatePhysics(true);
 		FoodHeld->GetMesh()->SetCollisionProfileName(TEXT("BlockAll"));
 		FoodHeld->GetBox()->SetCollisionProfileName(TEXT("FoodBox"));
