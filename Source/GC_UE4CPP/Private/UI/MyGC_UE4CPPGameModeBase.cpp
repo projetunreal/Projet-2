@@ -43,9 +43,12 @@ void AMyGC_UE4CPPGameModeBase::WinGame()
 			EndScreenWidget->AddToViewport();
 
 			UTextBlock* Text = EndScreenWidget->WinLoseTextBlock;
-			Text->SetText(FText::FromString("You won!"));
-			Text->SetJustification(ETextJustify::Center);
-			Text->SetColorAndOpacity(FSlateColor(FLinearColor(0.0f, 1.0f, 0.0f)));			
+			if (Text)
+			{
+				Text->SetText(FText::FromString("You won!"));
+				Text->SetJustification(ETextJustify::Center);
+				Text->SetColorAndOpacity(FSlateColor(FLinearColor(0.0f, 1.0f, 0.0f)));
+			}
 		}
 	}
 }
@@ -70,9 +73,12 @@ void AMyGC_UE4CPPGameModeBase::LoseGame()
 			EndScreenWidget->AddToViewport();
 
 			UTextBlock* Text = EndScreenWidget->WinLoseTextBlock;
-			Text->SetText(FText::FromString("You lost!"));
-			Text->SetJustification(ETextJustify::Center);
-			Text->SetColorAndOpacity(FSlateColor(FLinearColor(1.0f, 0.0f, 0.0f)));
+			if (Text)
+			{
+				Text->SetText(FText::FromString("You lost!"));
+				Text->SetJustification(ETextJustify::Center);
+				Text->SetColorAndOpacity(FSlateColor(FLinearColor(1.0f, 0.0f, 0.0f)));
+			}
 		}
 	}
 }
@@ -87,26 +93,31 @@ void AMyGC_UE4CPPGameModeBase::PauseGame()
 	{
 		PauseWidget = CreateWidget<UPauseWidget>(GetWorld(), PauseWidgetClass);
 		if (PauseWidget)
-		{
-			//Pause locally
+		
 			bGamePaused = true;
 			APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 			if (!PlayerController) { return; }
 
+			//Pause locally
 			PlayerController->SetPause(bGamePaused);
 
 			ToggleMouseCursor(true);
-
 
 			//Add Pause Screen
 			PauseWidget->AddToViewport();
 			
 			UTextBlock* Text = PauseWidget->PauseTextBlock;
-			Text->SetText(FText::FromString("PAUSE"));
-			Text->SetJustification(ETextJustify::Center);
-
+			if (Text)
+			{
+				Text->SetText(FText::FromString("PAUSE"));
+				Text->SetJustification(ETextJustify::Center);
+			}
+	
 			UImage* BackgroundImage = PauseWidget->BackgroundImage;
-			BackgroundImage->SetColorAndOpacity(FLinearColor(0.0f, 0.0f, 0.5f, 0.1f));
+			if (BackgroundImage)
+			{
+				BackgroundImage->SetColorAndOpacity(FLinearColor(0.0f, 0.0f, 0.5f, 0.1f));
+			}
 		}
 	}
 }

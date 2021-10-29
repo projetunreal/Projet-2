@@ -37,10 +37,11 @@ public:
 
 	UFUNCTION()
 	void PauseGame();
-
 	void UnpauseGame();
+	
 	void ToggleMouseCursor(bool Boolean) const;
 	void TogglePlayerInput(bool Boolean) const;
+	
 	bool IsWin() const;
 	bool IsLose() const;
 
