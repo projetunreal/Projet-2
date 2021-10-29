@@ -10,7 +10,8 @@ void AMyGC_UE4CPPGameModeBase::BeginPlay()
 	Super::BeginPlay();
 
 	ToggleMouseCursor(false);
-	
+
+	//Widget Spawn
 	if(FoodCountWidgetClass)
 	{
 		FoodCountWidget = CreateWidget<UFoodCountWidget>(GetWorld(), FoodCountWidgetClass);
@@ -91,7 +92,7 @@ void AMyGC_UE4CPPGameModeBase::PauseGame()
 	{
 		PauseWidget = CreateWidget<UPauseWidget>(GetWorld(), PauseWidgetClass);
 		if (PauseWidget)
-		
+		{
 			bGamePaused = true;
 			APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 			if (!PlayerController) { return; }
