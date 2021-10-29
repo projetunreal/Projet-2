@@ -21,9 +21,9 @@ class GC_UE4CPP_API AMyGC_UE4CPPGameModeBase final : public AGC_UE4CPPGameModeBa
 	GENERATED_BODY()
 
 protected:
-	bool bPlayerWon;
-	bool bPlayerLost;
-	bool bGamePaused;
+	bool bPlayerWon = false;
+	bool bPlayerLost = false;
+	bool bGamePaused = false;
 	
 public:
 	

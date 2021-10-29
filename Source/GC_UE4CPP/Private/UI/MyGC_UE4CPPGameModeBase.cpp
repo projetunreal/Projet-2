@@ -19,8 +19,6 @@ void AMyGC_UE4CPPGameModeBase::BeginPlay()
 			FoodCountWidget->AddToViewport();
 		}
 	}
-	
-	bGamePaused = false;
 }
 
 void AMyGC_UE4CPPGameModeBase::WinGame()
